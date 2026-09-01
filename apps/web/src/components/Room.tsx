@@ -9,6 +9,7 @@ import { useRoom } from '../store';
 import { mockEvents, mockState, mockSubmit, stopBots, useMock } from '../mock';
 import { Analyzer } from './Analyzer';
 import { Board } from './Board';
+import { DraftConfirm } from './DraftConfirm';
 import { Drawer } from './Drawer';
 import { KeepersPanel } from './KeepersPanel';
 import { MockControls } from './MockControls';
@@ -34,6 +35,7 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
   const [tab, setTab] = useState<Tab>('draft');
   const [panel, setPanel] = useState<Panel>(null);
   const [drawerPid, setDrawerPid] = useState<string | null>(null);
+  const [confirmPid, setConfirmPid] = useState<string | null>(null);
   const [modeSel, setModeSel] = useState<'manual' | 'mock'>('manual');
   const mock = useMock();
   const [theme, setTheme] = useState(() => localStorage.getItem('fa-theme') ?? '');
@@ -106,6 +108,9 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
   const mySlot = session.slot ?? (config as { commish_slot?: number }).commish_slot ?? 11;
   const openRequest = draft.requests.find((r) => !r.resolved);
   const redoPid = redoablePids(isMock ? mockEvents(room.events) : room.events).at(-1) ?? null;
+  // v1's rule: the confirm guard sits on the three HUMAN buttons only —
+  // Ask/Take-it are their own confirmation, bots and redo never see it
+  const requestDraft = (pid: string): void => setConfirmPid(pid);
   const balance = rosterBalance(config, draft);
   const round = done ? config.rounds : roundOf(config, cur);
   const pickInRound = done ? config.teams : ((cur - 1) % config.teams) + 1;
@@ -216,7 +221,7 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
               mode={isCommish || isMock ? 'commish' : 'team'}
               mySlot={mySlot}
               disabled={!draft.started || done || (isMock && mock.running && onClockSlot !== mySlot)}
-              onDraft={(pid) => act('pick_made', { pid })}
+              onDraft={requestDraft}
               onAsk={(pid) => act('pick_requested', { pid, slot: session.slot })}
               onOpen={setDrawerPid}
             />
@@ -236,6 +241,7 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
               onOpen={setDrawerPid}
               mock={isMock}
               redoPid={redoPid}
+              onDraft={requestDraft}
               mockPanel={isMock
                 ? <MockControls players={players} byPid={byPid} config={config} events={room.events} mySlot={mySlot} />
                 : null}
@@ -286,10 +292,27 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
           mySlot={mySlot}
           done={done}
           disabled={!draft.started || done || (isMock && mock.running && onClockSlot !== mySlot)}
-          onDraft={(pid) => act('pick_made', { pid })}
+          onDraft={requestDraft}
           onAsk={(pid) => act('pick_requested', { pid, slot: session.slot })}
           onOpen={setDrawerPid}
           onClose={() => setDrawerPid(null)}
+        />
+      )}
+      {confirmPid && byPid.has(confirmPid) && (
+        <DraftConfirm
+          p={byPid.get(confirmPid)!}
+          config={config}
+          draft={draft}
+          teamName={teamName}
+          mySlot={mySlot}
+          isMock={isMock}
+          onAnswer={(ok) => {
+            setConfirmPid(null);
+            if (ok) {
+              act('pick_made', { pid: confirmPid });
+              setDrawerPid(null); // a drawer-initiated draft closes the card too (v1)
+            }
+          }}
         />
       )}
     </div>

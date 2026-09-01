@@ -31,7 +31,12 @@ test('mock draft: bots pick, pause on your turn, real board untouched', async ({
   // ---- with bots paused you can pick for any team, v1-style
   const topRow = page.locator('[data-testid^="row-"]').first();
   const firstName = (await topRow.locator('.p-name').innerText()).split(/\s/)[0]!;
+  // cancel first: the confirm card guards every human draft button
   await topRow.locator('[data-testid^="draft-"]').click();
+  await page.getByTestId('dconf-cancel').click();
+  await expect(page.getByTestId('onclock')).toContainText('PICK 1.01', { ignoreCase: true });
+  await topRow.locator('[data-testid^="draft-"]').click();
+  await page.getByTestId('dconf-ok').click();
   await page.getByTestId('tab-board').click();
   await expect(page.getByTestId('cell-1')).toContainText(firstName);
   await page.getByTestId('tab-draft').click();
@@ -45,6 +50,7 @@ test('mock draft: bots pick, pause on your turn, real board untouched', async ({
   const mine = page.locator('[data-testid^="row-"]').first();
   const myName = (await mine.locator('.p-name').innerText()).split(/\s/)[0]!;
   await mine.locator('[data-testid^="draft-"]').click();
+  await page.getByTestId('dconf-ok').click();
   await page.getByTestId('tab-board').click();
   await expect(page.getByTestId('cell-11')).toContainText(myName);
   await expect(page.getByTestId('cell-13').locator('.bc-name')).toBeVisible({ timeout: 10_000 });

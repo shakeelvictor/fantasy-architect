@@ -64,6 +64,8 @@ test('player card: open, tabs, queue, draft from the card', async ({ browser }) 
   await topRow.click();
   await expect(drawer.getByTestId('drawer-draft')).toContainText(name.split(/\s/)[0]!);
   await drawer.getByTestId('drawer-draft').click();
+  // the confirm card opens over the drawer; OK commits and closes both
+  await page.getByTestId('dconf-ok').click();
   await expect(drawer).toHaveCount(0); // drafting closes the card
   await page.getByTestId('tab-board').click();
   await expect(page.getByTestId('cell-1')).toContainText(name.split(/\s/)[0]!);

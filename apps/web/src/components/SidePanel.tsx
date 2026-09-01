@@ -24,9 +24,10 @@ interface Props {
   mock?: boolean;
   mockPanel?: React.ReactNode;
   redoPid?: string | null;
+  onDraft?: (pid: string) => void;
 }
 
-export function SidePanel({ players, byPid, config, draft, session, mySlot, teamName, done, onClock, act, events, openPanel, onOpen, mock, mockPanel, redoPid }: Props): React.JSX.Element {
+export function SidePanel({ players, byPid, config, draft, session, mySlot, teamName, done, onClock, act, events, openPanel, onOpen, mock, mockPanel, redoPid, onDraft }: Props): React.JSX.Element {
   const isCommish = session.role === 'commish';
   const recs = done ? [] : recommendations(players, byPid, config, draft, mySlot, 8);
   const top = recs[0];
@@ -110,10 +111,14 @@ export function SidePanel({ players, byPid, config, draft, session, mySlot, team
                   <div className="ts-stat"><b>{(top!.p.vorp ?? 0) > 0 ? '+' : ''}{(top!.p.vorp ?? 0).toFixed(0)}</b><span>VS REPL</span></div>
                   <div className="ts-stat"><b>{top!.p.adp != null ? top!.p.adp.toFixed(0) : '—'}</b><span>ADP</span></div>
                 </div>
-                {onClock && isCommish && (
-                  <button className="ts-draft" onClick={(e) => { e.stopPropagation(); act('pick_made', { pid: top!.p.pid }); }}>Draft now ⚡</button>
+                {onClock && (isCommish || mock) && (
+                  <button className="ts-draft" onClick={(e) => {
+                    e.stopPropagation();
+                    if (onDraft) onDraft(top!.p.pid);
+                    else act('pick_made', { pid: top!.p.pid });
+                  }}>Draft now ⚡</button>
                 )}
-                {onClock && !isCommish && (
+                {onClock && !isCommish && !mock && (
                   <button className="ts-draft" onClick={(e) => { e.stopPropagation(); act('pick_requested', { pid: top!.p.pid, slot: session.slot }); }}>Ask for him ⚡</button>
                 )}
               </div>

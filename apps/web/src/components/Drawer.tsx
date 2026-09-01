@@ -252,7 +252,7 @@ function ActionArea(props: Props & { p: PoolPlayer; requestClose: () => void }):
         className="btn primary drawer-draft"
         data-testid="drawer-draft"
         disabled={disabled}
-        onClick={() => { onDraft(p.pid); requestClose(); }}
+        onClick={() => onDraft(p.pid)}
       >
         Draft {p.name} · {label}
       </button>

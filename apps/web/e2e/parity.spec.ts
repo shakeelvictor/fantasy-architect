@@ -83,8 +83,9 @@ test('keepers, trades, queue and teams — full parity slice', async ({ browser 
   await expect(commish.getByTestId('onclock')).toContainText('Vip');
   await expect(team.getByTestId('onclock')).toContainText('Vip');
 
-  // commissioner drafts p2 — it drops off the team's queue view
+  // commissioner drafts p2 (through the confirm card) — it drops off the team's queue view
   await commish.getByTestId(`draft-${p2}`).click();
+  await commish.getByTestId('dconf-ok').click();
   await expect(team.getByTestId('view-queue')).toContainText('(1)');
   await expect(team.locator('[data-testid^="row-"]').first()).toHaveAttribute('data-testid', `row-${p1}`);
 

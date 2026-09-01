@@ -35,6 +35,9 @@ test('a full slice of draft night, in two browsers', async ({ browser }) => {
   // innerText merges the inline <small>, so only the first token is safe
   const firstName = (await topRow.locator('.p-name').innerText()).split(/\s/)[0]!;
   await topRow.locator('[data-testid^="draft-"]').click();
+  // the confirm card quotes the pick; OK commits it
+  await expect(commish.locator('.dconf-label')).toContainText('Pick 1.01');
+  await commish.getByTestId('dconf-ok').click();
   const t0 = Date.now();
   await expect(team.getByTestId('cell-1')).toContainText(firstName, { timeout: 1000 });
   const propagation = Date.now() - t0;
@@ -79,6 +82,7 @@ test('a full slice of draft night, in two browsers', async ({ browser }) => {
   // (the idle SSE socket only notices on its next heartbeat — the loud
   // failure below is the exit criterion, not the indicator's timing)
   await commish.locator('[data-testid^="draft-"]').first().click();
+  await commish.getByTestId('dconf-ok').click();
   await expect(commish.getByTestId('toast')).toBeVisible();
   await expect(commish.getByTestId('cell-2')).not.toContainText(askedName);
 
@@ -86,6 +90,7 @@ test('a full slice of draft night, in two browsers', async ({ browser }) => {
   await commishCtx.setOffline(false);
   await expect(commish.getByTestId('conn')).toContainText('live', { timeout: 10_000 });
   await commish.locator('[data-testid^="draft-"]').first().click();
+  await commish.getByTestId('dconf-ok').click();
   await expect(commish.getByTestId('cell-2')).toContainText(askedName);
   await expect(team.getByTestId('cell-2')).toContainText(askedName);
 
