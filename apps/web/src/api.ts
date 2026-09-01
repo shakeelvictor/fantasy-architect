@@ -12,6 +12,12 @@ export interface PoolPlayer {
   team: string | null;
   proj: number;
   adp: number | null;
+  bye: number | null;
+  sos: number | null;
+  po: number | null;
+  interest: number | null;
+  injury: string | null;
+  stats: Record<string, number> | null;
   posRank?: number;
   vorp?: number;
   tier?: number;

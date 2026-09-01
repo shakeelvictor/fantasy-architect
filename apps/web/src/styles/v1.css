@@ -1,0 +1,2173 @@
+/* ============================================================ Prime Time
+   Design system from the Aug 2026 redesign (Claude Design mock 3a):
+   near-black ground, electric-blue #4da3ff accent, Archivo black italics for display,
+   Nunito throughout — display, data and body separate on weight and spacing, not family. Light theme keeps volt for
+   FILLS (dark ink on top) but switches volt-as-TEXT to --accent-text, a
+   deeper blue — the fill blue is too light to read as text on a white card. */
+:root {
+  --bg: #0a0c11;
+  --bg2: #0e1118;
+  --panel: #12151d;
+  --panel2: #1a1f29;
+  --row: rgba(255, 255, 255, 0.025);
+  --tile: rgba(255, 255, 255, 0.04);
+  --border: #21262f;
+  --text: #f2f4f8;
+  --muted: #8b93a5;
+  --faint: #5d6577;
+  --accent: #4da3ff;          /* electric blue — fills and lines, both themes */
+  --accent-ink: #06203a;      /* text ON a blue fill, both themes (6.1:1) */
+  --accent-text: #7ab8ff;     /* blue AS text — lifts on dark, deepens on light */
+  --accent-soft: rgba(77, 163, 255, 0.1);
+  --accent-line: rgba(77, 163, 255, 0.32);
+  --accent-glow: rgba(77, 163, 255, 0.16);
+  --accent2: #67e8f9;
+  --danger: #ff6b6b;
+  --qb: #ec4899;
+  --rb: #14b8a6;
+  --wr: #3b82f6;
+  --te: #f59e0b;
+  --k: #a78bfa;
+  --idp: #22c55e;
+  --qb-soft: rgba(236, 72, 153, 0.13);
+  --rb-soft: rgba(20, 184, 166, 0.13);
+  --wr-soft: rgba(59, 130, 246, 0.13);
+  --te-soft: rgba(245, 158, 11, 0.13);
+  --k-soft: rgba(167, 139, 250, 0.13);
+  --idp-soft: rgba(34, 197, 94, 0.13);
+  --wash-a: rgba(77, 163, 255, 0.06);
+  --wash-b: rgba(103, 232, 249, 0.045);
+  --wash-c: rgba(20, 184, 166, 0.045);
+  --font-display: 'Archivo', -apple-system, sans-serif;
+  --font-data: 'Nunito', -apple-system, sans-serif;
+  --font-body: 'Nunito', -apple-system, sans-serif;
+
+  /* ---- fluid type scale ----
+     Every font-size in this file goes through a token here, so the whole app
+     scales with the viewport instead of stepping at a breakpoint. Each token
+     is named for the fixed px size it replaced (--fs-12-5 was 12.5px) — that
+     keeps the diff readable and means a size can be re-tuned in one place.
+
+     Each ramps from its floor at a 360px viewport to its ceiling at 1440px.
+     Growth is banded by role, because the risk is not the same everywhere:
+       ≤10.5px  +0/+15%  — dense table labels and chips. These sit in the pool
+                           table's narrow columns, so they hold their current
+                           size on phones and only grow on roomy screens.
+       11–15px  +3/+18%  — body copy and controls, where the punch is wanted.
+       ≥16px    +4/+24%  — display type, which can afford the most.
+     The floors are at or above the old fixed sizes, so nothing gets SMALLER
+     than it was on any device. */
+  --fs-8: clamp(8px, 7.6px + 0.1111vw, 9.2px);
+  --fs-8-5: clamp(8.5px, 8.077px + 0.1176vw, 9.77px);
+  --fs-9: clamp(9px, 8.55px + 0.125vw, 10.35px);
+  --fs-9-5: clamp(9.5px, 9.027px + 0.1315vw, 10.92px);
+  --fs-10: clamp(10px, 9.5px + 0.1389vw, 11.5px);
+  --fs-10-5: clamp(10.5px, 9.977px + 0.1454vw, 12.07px);
+  --fs-11: clamp(11.33px, 10.78px + 0.1528vw, 12.98px);
+  --fs-11-5: clamp(11.85px, 11.277px + 0.1593vw, 13.57px);
+  --fs-12: clamp(12.36px, 11.76px + 0.1667vw, 14.16px);
+  --fs-12-5: clamp(12.88px, 12.257px + 0.1731vw, 14.75px);
+  --fs-13: clamp(13.39px, 12.74px + 0.1806vw, 15.34px);
+  --fs-13-5: clamp(13.91px, 13.237px + 0.187vw, 15.93px);
+  --fs-14: clamp(14.42px, 13.72px + 0.1944vw, 16.52px);
+  --fs-14-5: clamp(14.94px, 14.217px + 0.2009vw, 17.11px);
+  --fs-15: clamp(15.45px, 14.7px + 0.2083vw, 17.7px);
+  --fs-16: clamp(16.64px, 15.573px + 0.2963vw, 19.84px);
+  --fs-17: clamp(17.68px, 16.547px + 0.3148vw, 21.08px);
+  --fs-18: clamp(18.72px, 17.52px + 0.3333vw, 22.32px);
+  --fs-19: clamp(19.76px, 18.493px + 0.3519vw, 23.56px);
+  --fs-21: clamp(21.84px, 20.44px + 0.3889vw, 26.04px);
+  --fs-22: clamp(22.88px, 21.413px + 0.4074vw, 27.28px);
+  --fs-26: clamp(27.04px, 25.307px + 0.4815vw, 32.24px);
+  --fs-30: clamp(31.2px, 29.2px + 0.5556vw, 37.2px);
+  --fs-32: clamp(33.28px, 31.147px + 0.5926vw, 39.68px);
+  --fs-34: clamp(35.36px, 33.093px + 0.6296vw, 42.16px);
+  --fs-40: clamp(41.6px, 38.933px + 0.7407vw, 49.6px);
+  --fs-42: clamp(43.68px, 40.88px + 0.7778vw, 52.08px);
+  --fs-44: clamp(45.76px, 42.827px + 0.8148vw, 54.56px);
+  --fs-46: clamp(47.84px, 44.773px + 0.8519vw, 57.04px);
+}
+
+:root[data-theme="light"] {
+  --bg: #f2f3ef;
+  --bg2: #ffffff;
+  --panel: #ffffff;
+  --panel2: #eceee6;
+  --row: rgba(10, 12, 17, 0.03);
+  --tile: rgba(10, 12, 17, 0.05);
+  --border: #dcdfd5;
+  --text: #14161c;
+  --muted: #5c6370;
+  --faint: #9aa0ad;
+  --accent-text: #1565c0;
+  --accent-soft: rgba(21, 101, 192, 0.09);
+  --accent-line: rgba(21, 101, 192, 0.35);
+  --accent-glow: rgba(21, 101, 192, 0.11);
+  --accent2: #0e7490;
+  --danger: #d92b45;
+  --wash-a: rgba(21, 101, 192, 0.07);
+  --wash-b: rgba(14, 116, 144, 0.06);
+  --wash-c: rgba(20, 184, 166, 0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--fs-14);
+}
+
+/* Ambient background wash — three big, very faint colour clouds that drift on a
+   slow loop. `html` has no background of its own, so body's flat colour is
+   propagated to the canvas and this layer paints above it but beneath every bit
+   of content. Deliberately near-subliminal: it should register as depth, never
+   as movement you notice while reading a player row. */
+body::before {
+  content: ''; position: fixed; inset: -25%; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(38% 38% at 18% 22%, var(--wash-a), transparent 62%),
+    radial-gradient(34% 34% at 82% 14%, var(--wash-b), transparent 62%),
+    radial-gradient(44% 44% at 62% 88%, var(--wash-c), transparent 62%);
+  animation: ambient 42s ease-in-out infinite alternate;
+}
+@keyframes ambient {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-2.5%, 2%, 0) scale(1.07); }
+  100% { transform: translate3d(2%, -2.5%, 0) scale(1.03); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
+}
+.hidden { display: none !important; }
+button { font-family: inherit; cursor: pointer; }
+
+/* shared motion */
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+/* loading */
+.loading-screen {
+  position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(1200px 600px at 50% -10%, #131722, var(--bg)), var(--bg);
+}
+.loading-card { text-align: center; max-width: 420px; padding: 32px; }
+.loading-card h2 {
+  margin: 18px 0 8px; font-family: var(--font-display); font-weight: 900; font-style: italic;
+  letter-spacing: 0.02em; text-transform: uppercase;
+}
+.loading-card p { color: var(--muted); line-height: 1.5; }
+.spinner {
+  width: 42px; height: 42px; margin: 0 auto; border-radius: 50%;
+  border: 3px solid var(--border); border-top-color: var(--accent);
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+:root[data-theme="light"] .loading-screen { background: var(--bg); }
+:root[data-theme="light"] .spinner { border-top-color: var(--accent-text); }
+
+/* topbar */
+.topbar {
+  display: flex; align-items: center; gap: 16px;
+  padding: 11px 18px; background: var(--bg2); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 30;
+}
+.brand { display: flex; align-items: center; gap: 10px; min-width: 220px; }
+.brand-mark {
+  background: var(--accent); color: var(--accent-ink);
+  font-family: var(--font-display); font-weight: 900; font-style: italic;
+  padding: 7px 9px; border-radius: 9px; font-size: var(--fs-13); letter-spacing: 0.02em;
+}
+.brand-text { display: flex; flex-direction: column; line-height: 1.25; }
+/* Set like an active nav tab — Archivo 800, uppercase, italic, same tracking —
+   so the wordmark and the navigation read as one typographic system. */
+#league-name {
+  font-family: var(--font-display); font-weight: 800; font-style: italic;
+  text-transform: uppercase; letter-spacing: 0.03em;
+}
+/* Hidden when it does not fit; fitBrandWordmark() in app.js decides. Not a
+   breakpoint — see the comment there for why a breakpoint cannot answer it. */
+#league-name.no-room { display: none; }
+.brand-sub { color: var(--faint); font-family: var(--font-data); font-size: var(--fs-10); letter-spacing: 0.04em; }
+.clock-banner { flex: 1; text-align: center; min-width: 0; }
+.clock-pill {
+  display: inline-flex; align-items: center; gap: 9px; max-width: 100%;
+  padding: 7px 14px; border-radius: 999px;
+  background: var(--accent-soft); border: 1px solid var(--accent-line);
+  font-family: var(--font-data); font-weight: 700; font-size: var(--fs-11-5);
+  color: var(--accent-text); text-transform: uppercase; letter-spacing: 0.03em;
+}
+.clock-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--accent-text);
+  flex: none; animation: pulse 1.4s ease-in-out infinite;
+}
+.clock-banner .you { color: var(--accent-text); font-weight: 700; font-style: italic; }
+.clock-banner .pickno { color: var(--muted); font-weight: 500; margin-left: 8px; font-size: var(--fs-10-5); }
+.mode-switch { display: flex; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.mode-switch button {
+  background: none; border: none; color: var(--muted); padding: 8px 14px;
+  font-family: var(--font-display); font-weight: 600; font-size: var(--fs-12);
+}
+.mode-switch button.active { background: var(--accent); color: var(--accent-ink); font-weight: 800; }
+.icon-btn {
+  background: var(--panel); color: var(--muted); border: 1px solid var(--border);
+  border-radius: 10px; width: 36px; height: 36px; font-size: var(--fs-16);
+}
+.icon-btn:hover { color: var(--text); border-color: var(--accent-line); }
+
+/* live pick ticker — recent picks loop under the header */
+.pick-ticker {
+  overflow: hidden; background: var(--accent-soft);
+  border-bottom: 1px solid var(--border);
+}
+.ticker-track {
+  display: flex; white-space: nowrap; width: max-content; padding: 5px 0;
+  font-family: var(--font-data); font-weight: 600; font-size: var(--fs-10);
+  color: var(--muted); letter-spacing: 0.05em;
+}
+.ticker-track .tk { padding: 0 18px; flex: none; }
+.ticker-track .tk-clock { color: var(--accent-text); }
+.ticker-track .tk .tk-pos { color: var(--faint); }
+
+/* tabs */
+.tabs { display: flex; gap: 22px; padding: 4px 18px 0; background: var(--bg2); border-bottom: 1px solid var(--border); }
+.tabs button {
+  background: none; border: none; color: var(--faint);
+  font-family: var(--font-display); font-weight: 600; font-size: var(--fs-12);
+  text-transform: uppercase; letter-spacing: 0.03em;
+  padding: 10px 2px; border-bottom: 2px solid transparent;
+}
+.tabs button:hover { color: var(--muted); }
+.tabs button.active {
+  color: var(--text); border-bottom-color: var(--accent);
+  font-weight: 800; font-style: italic;
+}
+:root[data-theme="light"] .tabs button.active { border-bottom-color: var(--accent-text); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+main { padding: 14px 18px 40px; }
+
+/* draft layout */
+.draft-layout { display: grid; grid-template-columns: 1fr 330px; gap: 14px; align-items: start; }
+/* min-width:0 lets these grid items shrink below their content width — without
+   it the wide pool table forces the whole page to scroll sideways. */
+.pool-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; min-width: 0; }
+.pool-controls {
+  display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+#search {
+  background: var(--bg); border: 1px solid var(--border); color: var(--text);
+  padding: 9px 12px; border-radius: 10px; width: 220px; font-size: var(--fs-13-5); outline: none;
+  font-family: var(--font-body);
+}
+#search:focus { border-color: var(--accent-line); }
+.pos-tabs { display: flex; gap: 4px; }
+.pos-tabs button {
+  background: var(--bg); border: 1px solid var(--border); color: var(--muted);
+  padding: 7px 12px; border-radius: 9px;
+  font-family: var(--font-data); font-weight: 600; font-size: var(--fs-11);
+}
+.pos-tabs button.active { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); font-weight: 700; }
+.chk { color: var(--muted); font-size: var(--fs-12-5); display: flex; gap: 6px; align-items: center; margin-left: auto; }
+
+.pool-table-wrap { max-height: calc(100vh - 250px); overflow: auto; }
+.pool-table { width: 100%; border-collapse: collapse; }
+.pool-table th {
+  text-align: left; font-family: var(--font-data); font-weight: 600; font-size: var(--fs-9-5);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--faint); padding: 8px 10px; position: sticky; top: 0; background: var(--panel);
+  border-bottom: 1px solid var(--border); z-index: 5;
+}
+.pool-table th.num, .pool-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.pool-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); font-size: var(--fs-13); }
+/* Every numeric column in the pool goes through td.num — Proj, ADP, Bye, SOS,
+   PO, Int and each projected-stat column. It never needed tabular figures
+   while the data face was a monospace; Nunito is proportional, so without
+   this a column of ADPs no longer lines up its decimal points row to row. */
+.pool-table td.num {
+  font-family: var(--font-data); font-size: var(--fs-12);
+  font-variant-numeric: tabular-nums;
+}
+.pool-table tbody tr { cursor: pointer; }
+.pool-table tbody tr:hover { background: var(--accent-soft); }
+.pool-table tr.drafted { opacity: 0.35; }
+.pool-table tr.risk td:first-child { box-shadow: inset 3px 0 0 var(--danger); }
+
+.player-cell { display: flex; align-items: center; gap: 9px; }
+.pos-pill {
+  font-family: var(--font-data); font-size: var(--fs-10); font-weight: 700;
+  padding: 3px 7px; border-radius: 6px; min-width: 30px; text-align: center;
+}
+.pos-QB { background: var(--qb-soft); color: var(--qb); }
+.pos-RB { background: var(--rb-soft); color: var(--rb); }
+.pos-WR { background: var(--wr-soft); color: var(--wr); }
+.pos-TE { background: var(--te-soft); color: var(--te); }
+.pos-K { background: var(--k-soft); color: var(--k); }
+.pos-DL, .pos-LB, .pos-DB { background: var(--idp-soft); color: var(--idp); }
+/* the saturated mid-tones read fine on dark but wash out on white — deepen
+   the TEXT only, the soft chip background carries the hue either way */
+:root[data-theme="light"] .pos-QB { color: #be185d; }
+:root[data-theme="light"] .pos-RB { color: #0f766e; }
+:root[data-theme="light"] .pos-WR { color: #1d4ed8; }
+:root[data-theme="light"] .pos-TE { color: #b45309; }
+:root[data-theme="light"] .pos-K { color: #6d28d9; }
+:root[data-theme="light"] .pos-DL, :root[data-theme="light"] .pos-LB, :root[data-theme="light"] .pos-DB { color: #15803d; }
+.p-name { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.005em; }
+/* ADP lives in its own column on desktop; on a narrow phone that column is
+   dropped and this inline copy takes over. */
+.meta-adp { display: none; }
+.p-meta { color: var(--muted); font-family: var(--font-data); font-size: var(--fs-10-5); }
+.inj { color: var(--danger); font-weight: 700; font-size: var(--fs-10-5); margin-left: 6px; }
+.sos-good { color: var(--accent-text); }
+.sos-bad { color: var(--danger); }
+
+.draft-btn {
+  background: transparent; color: var(--accent-text); border: 1.5px solid var(--accent-line);
+  border-radius: 8px; padding: 5px 12px;
+  font-family: var(--font-display); font-weight: 800; font-style: italic;
+  font-size: var(--fs-11); letter-spacing: 0.04em; text-transform: uppercase;
+}
+.draft-btn:hover { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.draft-btn:disabled { opacity: 0.3; pointer-events: none; }
+
+/* side panel */
+.side-panel { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 14px; }
+.card h3 {
+  font-family: var(--font-data); font-size: var(--fs-10); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.14em; color: var(--faint); margin-bottom: 10px;
+}
+.card h3 .src { font-size: var(--fs-9); color: var(--accent2); margin-left: 6px; text-transform: none; letter-spacing: 0.02em; }
+
+/* Suggested Picks — spotlight Top Suggestion + Next Best list */
+.top-sug {
+  position: relative; border-radius: 16px; padding: 16px; margin-bottom: 12px;
+  background: radial-gradient(120% 90% at 80% 0%, var(--accent-glow), transparent 55%), var(--bg2);
+  border: 1px solid var(--accent-line); overflow: hidden; cursor: pointer;
+}
+.ts-label {
+  font-family: var(--font-data); font-weight: 700; font-size: var(--fs-10);
+  color: var(--accent-text); letter-spacing: 0.14em; margin-bottom: 12px;
+}
+.ts-hero { display: flex; align-items: center; gap: 13px; }
+.ts-ring {
+  width: 64px; height: 64px; border-radius: 50%; flex: none;
+  border: 2.5px solid var(--border); background: var(--panel2);
+  display: grid; place-items: center; overflow: hidden;
+  animation: floaty 3.5s ease-in-out infinite;
+}
+.ts-ring.ring-QB { border-color: var(--qb); background: var(--qb-soft); }
+.ts-ring.ring-RB { border-color: var(--rb); background: var(--rb-soft); }
+.ts-ring.ring-WR { border-color: var(--wr); background: var(--wr-soft); }
+.ts-ring.ring-TE { border-color: var(--te); background: var(--te-soft); }
+.ts-ring.ring-K { border-color: var(--k); background: var(--k-soft); }
+.ts-ring.ring-IDP { border-color: var(--idp); background: var(--idp-soft); }
+.ts-ring img { width: 100%; height: 100%; object-fit: cover; }
+.ts-name {
+  font-family: var(--font-display); font-weight: 900; font-style: italic;
+  font-size: var(--fs-19); line-height: 1.05; text-transform: uppercase; letter-spacing: -0.01em;
+}
+.ts-meta { font-family: var(--font-data); font-size: var(--fs-10); color: var(--muted); margin-top: 4px; }
+.ts-gone {
+  display: inline-block; margin-top: 6px; padding: 2px 7px; border-radius: 4px;
+  font-family: var(--font-data); font-weight: 700; font-size: var(--fs-8-5); letter-spacing: 0.06em;
+  color: #0a0c11;
+  background: linear-gradient(110deg, #ff6b6b 40%, #ffd0d0 50%, #ff6b6b 60%);
+  background-size: 200% 100%; animation: shimmer 2.2s linear infinite;
+}
+.ts-stats { display: flex; gap: 8px; margin: 14px 0 0; }
+.ts-stat { flex: 1; background: var(--tile); border-radius: 10px; padding: 8px 10px; min-width: 0; }
+.ts-stat b {
+  display: block; font-family: var(--font-data); font-weight: 700; font-size: var(--fs-15);
+  font-variant-numeric: tabular-nums;
+}
+.ts-stat:first-child b { color: var(--accent-text); }
+.ts-stat span {
+  font-family: var(--font-data); font-size: var(--fs-8-5); color: var(--faint); letter-spacing: 0.06em;
+}
+.ts-draft {
+  width: 100%; margin-top: 13px;
+  font-family: var(--font-display); font-weight: 900; font-style: italic;
+  font-size: var(--fs-13); letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--accent-ink); background: var(--accent); border: none; border-radius: 10px;
+  padding: 12px 0;
+}
+.ts-next-label {
+  font-family: var(--font-data); font-weight: 700; font-size: var(--fs-10);
+  color: var(--faint); letter-spacing: 0.14em; margin: 2px 0 6px;
+}
+.rec-item {
+  display: flex; align-items: center; gap: 9px; padding: 8px; border-radius: 10px; cursor: pointer;
+  border: 1px solid transparent;
+}
+.rec-item:hover { background: var(--accent-soft); border-color: var(--border); }
+.rec-main { flex: 1; min-width: 0; }
+.rec-name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-13); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rec-why { color: var(--muted); font-family: var(--font-data); font-size: var(--fs-10); margin-top: 2px; }
+.rec-pts { font-family: var(--font-data); font-weight: 700; font-size: var(--fs-12-5); color: var(--accent-text); font-variant-numeric: tabular-nums; }
+.rec-risk { font-size: var(--fs-9-5); color: var(--danger); font-weight: 700; }
+
+/* a roster row carries the player's photo and the projected stat line for HIS
+   position, so a lineup reads without opening every card */
+.roster-slot {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 8px; min-height: 46px; font-size: var(--fs-12-5); border-radius: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.roster-slot:last-child { border-bottom: none; }
+.slot-label {
+  width: 42px; flex: none; color: var(--faint);
+  font-family: var(--font-data); font-weight: 700; font-size: var(--fs-10);
+}
+.slot-empty { color: var(--faint); }
+.rs-main { flex: 1; min-width: 0; }
+.rs-name { display: block; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-13-5); }
+.rs-line {
+  display: block; margin-top: 2px; color: var(--muted);
+  font-family: var(--font-data); font-size: var(--fs-10); line-height: 1.5;
+}
+.rs-stats b { color: var(--text); font-weight: 700; }
+.rs-proj {
+  flex: none; text-align: right; color: var(--accent-text);
+  font-family: var(--font-data); font-weight: 700; font-size: var(--fs-14);
+  font-variant-numeric: tabular-nums;
+}
+.rs-proj-l { display: block; font-size: var(--fs-8); font-weight: 500; color: var(--faint); letter-spacing: 0.08em; }
+
+.btn {
+  background: var(--panel2); border: 1px solid var(--border); color: var(--text);
+  padding: 8px 14px; border-radius: 10px;
+  font-family: var(--font-display); font-weight: 600; font-size: var(--fs-12-5);
+}
+.btn:hover { border-color: var(--muted); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border: 1px solid var(--accent); font-weight: 800; }
+.btn.danger { color: var(--danger); }
+.btn:disabled { opacity: 0.4; pointer-events: none; }
+.util-row, .mock-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.range-row { display: flex; flex-direction: column; gap: 6px; color: var(--muted); font-size: var(--fs-12); margin-top: 10px; }
+
+/* board — Sleeper's shape: roomy position-tinted cells, the name on two lines
+   (first light / last bold) so long names don't truncate, and a headshot
+   bleeding out of the bottom-right corner behind the text. */
+.board-wrap { overflow: auto; background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+.board-grid { display: grid; gap: 7px; min-width: 1250px; }
+.board-head {
+  font-family: var(--font-display); font-size: var(--fs-11-5); font-weight: 700; color: var(--muted);
+  text-align: center; padding: 8px 4px 10px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.board-head.me { color: var(--accent-text); font-weight: 800; font-style: italic; letter-spacing: 0.05em; }
+.board-cell {
+  position: relative; isolation: isolate;
+  border-radius: 10px; padding: 9px 11px; font-size: var(--fs-11); min-height: 68px;
+  background: var(--row); border: 1px solid var(--border); border-left: 3px solid var(--border);
+  overflow: hidden;
+}
+/* the headshot sits behind the text and fades out toward the left, so the name
+   reads cleanly over it. Never takes a click — the whole cell opens the card. */
+.bc-shot {
+  position: absolute; right: -6px; bottom: -6px; z-index: -1;
+  width: 54px; height: 54px; object-fit: cover; object-position: top center;
+  opacity: 0.62; pointer-events: none;
+  -webkit-mask-image: linear-gradient(to left, #000 45%, transparent 92%);
+  mask-image: linear-gradient(to left, #000 45%, transparent 92%);
+}
+/* On dark cells the photo is knocked back so it reads as a backdrop. On the
+   pale light-theme cells that same blend turns faces into grey ghosts — light
+   mode keeps them nearly full-strength, and the mask alone holds the text. */
+:root[data-theme="light"] .bc-shot { opacity: 0.95; }
+.board-cell .bc-name { font-family: var(--font-display); line-height: 1.15; }
+.board-cell .bc-first,
+.board-cell .bc-last {
+  display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 100%;
+}
+.board-cell .bc-first { font-size: var(--fs-9-5); font-weight: 600; color: var(--muted); padding-right: 20px; }
+/* a one-word name (a single-name player, or an empty prefix) leaves this
+   empty — collapse it rather than leaving a blank line above the name */
+.board-cell .bc-first:empty { display: none; }
+.board-cell .bc-last { font-size: var(--fs-12-5); font-weight: 700; letter-spacing: -0.01em; }
+.board-cell .bc-meta {
+  color: var(--muted); font-family: var(--font-data); font-size: var(--fs-9);
+  margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+/* the photo occupies the bottom-right, so the meta line stops short of it
+   rather than disappearing under the opaque half of the image. Keyed on the
+   class the renderer adds alongside the photo — an empty cell (and the
+   archive's non-clickable cells) must not be judged by data-pid. */
+.board-cell.has-shot .bc-meta { padding-right: 26px; }
+.board-cell.c-QB { background: var(--qb-soft); border-left-color: var(--qb); }
+.board-cell.c-RB { background: var(--rb-soft); border-left-color: var(--rb); }
+.board-cell.c-WR { background: var(--wr-soft); border-left-color: var(--wr); }
+.board-cell.c-TE { background: var(--te-soft); border-left-color: var(--te); }
+.board-cell.c-K { background: var(--k-soft); border-left-color: var(--k); }
+.board-cell.c-IDP { background: var(--idp-soft); border-left-color: var(--idp); }
+.board-cell.onclock {
+  outline: 1.5px solid var(--accent); background: var(--accent-soft);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+:root[data-theme="light"] .board-cell.onclock { outline-color: var(--accent-text); }
+.round-label { color: var(--faint); font-family: var(--font-data); font-size: var(--fs-9); display: flex; align-items: center; justify-content: center; }
+
+/* analyzer */
+.analyzer { display: flex; flex-direction: column; gap: 14px; }
+.grade-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.grade-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 14px; }
+.grade-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.grade-team { font-family: var(--font-display); font-weight: 800; }
+.grade-letter { font-size: var(--fs-22); font-weight: 800; font-family: var(--font-data); font-style: italic; }
+.g-A { color: var(--accent-text); } .g-B { color: #8fd14f; } .g-C { color: var(--te); }
+.g-D { color: #ff8558; } .g-F { color: var(--danger); }
+:root[data-theme="light"] .g-B { color: #4d7c0f; }
+.grade-stats { color: var(--muted); font-size: var(--fs-12); line-height: 1.6; }
+
+/* news / values */
+.news-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px; align-items: start; }
+.news-col { min-width: 0; } /* shrink below content width instead of overflowing */
+.news-item { padding: 10px 4px; border-bottom: 1px solid var(--border); }
+.news-item a { color: var(--text); text-decoration: none; font-weight: 600; font-size: var(--fs-13-5); }
+.news-item a:hover { color: var(--accent2); }
+.news-item p { color: var(--muted); font-size: var(--fs-12); margin-top: 3px; line-height: 1.45; }
+.news-date { color: var(--faint); font-size: var(--fs-10-5); margin-top: 3px; }
+.trend-item { display: flex; justify-content: space-between; padding: 6px 4px; font-size: var(--fs-12-5); border-bottom: 1px solid var(--border); }
+.trend-count { color: var(--muted); font-family: var(--font-data); font-variant-numeric: tabular-nums; font-size: var(--fs-11-5); }
+
+/* drawer */
+.drawer-backdrop { position: fixed; inset: 0; background: rgba(4, 6, 10, 0.6); z-index: 40; }
+:root[data-theme="light"] .drawer-backdrop { background: rgba(20, 22, 28, 0.35); }
+.drawer {
+  position: fixed; inset: 0; margin: auto; z-index: 50;
+  width: min(720px, 94vw); height: fit-content; max-height: 88vh;
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 18px;
+  padding: 22px; overflow-y: auto;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+}
+:root[data-theme="light"] .drawer { box-shadow: 0 24px 70px rgba(20, 22, 28, 0.25); }
+.drawer h2 {
+  font-family: var(--font-display); font-weight: 900; font-style: italic;
+  text-transform: uppercase; letter-spacing: -0.01em; font-size: var(--fs-21); margin-bottom: 2px;
+}
+.drawer .sub { color: var(--muted); margin-bottom: 14px; }
+.drawer .stat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 14px 0; }
+.stat-box { background: var(--tile); border: 1px solid var(--border); border-radius: 10px; padding: 10px; text-align: center; }
+.stat-box .v { font-family: var(--font-data); font-weight: 700; font-size: var(--fs-15); font-variant-numeric: tabular-nums; color: var(--accent-text); }
+.stat-box .l { color: var(--faint); font-family: var(--font-data); font-size: var(--fs-8-5); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
+.drawer h4 {
+  margin: 16px 0 8px; font-family: var(--font-data); font-size: var(--fs-10); font-weight: 700;
+  text-transform: uppercase; color: var(--faint); letter-spacing: 0.12em;
+}
+/* read-only spectator banner (/watch) */
+.watch-banner {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin: 0 0 2px; padding: 9px 14px; font-size: var(--fs-12-5);
+  background: var(--panel); border: 1px solid var(--border);
+  border-left: 4px solid var(--accent2); border-radius: 10px; color: var(--muted);
+}
+.watch-banner b { color: var(--text); }
+.watch-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  flex: none; animation: pulse 1.4s ease-in-out infinite;
+}
+:root[data-theme="light"] .watch-dot { background: var(--accent-text); }
+.watch-status { margin-left: auto; font-family: var(--font-data); font-size: var(--fs-10); text-transform: uppercase; letter-spacing: 0.06em; }
+@media (max-width: 620px) { .watch-status { margin-left: 0; } }
+
+/* the season outlook leads the Summary tab, so it sits flush at the top */
+#outlook-slot > :first-child { margin-top: 0; }
+.wk-bars { display: flex; align-items: flex-end; gap: 3px; height: 70px; }
+.wk-bar { flex: 1; background: linear-gradient(180deg, var(--accent), #1f66b8); border-radius: 3px 3px 0 0; min-height: 2px; position: relative; }
+.wk-bar.bye { background: var(--panel2); }
+.wk-bar.po { background: linear-gradient(180deg, var(--te), #d98324); }
+:root[data-theme="light"] .wk-bar { background: linear-gradient(180deg, #4da3ff, #1565c0); }
+:root[data-theme="light"] .wk-bar.bye { background: #d9dcd2; }
+.wk-labels { display: flex; gap: 3px; margin-top: 4px; }
+.wk-labels span { flex: 1; text-align: center; font-size: var(--fs-8); color: var(--muted); }
+.po-opps { display: flex; gap: 8px; flex-wrap: wrap; }
+.po-chip { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: var(--fs-12); }
+.po-chip b { font-variant-numeric: tabular-nums; }
+.drawer .close-x { position: absolute; top: 14px; right: 14px; z-index: 20; }
+.inj-note {
+  background: rgba(255, 107, 107, 0.1); border: 1px solid rgba(255, 107, 107, 0.35);
+  color: #ff9fae; border-radius: 10px; padding: 10px; font-size: var(--fs-12-5); line-height: 1.5; margin-top: 10px;
+}
+:root[data-theme="light"] .inj-note { background: #fdecef; border-color: #f5c4cd; color: #b02338; }
+
+/* ---- sleepers & busts ---- */
+.values-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.values-head h3 { margin-bottom: 0; min-width: 0; }
+#values-switch button { font-size: var(--fs-11); }
+#values-blurb { margin: 8px 0 10px; line-height: 1.5; font-family: var(--font-body); font-size: var(--fs-12); }
+.values-pos { flex-wrap: wrap; margin-bottom: 8px; }
+.values-pos button { padding: 5px 10px; font-size: var(--fs-10-5); }
+.value-row {
+  display: flex; align-items: center; gap: 10px; padding: 9px 6px;
+  border-bottom: 1px solid var(--border); cursor: pointer; border-radius: 8px;
+}
+.value-row:hover { background: var(--accent-soft); }
+.value-row.is-drafted { opacity: 0.4; }
+.v-main { flex: 1; min-width: 0; }
+.v-name { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-13); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.v-why { color: var(--muted); font-size: var(--fs-11-5); margin-top: 2px; line-height: 1.4; font-family: var(--font-body); }
+.v-gone { font-size: var(--fs-10); font-weight: 700; text-transform: uppercase; color: var(--muted); letter-spacing: 0.4px; }
+.v-nums { text-align: right; flex-shrink: 0; }
+.v-gap { font-family: var(--font-data); font-weight: 700; font-size: var(--fs-14); font-variant-numeric: tabular-nums; }
+.v-gap.good { color: var(--accent-text); }
+.v-gap.bad { color: var(--danger); }
+.v-sub { color: var(--muted); font-family: var(--font-data); font-size: var(--fs-10); font-variant-numeric: tabular-nums; margin-top: 1px; }
+.trend-item { cursor: pointer; border-radius: 6px; }
+.trend-item:hover { background: var(--accent-soft); }
+
+/* ---- player profile: tabs, outlook, game log, news ---- */
+.drawer-tabs { padding: 4px 0 0; background: transparent; margin: 14px 0 12px; gap: 18px; }
+.drawer-tabs button { font-size: var(--fs-11); padding: 8px 2px; }
+.bio-line { color: var(--muted); font-size: var(--fs-12); margin-top: 3px; font-family: var(--font-body); }
+.inj-chip {
+  display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 999px;
+  background: rgba(255, 107, 107, 0.16); color: #ff9fae;
+  font-size: var(--fs-10-5); font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;
+}
+:root[data-theme="light"] .inj-chip { background: #fdecef; color: #b02338; }
+.outlook {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px 14px; font-size: var(--fs-13); line-height: 1.65; font-family: var(--font-body);
+}
+.src-line { margin-top: 8px; color: var(--faint); font-family: var(--font-data); font-size: var(--fs-10); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* a team has asked for a player — the commissioner decides */
+.nom-request {
+  display: flex; align-items: center; gap: 14px; margin: 10px 0 0;
+  background: radial-gradient(120% 90% at 80% 0%, var(--accent-glow), transparent 55%), var(--panel);
+  border: 1px solid var(--accent-line); border-left-width: 4px; border-radius: 12px;
+  padding: 12px 14px;
+}
+.nom-request.hidden { display: none; }
+.nr-shot { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; background: var(--panel2); flex-shrink: 0; }
+.nr-body { flex: 1; min-width: 0; }
+.nr-label {
+  color: var(--accent-text); font-family: var(--font-data); font-size: var(--fs-9-5); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em;
+}
+.nr-name { font-family: var(--font-display); font-size: var(--fs-17); font-weight: 800; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+.nr-name .p-meta { font-weight: 400; }
+.nr-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+@media (max-width: 560px) {
+  .nom-request { flex-wrap: wrap; }
+  .nr-actions { width: 100%; }
+  .nr-actions .btn { flex: 1; }
+}
+
+/* a team's own view: asking for a player rather than drafting one */
+.draft-btn.is-prepick { background: transparent; border-color: var(--border); color: var(--muted); }
+.draft-btn.is-prepick:hover { border-color: var(--accent-line); color: var(--text); }
+.draft-btn.is-asked { background: var(--accent2); border-color: var(--accent2); color: #06202b; }
+.watch-banner.is-team { border-left-color: var(--accent); }
+:root[data-theme="light"] .watch-banner.is-team { border-left-color: var(--accent-text); }
+
+/* team depth chart on the player card */
+.depth-chart { display: flex; flex-direction: column; gap: 14px; }
+.dc-group { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; }
+.dc-slot {
+  color: var(--faint); font-family: var(--font-data); font-size: var(--fs-9-5); text-transform: uppercase;
+  letter-spacing: 0.1em; font-weight: 700; margin-bottom: 5px;
+}
+.dc-row {
+  display: grid; grid-template-columns: 20px 1fr auto auto; align-items: center;
+  gap: 9px; padding: 5px 6px; border-radius: 7px; cursor: pointer; font-size: var(--fs-13);
+}
+.dc-row:hover { background: var(--accent-soft); }
+.dc-row.is-him { background: var(--accent-soft); cursor: default; }
+.dc-row.is-him .dc-name { font-weight: 700; color: var(--text); }
+.dc-rung {
+  color: var(--muted); font-family: var(--font-data); font-size: var(--fs-10-5); font-variant-numeric: tabular-nums; text-align: center;
+}
+.dc-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dc-pos { color: var(--muted); font-size: var(--fs-11-5); }
+.dc-proj { color: var(--accent-text); font-family: var(--font-data); font-weight: 700; font-variant-numeric: tabular-nums; font-size: var(--fs-12); }
+.dc-taken {
+  margin-left: 6px; color: var(--muted); font-size: var(--fs-10); text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.dc-note { margin-top: 12px; }
+
+.pnews-item { border-bottom: 1px solid var(--border); padding: 14px 0; }
+.pnews-item:first-child { padding-top: 4px; }
+.pnews-item:last-child { border-bottom: none; }
+.pnews-item h5 { font-family: var(--font-display); font-size: var(--fs-14); font-weight: 700; line-height: 1.35; }
+.pnews-item p { font-size: var(--fs-13); line-height: 1.6; margin-top: 6px; color: var(--text); font-family: var(--font-body); }
+.ni-meta { margin-top: 4px; color: var(--muted); font-family: var(--font-data); font-size: var(--fs-10); }
+.ni-src { font-weight: 700; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.4px; }
+.ni-analysis {
+  margin-top: 8px; padding: 8px 12px; border-left: 3px solid var(--accent);
+  background: var(--panel); border-radius: 0 8px 8px 0; font-size: var(--fs-12-5); line-height: 1.6;
+}
+.ni-analysis b { color: var(--accent-text); }
+:root[data-theme="light"] .ni-analysis { border-left-color: var(--accent-text); }
+.ni-link { display: inline-block; margin-top: 8px; font-size: var(--fs-12); color: var(--accent2); }
+
+.log-summary { grid-template-columns: repeat(6, 1fr); }
+.log-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+.log-table th {
+  text-align: left; font-family: var(--font-data); font-size: var(--fs-9); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--faint); padding: 6px 8px; border-bottom: 1px solid var(--border);
+}
+.log-table td { padding: 7px 8px; border-bottom: 1px solid var(--border); font-size: var(--fs-12-5); }
+.log-table .num { text-align: right; font-family: var(--font-data); font-size: var(--fs-11-5); font-variant-numeric: tabular-nums; }
+.log-table .pts { font-weight: 700; }
+.log-table .log-line { color: var(--muted); }
+.log-table tr.dnp td { opacity: 0.45; font-style: italic; }
+.log-table tr.boom .pts { color: var(--accent-text); }
+.log-table tr.bust .pts { color: var(--danger); }
+.log-table .pct { color: var(--muted); font-size: var(--fs-11); }
+
+@media (max-width: 640px) {
+  .log-summary { grid-template-columns: repeat(3, 1fr); }
+  /* drop the box-score column — header and cells together, or the remaining
+     columns sit under the wrong headings */
+  .log-table th:nth-child(3), .log-table .log-line { display: none; }
+}
+
+/* ---- draft safety ---- */
+.snap-list { margin-top: 10px; border-top: 1px solid var(--border); }
+.snap-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 7px 0; border-bottom: 1px solid var(--border); font-size: var(--fs-12-5);
+}
+.snap-row .btn { padding: 4px 9px; font-size: var(--fs-11); }
+#safety-card { border-color: var(--border); }
+
+/* a mock draft is visually unmistakable, so it can't be confused for the real
+   board while picks are flying */
+body.is-mock .topbar { box-shadow: inset 0 -3px 0 var(--te); }
+
+/* ---- toast ---- */
+.toast {
+  position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%);
+  z-index: 90; max-width: min(520px, 92vw); padding: 11px 16px;
+  background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--accent);
+  border-radius: 10px; font-size: var(--fs-13); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+.toast.t-good { border-left-color: var(--accent); }
+.toast.t-warn { border-left-color: var(--te); }
+.toast.hidden { display: none; }
+:root[data-theme="light"] .toast { box-shadow: 0 10px 30px rgba(20, 22, 28, 0.2); }
+:root[data-theme="light"] .toast, :root[data-theme="light"] .toast.t-good { border-left-color: var(--accent-text); }
+
+/* ---- trade details ---- */
+#ops-paste {
+  width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text);
+  border-radius: 8px; padding: 9px 10px; font-family: var(--font-data);
+  font-size: var(--fs-11-5); resize: vertical; outline: none;
+}
+/* ---- keepers (read-only board) ---- */
+.keeper-grid { display: flex; flex-direction: column; gap: 2px; margin-top: 12px; }
+.keeper-team {
+  display: grid; grid-template-columns: 120px 1fr; gap: 10px; align-items: center;
+  padding: 8px 10px; border-radius: 9px; background: var(--panel);
+}
+.keeper-team.none { opacity: 0.55; }
+.keeper-team.me { outline: 1px solid var(--accent-line); }
+.kt-name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-13); min-width: 0; }
+.kt-body { display: flex; flex-wrap: wrap; gap: 14px; min-width: 0; }
+.keeper-entry { display: flex; align-items: center; gap: 8px; }
+.keeper-entry .mini-shot { width: 28px; height: 28px; }
+.k-name { font-weight: 600; font-size: var(--fs-13); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.k-missed { color: var(--te); font-size: var(--fs-11-5); margin-top: 2px; }
+.keeper-reject {
+  margin-top: 10px; padding: 8px 10px; border-radius: 8px;
+  background: rgba(255, 133, 88, 0.12); border: 1px solid rgba(255, 133, 88, 0.35); font-size: var(--fs-12-5);
+}
+/* a declared keeper holds its board slot before the draft reaches it */
+.board-cell.keeper-pending { opacity: 0.72; border-style: dashed; }
+/* a pick that now belongs to another team stays in its original column, so it
+   needs to be obvious at a glance which ones moved */
+.board-cell.traded { border-color: var(--te); border-style: dashed; }
+.bc-traded { color: var(--te); font-weight: 700; font-size: var(--fs-9-5); }
+:root[data-theme="light"] .bc-traded, :root[data-theme="light"] .k-missed { color: #b45309; }
+
+#trades-panel h4 { margin: 14px 0 8px; color: var(--faint); font-family: var(--font-data); font-size: var(--fs-10); text-transform: uppercase; letter-spacing: 0.12em; }
+/* every team has to finish on exactly `rounds` players */
+.balance-ok, .balance-bad {
+  margin: 10px 0; padding: 9px 11px; border-radius: 9px; font-size: var(--fs-12-5); line-height: 1.5;
+}
+.balance-ok { background: var(--accent-soft); border: 1px solid var(--accent-line); }
+.balance-bad { background: rgba(255, 133, 88, 0.12); border: 1px solid rgba(255, 133, 88, 0.4); }
+.trade-detail { padding: 8px 0 8px 10px; border-left: 2px solid var(--border); margin-bottom: 8px; }
+.trade-detail.ok { border-left-color: var(--accent); }
+.trade-detail.bad { border-left-color: var(--te); }
+:root[data-theme="light"] .trade-detail.ok { border-left-color: var(--accent-text); }
+
+/* drafted-player celebration */
+/* Centred in the viewport on every size, over a scrim, so the pick is the only
+   thing on screen for a beat. pointer-events stays off the whole overlay —
+   nothing here may swallow a click on the board underneath. */
+.pick-pop {
+  position: fixed; inset: 0; z-index: 90; pointer-events: none;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+  opacity: 0; visibility: hidden;
+  background: rgba(3, 5, 9, 0.45);
+  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+}
+.pick-pop.show { animation: pp-veil 2.3s ease forwards; }
+.pick-pop.show .pp-card { animation: pp-run 2.3s cubic-bezier(0.2, 0.9, 0.3, 1) forwards; }
+.pp-card {
+  display: flex; align-items: center; gap: 26px; padding: 26px 40px 26px 26px;
+  /* the team logo hangs ~54px past the top-right corner, so the card has to
+     stop short of the viewport edge by more than that or the logo is clipped
+     on a half-width window */
+  max-width: min(720px, calc(100vw - 150px));
+  background: var(--bg2); border: 2px solid var(--border); border-radius: 24px;
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.6); position: relative;
+}
+.pick-pop.g-QB .pp-card { border-color: var(--qb); box-shadow: 0 18px 50px rgba(236, 72, 153, 0.28); }
+.pick-pop.g-RB .pp-card { border-color: var(--rb); box-shadow: 0 18px 50px rgba(20, 184, 166, 0.28); }
+.pick-pop.g-WR .pp-card { border-color: var(--wr); box-shadow: 0 18px 50px rgba(59, 130, 246, 0.28); }
+.pick-pop.g-TE .pp-card { border-color: var(--te); box-shadow: 0 18px 50px rgba(245, 158, 11, 0.28); }
+.pick-pop.g-K  .pp-card { border-color: var(--k);  box-shadow: 0 18px 50px rgba(167, 139, 250, 0.28); }
+.pick-pop.g-IDP .pp-card { border-color: var(--idp); box-shadow: 0 18px 50px rgba(34, 197, 94, 0.28); }
+.pick-pop.is-mine .pp-card {
+  background: radial-gradient(120% 90% at 80% 0%, var(--accent-glow), transparent 55%), var(--bg2);
+}
+/* The drafted player's NFL team, hung on the card's top-right corner — the bare
+   PNG, no chip or ring behind it, centred on the corner point so half of it
+   sits outside the border. The card has no overflow clipping, which is what
+   lets it hang over. The drop-shadow is not decoration: several club marks are
+   near-black (Raiders, Steelers, Ravens) and would otherwise dissolve into the
+   dark scrim behind the card. */
+.pp-logo {
+  position: absolute; top: 0; right: 0; transform: translate(50%, -50%);
+  z-index: 3; width: 108px; height: 108px; object-fit: contain;
+  filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.55));
+}
+:root[data-theme="light"] .pp-logo { filter: drop-shadow(0 3px 10px rgba(20, 22, 28, 0.28)); }
+
+.board-cell[data-pid] { cursor: pointer; }
+.pp-shot {
+  width: 118px; height: 118px; border-radius: 50%; object-fit: cover;
+  background: var(--panel2); flex-shrink: 0;
+}
+.pp-label {
+  color: var(--muted); font-family: var(--font-data); font-size: var(--fs-12);
+  text-transform: uppercase; letter-spacing: 0.14em; font-weight: 700;
+}
+.pick-pop.is-mine .pp-label { color: var(--accent-text); }
+.pp-name {
+  font-family: var(--font-display); font-size: var(--fs-40); font-weight: 900; font-style: italic;
+  text-transform: uppercase; letter-spacing: -0.01em; margin: 4px 0 9px; line-height: 1.05;
+}
+.pp-sub { display: flex; align-items: center; gap: 11px; color: var(--muted); font-size: var(--fs-17); flex-wrap: wrap; }
+.pp-sub b { color: var(--text); }
+.pp-pts { color: var(--accent-text); font-family: var(--font-data); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* six dots thrown outward as the card lands */
+.pp-spark { position: absolute; inset: 0; overflow: visible; }
+.pp-spark i {
+  position: absolute; top: 50%; left: 50%; width: 9px; height: 9px; border-radius: 50%;
+  background: var(--accent); opacity: 0;
+}
+.pick-pop.show .pp-spark i { animation: pp-spark 0.75s ease-out forwards; }
+.pp-spark i:nth-child(1) { --dx: -190px; --dy: -70px; background: var(--accent); }
+.pp-spark i:nth-child(2) { --dx: 205px;  --dy: -52px; background: var(--accent2); }
+.pp-spark i:nth-child(3) { --dx: -165px; --dy: 74px;  background: var(--te); }
+.pp-spark i:nth-child(4) { --dx: 184px;  --dy: 80px;  background: var(--qb); }
+.pp-spark i:nth-child(5) { --dx: -48px;  --dy: -96px; background: var(--wr); }
+.pp-spark i:nth-child(6) { --dx: 64px;   --dy: -102px; background: var(--idp); }
+
+@keyframes pp-veil {
+  0%   { opacity: 0; visibility: visible; }
+  12%  { opacity: 1; }
+  80%  { opacity: 1; visibility: visible; }
+  100% { opacity: 0; visibility: hidden; }
+}
+@keyframes pp-run {
+  0%   { transform: scale(0.86) translateY(12px); }
+  12%  { transform: scale(1.03) translateY(0); }
+  20%  { transform: scale(1); }
+  80%  { transform: scale(1); }
+  100% { transform: scale(0.97) translateY(-8px); }
+}
+@keyframes pp-spark {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.4); }
+}
+
+/* ---------------------------------------------- team celebrations
+   Two specials, both scoped inside .pp-card so they can never escape the
+   overlay (which stays pointer-events:none throughout). `pp-long` stretches
+   the veil and card runs to match the JS timer, since the tomato has to fly,
+   land and splat before the shot pours. */
+.pick-pop.pp-long.show { animation-duration: 3.9s; }
+.pick-pop.pp-long.show .pp-card { animation-duration: 3.9s; }
+.pp-fx { position: absolute; inset: 0; overflow: visible; pointer-events: none; z-index: 4; }
+
+/* ---- Chicago: BEAR DOWN ---- */
+.pick-pop.pp-bears.show .pp-card {
+  border-color: #c83803;
+  box-shadow: 0 18px 50px rgba(200, 56, 3, 0.35);
+  animation-name: pp-run, pp-shake;
+  animation-duration: 3.9s, 0.5s;
+  animation-delay: 0s, 0.35s;
+  animation-timing-function: cubic-bezier(0.2, 0.9, 0.3, 1), ease-in-out;
+}
+.pp-chant {
+  position: absolute; left: 0; right: 0; bottom: -20px;
+  display: flex; justify-content: center; gap: 1px;
+  font-family: var(--font-display); font-weight: 900; font-style: italic;
+  font-size: var(--fs-40); letter-spacing: -0.01em; white-space: nowrap;
+}
+.pp-chant span {
+  display: inline-block; color: #f36f21;
+  text-shadow: 2px 2px 0 #0b162a, -1px -1px 0 #0b162a, 0 6px 18px rgba(0, 0, 0, 0.5);
+  opacity: 0; animation: pp-chant 3.9s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+@keyframes pp-chant {
+  0%, 8%   { opacity: 0; transform: translateY(26px) scale(0.4) rotate(-12deg); }
+  17%      { opacity: 1; transform: translateY(0) scale(1.25) rotate(3deg); }
+  22%      { transform: translateY(0) scale(1) rotate(0deg); }
+  82%      { opacity: 1; transform: translateY(0) scale(1); }
+  100%     { opacity: 0; transform: translateY(-14px) scale(0.9); }
+}
+/* three claw slashes rake across the card as the chant lands */
+.pp-claw { position: absolute; inset: 0; overflow: hidden; border-radius: 22px; }
+.pp-claw i {
+  position: absolute; top: -30%; height: 160%; width: 7px; border-radius: 5px;
+  background: linear-gradient(180deg, transparent, #f36f21, transparent);
+  opacity: 0; transform: rotate(14deg);
+  animation: pp-claw 3.9s ease-out both;
+}
+.pp-claw i:nth-child(1) { left: 22%; animation-delay: 0.02s; }
+.pp-claw i:nth-child(2) { left: 32%; animation-delay: 0.07s; height: 190%; }
+.pp-claw i:nth-child(3) { left: 42%; animation-delay: 0.12s; }
+@keyframes pp-claw {
+  0%, 3%  { opacity: 0; transform: translateX(-40px) rotate(14deg); }
+  9%      { opacity: 0.95; }
+  20%     { opacity: 0; transform: translateX(190px) rotate(14deg); }
+  100%    { opacity: 0; transform: translateX(190px) rotate(14deg); }
+}
+@keyframes pp-shake {
+  0%, 100% { translate: 0 0; }
+  20%  { translate: -7px 2px; }
+  40%  { translate: 6px -2px; }
+  60%  { translate: -4px 1px; }
+  80%  { translate: 3px 0; }
+}
+
+/* ---- NFC North rivals: a tomato, then a consolation shot ---- */
+/* the tomato arcs in from off the left and lands on the headshot */
+.pp-tomato {
+  position: absolute; left: 26px; top: 46%; font-size: var(--fs-42); line-height: 1;
+  opacity: 0; transform-origin: center;
+  animation: pp-tomato 3.9s ease-in both;
+}
+@keyframes pp-tomato {
+  0%   { opacity: 0; transform: translate(-240px, -120px) rotate(0deg) scale(0.7); }
+  4%   { opacity: 1; }
+  17%  { transform: translate(0, 0) rotate(520deg) scale(1); }
+  19%  { opacity: 1; transform: translate(6px, 6px) rotate(540deg) scale(1.35); }
+  22%  { opacity: 0; transform: translate(6px, 6px) rotate(540deg) scale(1.6); }
+  100% { opacity: 0; transform: translate(6px, 6px) scale(1.6); }
+}
+/* the splat it leaves behind, sitting over the player's photo */
+/* Soft-edged and translucent on purpose: at full strength it replaced the
+   headshot with a red blob instead of reading as a tomato splattered ON him. */
+.pp-splat {
+  position: absolute; left: 16px; top: 36%; width: 86px; height: 86px;
+  opacity: 0; border-radius: 46% 54% 38% 62% / 55% 42% 58% 45%;
+  background: radial-gradient(circle at 42% 38%,
+    rgba(255, 91, 74, 0.82) 0%, rgba(214, 39, 25, 0.78) 48%,
+    rgba(150, 22, 12, 0.5) 78%, rgba(150, 22, 12, 0) 100%);
+  animation: pp-splat 3.9s ease-out both;
+}
+/* a couple of stray specks so the splat reads as an impact */
+.pp-splat::before, .pp-splat::after {
+  content: ''; position: absolute; border-radius: 50%; background: #d62719;
+}
+.pp-splat::before { width: 15px; height: 13px; top: -8px; right: 14px; }
+.pp-splat::after { width: 10px; height: 9px; bottom: 4px; right: -9px; }
+@keyframes pp-splat {
+  0%, 18% { opacity: 0; transform: scale(0.2); }
+  23%     { opacity: 0.95; transform: scale(1.12); }
+  27%     { opacity: 0.9; transform: scale(1); }
+  74%     { opacity: 0.9; transform: scale(1); }
+  100%    { opacity: 0; transform: scale(1.04); }
+}
+/* then the shot: slides up from the bottom-right, tips back, and is gone */
+.pp-shot-glass {
+  position: absolute; right: 30px; bottom: 6px; font-size: var(--fs-46); line-height: 1;
+  opacity: 0; transform-origin: 50% 90%;
+  animation: pp-shotglass 3.9s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+@keyframes pp-shotglass {
+  0%, 40% { opacity: 0; transform: translateY(46px) rotate(0deg) scale(0.8); }
+  50%     { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+  62%     { transform: translateY(0) rotate(0deg) scale(1.1); }
+  72%     { transform: translateY(-6px) rotate(-108deg) scale(1.1); }
+  84%     { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+  100%    { opacity: 0; transform: translateY(16px) rotate(0deg) scale(0.85); }
+}
+.pp-shot-word {
+  position: absolute; right: 24px; bottom: -22px;
+  font-family: var(--font-display); font-weight: 900; font-style: italic;
+  font-size: var(--fs-15); letter-spacing: 0.08em; color: #ffd166;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  opacity: 0; animation: pp-shotword 3.9s ease-out both;
+}
+@keyframes pp-shotword {
+  0%, 48% { opacity: 0; transform: translateY(10px); }
+  57%     { opacity: 1; transform: translateY(0); }
+  86%     { opacity: 1; transform: translateY(0); }
+  100%    { opacity: 0; transform: translateY(-8px); }
+}
+
+@media (max-width: 560px) {
+  .pp-chant { font-size: var(--fs-26); bottom: -14px; }
+  .pp-tomato { font-size: var(--fs-30); left: 16px; }
+  .pp-splat { width: 66px; height: 66px; left: 6px; }
+  .pp-shot-glass { font-size: var(--fs-32); right: 16px; }
+  .pp-shot-word { font-size: var(--fs-11); right: 14px; bottom: -16px; }
+}
+
+/* a pop that flies at you is exactly what reduced-motion is for — still shows,
+   just fades. The team specials go completely still: the chant and the splat
+   stay legible, the things that fly and shake do not run at all. */
+@media (prefers-reduced-motion: reduce) {
+  .pick-pop.show .pp-card { animation: none; }
+  .pick-pop.show .pp-spark i { animation: none; }
+  /* matches the specificity of the bears rule above, so it actually wins */
+  .pick-pop.pp-bears.show .pp-card { animation: none; }
+  .pp-claw, .pp-tomato, .pp-shot-glass { display: none; }
+  .pp-chant span, .pp-splat, .pp-shot-word { animation: none; opacity: 1; transform: none; }
+  .pp-splat { opacity: 0.9; }
+}
+
+/* phones get the same centred card, scaled to the screen rather than a
+   different shape — a spectator watching on a phone should get the same beat */
+@media (max-width: 560px) {
+  .pick-pop { padding: 14px; }
+  .pp-card { padding: 20px 22px; gap: 16px; border-width: 2px; border-radius: 20px; max-width: calc(100vw - 76px); }
+  .pp-shot { width: 76px; height: 76px; }
+  /* smaller and hung further out here: the phone card is narrow, so a logo
+     this size sitting deeper into the corner covers the pick number */
+  .pp-logo { width: 64px; height: 64px; transform: translate(40%, -50%); }
+  /* and the pick line stops short of whatever the logo still overlaps. Kept
+     tight: the longest labels ("Your pick 11.11 · #121") wrap on a 375px
+     screen whatever we do here, so every px given back is one fewer that does. */
+  .pp-label { padding-right: 12px; }
+  .pp-label { font-size: var(--fs-10-5); letter-spacing: 0.1em; }
+  .pp-name { font-size: var(--fs-26); margin: 3px 0 6px; }
+  .pp-sub { font-size: var(--fs-14); gap: 9px; }
+  .pp-spark i { width: 6px; height: 6px; }
+  .pp-spark i:nth-child(1) { --dx: -120px; --dy: -46px; }
+  .pp-spark i:nth-child(2) { --dx: 130px;  --dy: -34px; }
+  .pp-spark i:nth-child(3) { --dx: -104px; --dy: 48px; }
+  .pp-spark i:nth-child(4) { --dx: 116px;  --dy: 52px; }
+  .pp-spark i:nth-child(5) { --dx: -30px;  --dy: -62px; }
+  .pp-spark i:nth-child(6) { --dx: 40px;   --dy: -66px; }
+}
+
+/* ---------------------------------------------------- draft finale
+   Fireworks when the last pick lands. Same contract as the pick pop: the whole
+   overlay is pointer-events:none, so nothing here can ever swallow a click on
+   the board underneath, and it removes itself after ~6.4s. */
+.finale {
+  position: fixed; inset: 0; z-index: 95; pointer-events: none; overflow: hidden;
+  opacity: 0; visibility: hidden;
+  background: radial-gradient(120% 90% at 50% 60%, rgba(4, 6, 10, 0.62), rgba(4, 6, 10, 0.34));
+  -webkit-backdrop-filter: blur(1.5px); backdrop-filter: blur(1.5px);
+}
+:root[data-theme="light"] .finale {
+  background: radial-gradient(120% 90% at 50% 60%, rgba(12, 16, 24, 0.5), rgba(12, 16, 24, 0.26));
+}
+.finale.show { animation: fin-veil 10s ease forwards; }
+/* Percentages are relative to the 10s run, so they are re-derived rather than
+   carried over: 4% = 400ms fade in, 90% = 9s, leaving a 1s fade out. */
+@keyframes fin-veil {
+  0% { opacity: 0; visibility: visible; }
+  4% { opacity: 1; }
+  90% { opacity: 1; visibility: visible; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+/* the white-hot pop at the moment of detonation */
+.fw-flash {
+  position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px;
+  border-radius: 50%; background: #fff; opacity: 0;
+  animation: fw-flash 1.6s ease-out both;
+}
+@keyframes fw-flash {
+  0% { opacity: 0; transform: scale(0.2); }
+  6% { opacity: 0.95; transform: scale(1); box-shadow: 0 0 26px 10px rgba(255, 255, 255, 0.55); }
+  30% { opacity: 0; transform: scale(2.6); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+  100% { opacity: 0; }
+}
+
+/* Outer flies straight out, inner falls with an ease-in. Composed, they arc —
+   which a single transform cannot do. */
+.fw-p { position: absolute; animation: fw-fly 1.9s cubic-bezier(0.15, 0.75, 0.35, 1) both; }
+.fw-p i {
+  display: block; border-radius: 50%;
+  animation: fw-fall 1.9s cubic-bezier(0.5, 0, 0.85, 0.5) both;
+}
+@keyframes fw-fly {
+  0% { transform: translate(0, 0) scale(0.4); opacity: 0; }
+  8% { opacity: 1; transform: translate(0, 0) scale(1); }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.85); opacity: 0; }
+}
+@keyframes fw-fall {
+  0% { transform: translateY(0); filter: brightness(1.5); }
+  100% { transform: translateY(var(--fall)); filter: brightness(0.85); }
+}
+
+.finale-card {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  text-align: center; padding: 26px 40px; border-radius: 22px;
+  background: var(--bg2); border: 2px solid var(--accent-line);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.55);
+  animation: fin-card 10s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  /* an explicit width, not shrink-to-fit: left to size itself the card settled
+     at ~361px and broke the summary line mid-phrase ("best board:" / "Hoss") */
+  width: min(540px, calc(100vw - 36px));
+}
+:root[data-theme="light"] .finale-card { box-shadow: 0 26px 70px rgba(20, 22, 28, 0.28); }
+@keyframes fin-card {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.86); }
+  3% { opacity: 1; transform: translate(-50%, -50%) scale(1.03); }
+  6% { transform: translate(-50%, -50%) scale(1); }
+  90% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -52%) scale(0.97); }
+}
+.finale-kicker {
+  font-family: var(--font-data); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-text);
+}
+.finale-title {
+  font-family: var(--font-display); font-weight: 900; font-style: italic;
+  font-size: 46px; line-height: 1.02; letter-spacing: -0.015em;
+  margin: 6px 0 10px; color: var(--text);
+}
+.finale-sub { font-family: var(--font-data); font-size: 16px; color: var(--text); line-height: 1.5; }
+.finale-sub b { color: var(--accent-text); }
+/* --faint is ~2.8:1 on the light card — the hint needs --muted to be readable */
+.finale-hint { margin-top: 13px; font-size: 14px; line-height: 1.5; color: var(--muted); }
+
+@media (max-width: 560px) {
+  .finale-card { padding: 20px 22px; border-radius: 18px; }
+  .finale-title { font-size: 30px; }
+  .finale-sub { font-size: 13.5px; }
+  .finale-hint { font-size: 12.5px; }
+}
+
+/* Reduced motion: the card still lands, nothing flies. */
+@media (prefers-reduced-motion: reduce) {
+  .fw-p, .fw-flash { display: none; }
+  .finale.show { animation: fin-veil 10s linear forwards; }
+  .finale-card { animation: none; opacity: 1; }
+}
+
+/* modal */
+.modal { position: fixed; inset: 0; background: rgba(4, 6, 10, 0.7); z-index: 60; display: flex; align-items: center; justify-content: center; }
+:root[data-theme="light"] .modal { background: rgba(20, 22, 28, 0.4); }
+.modal-card {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 22px;
+  width: 520px; max-width: 94vw; max-height: 90vh; overflow-y: auto;
+}
+.modal-card h2 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.01em; margin-bottom: 14px; }
+.modal-card h4 {
+  margin: 14px 0 8px; color: var(--faint); font-family: var(--font-data);
+  font-size: var(--fs-10); font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+}
+.settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.settings-grid label, #set-order label { display: flex; flex-direction: column; gap: 4px; color: var(--muted); font-size: var(--fs-12); }
+.settings-grid input, .settings-grid select, #set-order input {
+  background: var(--bg); border: 1px solid var(--border); color: var(--text);
+  padding: 8px 10px; border-radius: 8px; font-size: var(--fs-13); outline: none; font-family: var(--font-body);
+}
+#set-order { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+
+@media (max-width: 1100px) {
+  .draft-layout { grid-template-columns: 1fr; }
+  .news-layout { grid-template-columns: 1fr; }
+}
+
+/* ------------------------------------------------------------------ mobile
+   Phone layout. The draft is run from this thing on draft night, so the two
+   things that must survive a 375px screen are "who's on the clock" and the
+   player pool. Everything sideways-scrolling gets its own container so the
+   page itself never does. */
+
+/* rows of chips that would otherwise wrap into a tall stack — swipe instead */
+.scroll-x {
+  overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.scroll-x::-webkit-scrollbar { display: none; }
+.scroll-x > * { flex: 0 0 auto; }
+
+@media (max-width: 820px) {
+  main { padding: 12px 12px 48px; }
+
+  /* On a phone the pool table is hundreds of rows long, so the controls you
+     actually reach for during a pick have to sit ABOVE it rather than after a
+     very long scroll. `display: contents` dissolves the sidebar wrapper so its
+     cards become siblings of the pool and can be ordered individually. */
+  /* `align-items: start` comes from the desktop GRID rule, where it stops the
+     two columns stretching to equal height. Inherited into this flex column it
+     means something else entirely — start is a CROSS-axis value here, so every
+     card sized to its own content instead of the container, and the pool table's
+     min-content width (~420px) pushed the whole page sideways. Stretch them. */
+  .draft-layout { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+  /* and wide content scrolls inside its own box rather than widening the page */
+  .draft-layout > *, .side-panel > * { min-width: 0; max-width: 100%; }
+  .side-panel { display: contents; }
+  #mock-controls { order: 1; }
+  #util-card { order: 2; }
+  #export-card { order: 3; }
+  #rec-card { order: 4; }
+  .pool-panel { order: 5; }
+  #safety-card { order: 7; }
+
+  /* topbar: brand + controls on one row, the clock on its own full-width row
+     underneath so it stays readable and stays stuck to the top */
+  .topbar { flex-wrap: wrap; gap: 8px 10px; padding: 8px 12px; }
+  .brand { min-width: 0; flex: 1; gap: 8px; }
+  .brand-mark { padding: 5px 7px; font-size: var(--fs-12); }
+  #league-name { font-size: var(--fs-13); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* the config line ("11 teams · 20 rounds · straight") is desktop-only */
+  .brand-sub { display: none; }
+  .clock-banner {
+    order: 5; flex-basis: 100%; text-align: left; font-size: var(--fs-13);
+    padding-top: 6px; border-top: 1px solid var(--border);
+  }
+  .clock-pill { width: 100%; font-size: var(--fs-10-5); padding: 7px 12px; flex-wrap: wrap; gap: 6px 9px; }
+  .clock-banner .pickno { display: block; margin-left: 0; flex-basis: 100%; }
+  .mode-switch button { padding: 7px 10px; font-size: var(--fs-12); }
+  .icon-btn { width: 32px; height: 32px; font-size: var(--fs-14); }
+
+  /* nav tabs swipe rather than wrap to two lines */
+  .tabs {
+    padding: 4px 12px 0; gap: 16px; overflow-x: auto; flex-wrap: nowrap;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+
+  /* Only the PAGE nav sticks — by id, not by .tabs.
+     The player card's tab bar is `class="tabs drawer-tabs"`, so a .tabs rule
+     reaches it too. Sticking it there floated Summary/Game Log/Depth/News over
+     the outlook text: .drawer-tabs is deliberately transparent, so the copy
+     scrolled underneath and read straight through it. The offset made no sense
+     there either — inside the drawer's own scroll container it was pushing the
+     bar down by the height of the page topbar.
+     Board / Teams / Sleepers are what needed reaching without scrolling back
+     up; top is the topbar's MEASURED height (trackTopbarHeight() in app.js),
+     since the topbar wraps at narrow widths and the clock banner is a row that
+     comes and goes. The 0px fallback covers only the frame before the first
+     measurement and errs toward tucking under rather than leaving a gap.
+     z-index sits just below the topbar's 30, so if the two ever meet the tabs
+     pass beneath it. */
+  #main-tabs {
+    position: sticky; top: var(--topbar-h, 0px); z-index: 29;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabs button { flex: 0 0 auto; padding: 9px 2px; font-size: var(--fs-11-5); }
+
+  /* pool controls stack; 16px input font stops iOS zooming on focus */
+  .pool-controls { gap: 8px; padding: 10px; }
+  #search { width: 100%; font-size: var(--fs-16); }
+  .pos-tabs { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; -webkit-overflow-scrolling: touch; width: 100%; }
+  .pos-tabs::-webkit-scrollbar { display: none; }
+  .pos-tabs button { flex: 0 0 auto; }
+  .chk { margin-left: 0; }
+
+  /* the pool scrolls with the page instead of inside a short box */
+  .pool-table-wrap { max-height: none; }
+  /* Automatic layout, deliberately: a table with width:100% shrinks its
+     columns to fit the container on its own. `table-layout: fixed` was tried
+     here and can't be made to work — it takes column widths from the first
+     row, so a filtered view (which starts with a colspan tier divider)
+     collapsed the name column to min-content and left half the row empty. */
+  .pool-table { width: 100%; }
+  .pool-table th, .pool-table td { padding: 8px 4px; }
+  /* the display + mono faces run wider than the old Inter — every column
+     gives a little back or the Draft button falls off a 375px screen */
+  .pool-table td.num { font-size: var(--fs-11); }
+  .pos-pill { min-width: 26px; padding: 3px 5px; font-size: var(--fs-9); }
+  .star { padding: 2px 3px; font-size: var(--fs-15); }
+  .star-gap { width: 21px; }
+  .p-meta { font-size: var(--fs-9-5); }
+  /* drop the columns the player cell already implies, keeping rank, name,
+     projection, ADP and the draft button */
+  .pool-table:not(.stats-view) th:nth-child(4), .pool-table:not(.stats-view) td:nth-child(4),
+  .pool-table:not(.stats-view) th:nth-child(6), .pool-table:not(.stats-view) td:nth-child(6),
+  .pool-table:not(.stats-view) th:nth-child(7), .pool-table:not(.stats-view) td:nth-child(7),
+  .pool-table:not(.stats-view) th:nth-child(8), .pool-table:not(.stats-view) td:nth-child(8),
+  .pool-table:not(.stats-view) th:nth-child(9), .pool-table:not(.stats-view) td:nth-child(9) { display: none; }
+  .player-cell { gap: 5px; }
+  .player-cell > div { min-width: 0; } /* let the text block shrink and ellipsis */
+  /* Both lines are allowed to wrap. Forcing the meta line to nowrap raises the
+     column's min-content width, which is what pushed the Draft button off the
+     screen and started the whole fixed-layout detour. */
+  .pool-table td:nth-child(3) { font-size: var(--fs-12-5); }
+  .mini-shot { width: 26px; height: 26px; }
+  .draft-btn { padding: 7px 7px; font-size: var(--fs-10); letter-spacing: 0.01em; }
+
+  /* the draft board is genuinely wide — let it pan inside its own frame.
+     Cells give back a little here so a phone still pans a sane distance. */
+  .board-wrap { padding: 10px; -webkit-overflow-scrolling: touch; }
+  .board-grid { min-width: 940px; gap: 5px; }
+  .board-cell { min-height: 58px; padding: 7px 8px; }
+  .bc-shot { width: 44px; height: 44px; right: -5px; bottom: -5px; }
+  .board-cell .bc-last { font-size: var(--fs-11-5); }
+
+  /* player card becomes a bottom sheet, stopping short of the top so there's
+     always a strip of backdrop left to tap */
+  .drawer {
+    inset: auto 0 0 0; margin: 0; width: 100%; max-height: 86vh;
+    border-radius: 18px 18px 0 0; border-bottom: none; padding: 8px 14px 24px;
+  }
+  /* The drawer is its own scroll container, so an absolutely-positioned close
+     button scrolls away with the content and becomes unreachable on a long
+     card. In flow + sticky, it rides along at the top instead.
+
+     In flow it also reserved a full 44px row plus its margin — an empty band
+     across the card with only the X in its right corner. The negative bottom
+     margin claws most of that back by letting the hero rise underneath it.
+     Only PART of it: pulled all the way up, the second line of .sub would
+     also cross the button's band, and clearing that needs padding on the
+     whole of .hero-main, which costs every line its width and just trades
+     the space back as extra wrapping. Stopping at -24px keeps the collision
+     confined to the h2, which can be padded on its own. */
+  .drawer .close-x {
+    position: sticky; top: 0; right: auto; float: none;
+    display: block; margin: 0 0 -24px auto; width: 44px; height: 44px; font-size: var(--fs-18);
+    /* content scrolls underneath it, so it needs to be opaque */
+    background: var(--bg2); border: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  }
+  /* the one line that now shares vertical space with the close button */
+  .drawer-hero h2 { padding-right: 48px; }
+  .drawer-hero { gap: 11px; padding-right: 0; margin-bottom: 10px; }
+  .headshot { width: 60px; height: 60px; }
+  .hero-logo { width: 36px; height: 36px; }
+  .drawer h2 { font-size: var(--fs-18); }
+  .drawer .stat-grid, .log-summary { grid-template-columns: repeat(2, 1fr); }
+  /* four tabs now, so they have to give a little to stay on one line. The id
+     is deliberate — the base .tabs padding is wider and would win otherwise. */
+  .drawer-tabs button { flex: 1; text-align: center; }
+  #drawer-tabs { gap: 4px; }
+  #drawer-tabs button { padding: 9px 4px; font-size: var(--fs-11); white-space: nowrap; }
+  .log-table th, .log-table td { padding: 7px 5px; font-size: var(--fs-12); }
+
+  /* values rows: number block sits under the name rather than squeezing it */
+  .values-head { align-items: flex-start; }
+  #values-switch, #values-pos {
+    overflow-x: auto; flex-wrap: nowrap; max-width: 100%;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  #values-switch::-webkit-scrollbar, #values-pos::-webkit-scrollbar { display: none; }
+  #values-switch button, #values-pos button { flex: 0 0 auto; }
+  .value-row { flex-wrap: wrap; }
+  .v-nums { text-align: left; width: 100%; padding-left: 36px; display: flex; align-items: baseline; gap: 8px; }
+  .v-gap { font-size: var(--fs-14); }
+
+  /* keeper rows stack team name over its keepers */
+  .keeper-team { grid-template-columns: 1fr; gap: 4px; }
+
+  /* modals fill the width and stop being two-column */
+  .modal { align-items: flex-end; }
+  .modal-card { width: 100%; max-width: 100%; border-radius: 18px 18px 0 0; padding: 18px 14px 24px; max-height: 92vh; }
+  .settings-grid, #set-order { grid-template-columns: 1fr; }
+  .settings-grid input, .settings-grid select, #set-order input { font-size: var(--fs-16); }
+
+  /* comfortable touch targets */
+  .btn, .mode-switch button, .pos-tabs button { min-height: 38px; }
+}
+
+/* very narrow phones */
+@media (max-width: 430px) {
+  main { padding: 10px 8px 40px; }
+  .pool-table:not(.stats-view) th:nth-child(5), .pool-table:not(.stats-view) td:nth-child(5) { display: none; } /* ADP column */
+  .meta-adp { display: inline; } /* …reappears under the player's name */
+  .meta-depth { display: none; } /* and the depth slot yields the room for it */
+  .hero-logo { display: none; } /* the team is already named in the line below */
+  .card { padding: 12px; }
+  .tabs button { padding: 9px 2px; font-size: var(--fs-11); }
+
+}
+
+/* ---- pool headshots ---- */
+.mini-shot {
+  width: 30px; height: 30px; border-radius: 50%; object-fit: cover;
+  background: var(--panel2); flex-shrink: 0;
+}
+
+/* ---- drawer hero (FantasyPros-style card) ---- */
+.drawer-hero {
+  display: flex; align-items: center; gap: 14px; position: relative;
+  margin-bottom: 14px; padding-right: 40px;
+  /* the watermark is deliberately bigger than the hero and bleeds past its
+     edges — clipping is what turns that into a crop rather than a spill */
+  overflow: hidden;
+}
+.headshot {
+  width: 76px; height: 76px; border-radius: 50%; object-fit: cover;
+  background: var(--panel); border: 2.5px solid var(--border); flex-shrink: 0;
+  position: relative; z-index: 1;
+}
+.hero-main { flex: 1; min-width: 0; position: relative; z-index: 1; }
+/* The phone used to carry a small crisp team logo beside the name. The
+   watermark now says the same thing behind the photo, the way the laptop card
+   has always done it, and the team is still named in the line under the name —
+   two logos in one hero was one too many. */
+.hero-logo { display: none; }
+
+/* ---- the team mark behind the player, on EVERY screen ----
+   Anchored to the TOP, not centred. Centring tied the mark to the hero box,
+   which is taller than the headshot and grows whenever the name or bio line
+   wraps to two lines — so it drifted down behind the bio text, and sat
+   differently from player to player. A fixed top offset keeps it behind the
+   headshot and name whatever the text below does.
+
+   The phone hero has no free space: the headshot is opaque across its left,
+   the text starts 14px later, and overflow:hidden clips any vertical bleed. So
+   the mark sits UNDER the text, exactly as it does on the laptop card. What
+   has to change for a flat panel is the treatment, not the position — the
+   laptop's grayscale(0.3) leaves a team colour bright enough that the muted
+   bio line loses contrast against it, which is what read as broken. A tint at
+   low opacity keeps `#18 · 6'1"` legible on top. The late mask only softens
+   the trailing edge so the crop against the card edge isn't a hard line. */
+.pc-watermark {
+  display: block; position: absolute; left: -26px; top: -4px;
+  width: 128px; height: 128px; object-fit: contain;
+  opacity: 0.16; filter: grayscale(0.72);
+  /* Dissolves the mark just before the hero's bottom edge, so the crop reads
+     as a fade rather than a cut. Straight `to bottom` rather than an angle:
+     on an angled gradient the stops run along a diagonal axis longer than the
+     box, so a percentage no longer maps to a predictable y and the fade
+     overshot the clip line. Text legibility on the right is handled by the
+     opacity and desaturation instead — a second mask layer would need
+     mask-composite, whose fallback is a UNION, i.e. no fade at all where it
+     is unsupported. 60% of 128px lands at y=73px, just inside the 76px edge. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 26%, transparent 60%);
+  mask-image: linear-gradient(to bottom, #000 26%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+/* The desktop-only halves of the card. They sit in the markup on every screen
+   and are switched off here; the laptop block below turns them on and hides the
+   phone's compact equivalents (.sub, .bio-line). */
+.pc-vitals, .pc-ranks, .pc-ranks-label, .pc-posbadge, .pc-news { display: none; }
+.pc-num { display: none; }
+.outlook-more {
+  display: block; margin-top: 8px; padding: 0; background: none; border: none;
+  color: var(--accent-text); font-family: var(--font-data);
+  font-size: var(--fs-10); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.outlook-more:hover { text-decoration: underline; }
+.outlook p.clamped {
+  display: -webkit-box; -webkit-line-clamp: 4; line-clamp: 4;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* ------------------------------------------------------- the laptop card
+   Sleeper's shape: a full-bleed dark hero band (dark in BOTH themes, the way
+   Sleeper's own light UI does it) over a two-column body with a news rail. */
+@media (min-width: 821px) {
+  .drawer { width: min(1180px, 95vw); max-height: 90vh; padding: 0; }
+
+  .drawer-hero {
+    position: relative; overflow: hidden; margin: 0; padding: 26px 30px 24px;
+    gap: 26px; align-items: flex-end; border-radius: 17px 17px 0 0;
+    background:
+      radial-gradient(120% 140% at 88% 0%, rgba(77, 163, 255, 0.16), transparent 55%),
+      linear-gradient(150deg, #171c26 0%, #0a0c11 60%);
+    color: #f2f4f8;
+  }
+  /* the club mark, huge and ghosted, anchored off the top-left corner */
+  .pc-watermark {
+    display: block; position: absolute; left: -34px; top: -46px;
+    /* This pair shares a selector, so anything the phone rule sets and this
+       one doesn't answer leaks up to the laptop — the failure mode to watch
+       when editing either. The phone fades its trailing edge; this hero is a
+       dark full-bleed band with room to spare, so the mask is cleared.
+       transform is reset defensively: the phone rule doesn't set one today,
+       but it did, and re-adding one there would silently move this mark. */
+    transform: none;
+    -webkit-mask-image: none; mask-image: none;
+    width: 250px; height: 250px; object-fit: contain;
+    opacity: 0.13; filter: grayscale(0.3); pointer-events: none;
+  }
+  .drawer-hero .headshot {
+    position: relative; width: 132px; height: 132px; border-width: 3px;
+    border-color: rgba(255, 255, 255, 0.16); background: #11141c;
+  }
+  /* position tag tucked under the photo, as on Sleeper's card */
+  .pc-posbadge {
+    display: block; position: absolute; left: 30px; bottom: 18px;
+    font-size: var(--fs-11); padding: 4px 12px; z-index: 2;
+  }
+  .drawer-hero .hero-main { position: relative; z-index: 1; }
+  .drawer-hero h2 {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    font-size: var(--fs-34); color: #f2f4f8; margin-bottom: 12px;
+  }
+  .pc-num {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 11px 4px 5px; border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.16);
+    font-family: var(--font-data); font-size: var(--fs-12); font-weight: 700; font-style: normal;
+    letter-spacing: 0; color: #f2f4f8;
+  }
+  .pc-num img { width: 20px; height: 20px; object-fit: contain; }
+
+  /* the phone's compact lines step aside for the vitals strip */
+  .drawer-hero .sub, .drawer-hero .bio-line, .drawer-hero .hero-logo { display: none; }
+
+  .pc-vitals { display: flex; flex-wrap: wrap; align-items: stretch; }
+  .pc-vital {
+    display: flex; flex-direction: column; gap: 3px;
+    padding: 0 18px; border-left: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .pc-vital:first-child { padding-left: 0; border-left: none; }
+  .pc-vital i {
+    font-style: normal; font-family: var(--font-data); font-size: var(--fs-9-5); font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase; color: rgba(242, 244, 248, 0.5);
+  }
+  .pc-vital b { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-19); }
+  .pc-vital b i {
+    font-size: var(--fs-10); font-weight: 500; margin-left: 2px;
+    letter-spacing: 0; text-transform: none; color: rgba(242, 244, 248, 0.55);
+  }
+
+  .pc-ranks-label {
+    display: block; margin: 16px 0 7px;
+    font-family: var(--font-data); font-size: var(--fs-9-5); font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; color: rgba(242, 244, 248, 0.55);
+  }
+  .pc-ranks-label span { font-weight: 500; letter-spacing: 0.04em; text-transform: none; opacity: 0.7; }
+  .pc-ranks { display: flex; align-items: center; flex-wrap: wrap; gap: 18px; }
+  .pc-rank { display: flex; align-items: baseline; gap: 5px; }
+  .pc-rank b {
+    font-family: var(--font-display); font-weight: 900; font-style: italic;
+    font-size: var(--fs-22); letter-spacing: -0.01em; color: var(--accent);
+  }
+  .pc-rank i {
+    font-style: normal; font-family: var(--font-data); font-size: var(--fs-9-5); font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: rgba(242, 244, 248, 0.6);
+  }
+  .drawer-hero .trend-badge { margin-top: 12px; }
+
+  /* close button rides the hero's top-right, over the dark band */
+  .drawer .close-x {
+    top: 20px; right: 22px; z-index: 4;
+    background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.18);
+    color: #f2f4f8;
+  }
+  .drawer .close-x:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
+
+  .pc-body { padding: 20px 26px 26px; }
+  .pc-main { min-width: 0; }
+}
+
+/* The news rail needs its own width before it earns a column — under ~1040px
+   the two columns would squeeze the game-log table, so news stays a tab there
+   and only becomes a rail once there is genuinely room for both. */
+@media (min-width: 1041px) {
+  .pc-body { display: grid; grid-template-columns: minmax(0, 1fr) 336px; gap: 24px; }
+  /* The rail is sized by the column beside it, not by a magic vh — a fixed
+     46vh cut the last story off mid-sentence at a height that had nothing to
+     do with the layout.
+     The inner wrapper is absolutely positioned so this column contributes NO
+     height of its own: ten stories are ~4700px, and left in flow they stretch
+     the grid row (and so the whole modal) to seven times what the left column
+     actually needs. Out of flow, the row is driven by the main column and the
+     rail scrolls inside exactly that height, with min-height as the floor for
+     a short tab like Depth. */
+  /* display:block turns off the base rule that hides this column on phones */
+  .pc-news {
+    display: block; position: relative; min-width: 0; min-height: 320px;
+    border-left: 1px solid var(--border);
+  }
+  .pc-news-inner { position: absolute; inset: 0 0 0 22px; display: flex; flex-direction: column; }
+  .pc-news-inner > h4 { margin: 0 0 10px; flex: none; }
+  #pc-news-rail {
+    flex: 1 1 auto; min-height: 0; overflow-y: auto;
+    /* the gutter keeps text from running under the scrollbar, and the tail
+       gives the last story room to breathe above the fade */
+    padding-right: 12px; padding-bottom: 26px;
+    scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+  }
+  #pc-news-rail::-webkit-scrollbar { width: 8px; }
+  #pc-news-rail::-webkit-scrollbar-track { background: transparent; }
+  #pc-news-rail::-webkit-scrollbar-thumb {
+    background: var(--border); border-radius: 99px;
+    border: 2px solid transparent; background-clip: content-box;
+  }
+  #pc-news-rail:hover::-webkit-scrollbar-thumb { background: var(--muted); background-clip: content-box; }
+  /* Content fades out at the bottom edge rather than being guillotined, so a
+     part-scrolled rail reads as "there is more". Removed the moment you reach
+     the end (JS toggles .at-end) so the last line is never left veiled. */
+  .pc-news::after {
+    content: ''; position: absolute; left: 22px; right: 0; bottom: 0; height: 46px;
+    pointer-events: none; background: linear-gradient(to top, var(--bg2) 20%, transparent);
+    opacity: 1; transition: opacity 0.18s ease;
+  }
+  .pc-news.at-end::after { opacity: 0; }
+  /* the rail IS the news at this size — the tab would be a second copy */
+  #drawer-tabs [data-tab="news"] { display: none; }
+}
+.trend-badge {
+  display: inline-block; margin-top: 6px; font-family: var(--font-data); font-size: var(--fs-10-5); font-weight: 700;
+  background: var(--te-soft); color: var(--te);
+  border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 8px; padding: 3px 8px;
+}
+:root[data-theme="light"] .trend-badge { color: #b45309; }
+
+.season-compare {
+  display: flex; align-items: center; gap: 10px; justify-content: center;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+  padding: 9px 12px; font-size: var(--fs-12-5); color: var(--muted); margin-bottom: 4px;
+}
+.season-compare b { color: var(--text); }
+.season-compare .arrow { color: var(--accent-text); font-weight: 800; }
+
+.drawer-links { display: flex; gap: 16px; }
+.drawer-links a { color: var(--accent2); text-decoration: none; font-weight: 600; }
+.drawer-links a:hover { text-decoration: underline; }
+
+/* ---- schedule strip ---- */
+.sched-strip {
+  display: grid; grid-template-columns: repeat(18, 1fr); gap: 3px;
+}
+.sched-cell {
+  border-radius: 6px; padding: 4px 1px; text-align: center; min-width: 0;
+  background: var(--panel); border: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 1px;
+}
+.sched-cell .sc-w { font-size: var(--fs-8-5); color: var(--muted); }
+.sched-cell .sc-opp { font-family: var(--font-data); font-size: var(--fs-9); font-weight: 700; letter-spacing: -0.2px; }
+.sched-cell .sc-r { font-size: var(--fs-8-5); color: var(--muted); font-variant-numeric: tabular-nums; }
+.sched-cell.m-easy { background: var(--idp-soft); border-color: rgba(34, 197, 94, 0.4); }
+.sched-cell.m-easy .sc-opp { color: var(--idp); }
+.sched-cell.m-hard { background: rgba(255, 107, 107, 0.12); border-color: rgba(255, 107, 107, 0.38); }
+.sched-cell.m-hard .sc-opp { color: var(--danger); }
+.sched-cell.m-bye { opacity: 0.55; }
+.sched-cell.m-bye .sc-opp { color: var(--muted); font-weight: 600; }
+.sched-cell.m-po { outline: 2px solid var(--te); outline-offset: -1px; }
+.sched-summary { margin-top: 8px; font-size: var(--fs-12); color: var(--muted); }
+:root[data-theme="light"] .sched-cell.m-easy .sc-opp { color: #15803d; }
+:root[data-theme="light"] .sched-cell.m-hard { background: rgba(217, 43, 69, 0.09); border-color: rgba(217, 43, 69, 0.35); }
+
+/* ---- keepers ---- */
+.keeper-row {
+  display: grid; grid-template-columns: 1fr 110px 64px 36px; gap: 8px;
+  margin-bottom: 8px; align-items: center;
+}
+.keeper-row input, .keeper-row select {
+  background: var(--bg); border: 1px solid var(--border); color: var(--text);
+  padding: 8px 10px; border-radius: 8px; font-size: var(--fs-13); outline: none; min-width: 0;
+}
+.keeper-row .k-del { padding: 8px 0; }
+.keeper-tag {
+  font-family: var(--font-data); font-size: var(--fs-10); font-weight: 700; color: var(--te);
+  background: var(--te-soft); border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 8px; padding: 4px 8px; white-space: nowrap;
+}
+:root[data-theme="light"] .keeper-tag { color: #b45309; }
+
+/* ---- sleepers + drafted-by + drawer draft button ---- */
+.sleeper-badge { margin-left: 5px; font-size: var(--fs-12); cursor: default; }
+.drafted-by {
+  font-family: var(--font-data); font-size: var(--fs-10); font-weight: 700; color: var(--muted); white-space: nowrap;
+}
+.pool-table tr.drafted { opacity: 0.55; }
+.drafted-banner {
+  background: var(--accent-soft); border: 1px solid var(--accent-line);
+  color: var(--text); border-radius: 10px; padding: 10px 12px; font-size: var(--fs-12-5);
+  margin-bottom: 14px;
+}
+.drawer-draft {
+  width: 100%; padding: 12px; font-size: var(--fs-13); margin-bottom: 14px;
+  font-style: normal;
+}
+.drawer-draft:disabled { opacity: 0.45; pointer-events: none; }
+
+/* ---- trades ---- */
+.trade-row {
+  display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  padding: 7px 4px; border-bottom: 1px solid var(--border); font-size: var(--fs-12-5);
+}
+.trade-form {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  margin-top: 10px; color: var(--muted); font-size: var(--fs-12);
+}
+.trade-form label { display: flex; gap: 6px; align-items: center; }
+.trade-form input, .trade-form select {
+  background: var(--bg); border: 1px solid var(--border); color: var(--text);
+  padding: 8px 10px; border-radius: 8px; font-size: var(--fs-13); outline: none;
+}
+.trade-form input { width: 58px; }
+
+/* ---- micro animations (skipped for reduced-motion users) ---- */
+@media (prefers-reduced-motion: no-preference) {
+  .btn, .draft-btn, .icon-btn, .pos-tabs button, .mode-switch button, .tabs button {
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease,
+      transform 0.12s ease, box-shadow 0.15s ease;
+  }
+  .btn:hover, .draft-btn:hover { transform: translateY(-1px); }
+  .btn:active, .draft-btn:active { transform: translateY(0) scale(0.96); }
+  .draft-btn:hover { box-shadow: 0 3px 14px rgba(77, 163, 255, 0.3); }
+  :root[data-theme="light"] .draft-btn:hover { box-shadow: 0 3px 14px rgba(21, 101, 192, 0.28); }
+
+  /* Pool rows keep a flat tint on hover for affordance — they're clickable —
+     but nothing MOVES. The sideways nudge, the headshot zoom and the
+     travelling sweep all read as distraction while scanning a dense table,
+     and they fired on whatever row the cursor crossed on the way to the one
+     you wanted. The Draft button is the only thing in a row that animates. */
+  .pool-table tbody tr { transition: background 0.15s ease; }
+
+  .rec-item { transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease; }
+  .rec-item:hover { transform: translateX(3px); }
+
+  .card { animation: cardIn 0.35s ease both; }
+  .card:nth-child(2) { animation-delay: 0.04s; }
+  .card:nth-child(3) { animation-delay: 0.08s; }
+  .card:nth-child(4) { animation-delay: 0.12s; }
+
+  .stat-box { transition: transform 0.15s ease, border-color 0.15s ease; }
+  .stat-box:hover { transform: translateY(-2px); border-color: var(--accent-line); }
+  .sched-cell { transition: transform 0.12s ease; }
+  .sched-cell:hover { transform: translateY(-3px); }
+
+  /* ---- the player card keys in like a broadcast graphic ----
+     The card is the one place in the app that opens on top of everything, so
+     it gets the app's most deliberate motion. Three things happen in sequence,
+     fast enough that it reads as one gesture rather than a queue:
+       1. the backdrop dims AND blurs, pushing the board back a plane
+       2. the card lands with a decelerating overshoot (a cubic-bezier that
+          overshoots on the way to rest, so it settles rather than stops)
+       3. a hairline of light wipes once across the hero band — the key-in
+     Closing is deliberately FASTER than opening (0.19s vs 0.42s) and uses an
+     ease-IN. Dismissal should feel like the card gets out of the way; only
+     arrivals earn an entrance. Both geometries are handled: a centred card on
+     laptops, a bottom sheet under 820px, each leaving the way it came in. */
+  .drawer:not(.hidden) { animation: cardKeyIn 0.42s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .drawer.is-closing { animation: cardKeyOut 0.19s cubic-bezier(0.4, 0, 1, 1) both; }
+  .drawer-backdrop:not(.hidden) { animation: backdropIn 0.28s ease both; }
+  .drawer-backdrop.is-closing { animation: backdropOut 0.19s ease both; }
+
+  /* The key-in sheen. Sits above the hero's gradient but below its content,
+     and is purely decorative, so it never intercepts a tap. It runs once. */
+  .drawer:not(.hidden) .drawer-hero { overflow: hidden; }
+  .drawer:not(.hidden) .drawer-hero::after {
+    content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(100deg,
+      transparent 38%, rgba(255, 255, 255, 0.09) 50%, transparent 62%);
+    animation: heroKey 0.72s ease-out 0.16s both;
+  }
+  .drawer.is-closing .drawer-hero::after { animation: none; opacity: 0; }
+
+  /* the card's contents arrive just behind the card itself */
+  .drawer:not(.hidden) .drawer-hero > *,
+  .drawer:not(.hidden) .pc-body { animation: cardContentIn 0.34s ease both; }
+  .drawer:not(.hidden) .drawer-hero > * { animation-delay: 0.08s; }
+  .drawer:not(.hidden) .pc-body { animation-delay: 0.13s; }
+  /* on the way out the contents go with the card, not on their own timeline */
+  .drawer.is-closing .drawer-hero > *,
+  .drawer.is-closing .pc-body { animation: none; }
+  .modal:not(.hidden) { animation: fadeIn 0.18s ease both; }
+  .modal:not(.hidden) .modal-card { animation: popIn 0.24s cubic-bezier(0.2, 0.9, 0.3, 1.08) both; }
+
+  .tab-panel.active { animation: fadeIn 0.18s ease both; }
+  .board-cell { transition: transform 0.12s ease; }
+  .board-cell:hover { transform: translateY(-2px); }
+  .board-cell.latest { animation: cellPop 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.25) both; }
+  .spinner { animation: spin 0.9s linear infinite; }
+
+  /* duration is set per-render in renderTicker(), scaled to the item count so
+     the speed stays constant however many picks are in the loop */
+  .ticker-track { animation: ticker 60s linear infinite; }
+  .pick-ticker:hover .ticker-track { animation-play-state: paused; }
+
+  .ts-draft { transition: transform 0.12s ease, box-shadow 0.12s ease; }
+  .ts-draft:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(77, 163, 255, 0.4); }
+  :root[data-theme="light"] .ts-draft:hover { box-shadow: 0 8px 24px rgba(21, 101, 192, 0.32); }
+  .top-sug { animation: cardIn 0.35s ease both; }
+
+  /* ---- the two "commit" buttons breathe ----
+     A slow gradient drift across the Top Suggestion and player-card draft
+     buttons, so the action you are meant to take is the one thing on screen
+     that is alive. background-IMAGE only, so the solid --accent underneath
+     stays as the fallback (and is what reduced-motion users keep).
+     Every stop is at or above the base blue's lightness: --accent-ink is dark
+     navy, and a stop any deeper would drop the label under 4.5:1. It
+     ping-pongs rather than looping, which is seamless by construction. */
+  .ts-draft, .btn.primary.drawer-draft {
+    background-image: linear-gradient(100deg,
+      #4da3ff 0%, #7cc0ff 25%, #3d93f0 50%, #7cc0ff 75%, #4da3ff 100%);
+    background-size: 220% 100%;
+    animation: accent-flow 7s ease-in-out infinite;
+  }
+  /* hovering speeds it up — the button feels like it is winding up */
+  .ts-draft:hover, .btn.primary.drawer-draft:hover { animation-duration: 2.6s; }
+
+}
+
+@keyframes accent-flow {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+/* reduced motion: the looping/pulsing decorations stop entirely */
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; }
+  .clock-dot, .watch-dot, .board-cell.onclock { animation: none; }
+  .ts-ring { animation: none; }
+  .ts-gone { animation: none; background: var(--danger); color: #fff; }
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cardIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes popIn { from { opacity: 0; transform: translateY(14px) scale(0.965); } to { opacity: 1; transform: none; } }
+@keyframes cellPop { 0% { opacity: 0; transform: scale(0.55); } 100% { opacity: 1; transform: scale(1); } }
+
+/* ---- player card motion ----
+   Default geometry is the centred laptop card; the phone bottom sheet
+   overrides both halves below. Opacity finishes well before the transform so
+   the card reads as solid while it is still settling. */
+@keyframes cardKeyIn {
+  from { opacity: 0; transform: translateY(28px) scale(0.93); }
+  55%  { opacity: 1; }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes cardKeyOut {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: translateY(14px) scale(0.97); }
+}
+@keyframes backdropIn {
+  from { opacity: 0; backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); }
+  to   { opacity: 1; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+}
+@keyframes backdropOut {
+  from { opacity: 1; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+  to   { opacity: 0; backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); }
+}
+/* the sheen crosses once and is gone — it must not leave a bright edge parked
+   on the hero, so it ends fully transparent as well as fully travelled */
+@keyframes heroKey {
+  from { opacity: 0; transform: translateX(-115%); }
+  25%  { opacity: 1; }
+  to   { opacity: 0; transform: translateX(115%); }
+}
+@keyframes cardContentIn {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* The phone card is a bottom sheet, so it arrives and leaves along the edge it
+   is docked to. Same durations and curves as the laptop card. */
+@media (prefers-reduced-motion: no-preference) and (max-width: 820px) {
+  .drawer:not(.hidden) { animation-name: sheetKeyIn; }
+  .drawer.is-closing { animation-name: sheetKeyOut; }
+}
+@keyframes sheetKeyIn {
+  from { opacity: 0.4; transform: translateY(100%); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes sheetKeyOut {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0.4; transform: translateY(100%); }
+}
+
+/* ---- tiers ---- */
+.tier-chip {
+  display: inline-block; font-family: var(--font-data); font-size: var(--fs-9); font-weight: 700;
+  padding: 1px 5px; border-radius: 5px; margin-left: 4px; vertical-align: 1px;
+  border: 1px solid; background: transparent;
+}
+.tier-chip.t-0 { color: #2dd4bf; border-color: rgba(45, 212, 191, 0.5); }
+.tier-chip.t-1 { color: #a78bfa; border-color: rgba(167, 139, 250, 0.5); }
+.tier-chip.t-2 { color: #f472b6; border-color: rgba(244, 114, 182, 0.5); }
+.tier-chip.t-3 { color: #fb923c; border-color: rgba(251, 146, 60, 0.5); }
+.tier-chip.t-4 { color: #60a5fa; border-color: rgba(96, 165, 250, 0.5); }
+.tier-chip.t-5 { color: #34d399; border-color: rgba(52, 211, 153, 0.5); }
+:root[data-theme="light"] .tier-chip.t-0 { color: #0d9488; }
+:root[data-theme="light"] .tier-chip.t-1 { color: #7c3aed; }
+:root[data-theme="light"] .tier-chip.t-2 { color: #db2777; }
+:root[data-theme="light"] .tier-chip.t-3 { color: #c2410c; }
+:root[data-theme="light"] .tier-chip.t-4 { color: #2563eb; }
+:root[data-theme="light"] .tier-chip.t-5 { color: #059669; }
+.tier-divider td {
+  padding: 10px 10px 4px !important; border-bottom: none !important;
+  font-family: var(--font-data); font-size: var(--fs-9-5); font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.14em; color: var(--accent2);
+}
+.next-pick-divider td {
+  color: var(--accent-text);
+  border-top: 2px solid var(--accent) !important;
+  padding-top: 6px !important;
+}
+:root[data-theme="light"] .next-pick-divider td { border-top-color: var(--accent-text) !important; }
+.pool-table th.sortable { cursor: pointer; user-select: none; }
+.pool-table th.sortable:hover { color: var(--accent-text); }
+.pool-table th.sorted-asc::after { content: ' ↑'; color: var(--accent-text); }
+.pool-table th.sorted-desc::after { content: ' ↓'; color: var(--accent-text); }
+.sort-chip { padding: 4px 10px; font-size: var(--fs-11); }
+.sort-chip.active { border-color: var(--accent-line); color: var(--accent-text); }
+
+/* ---- the ★ Queue chip pulses while it holds players ----
+   An expanding ring rather than a blinking opacity: it reads as "there is
+   something here" at the edge of your vision without competing with the board
+   for attention, and it never makes the label itself hard to read. The chip
+   keeps a steady accent border the whole time, so the reminder survives
+   reduced-motion, where the ring is switched off entirely. */
+.sort-chip.has-queue { border-color: var(--accent-line); color: var(--accent-text); }
+@media (prefers-reduced-motion: no-preference) {
+  .sort-chip.has-queue { animation: queuePulse 2.6s ease-out infinite; }
+}
+@keyframes queuePulse {
+  0%   { box-shadow: 0 0 0 0 var(--accent-glow); }
+  /* fades out well before the cycle ends, so there is a beat of quiet between
+     rings — a continuous throb is what makes this kind of thing irritating */
+  60%  { box-shadow: 0 0 0 8px rgba(77, 163, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(77, 163, 255, 0); }
+}
+:root[data-theme="light"] .sort-chip.has-queue { animation-name: queuePulseLight; }
+@keyframes queuePulseLight {
+  0%   { box-shadow: 0 0 0 0 var(--accent-glow); }
+  60%  { box-shadow: 0 0 0 8px rgba(21, 101, 192, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(21, 101, 192, 0); }
+}
+.tab-count { font-family: var(--font-data); font-size: var(--fs-9-5); opacity: 0.65; font-weight: 600; }
+.my-rk { white-space: nowrap; }
+.my-sub { display: block; font-size: var(--fs-9-5); opacity: 0.55; font-weight: 400; }
+/* ---- queue row controls ----
+   The old ▲▼ computed to about 19×16px each, two pixels apart, in the pool's
+   narrowest column — under WCAG's 24px floor and nowhere near Apple's 44px.
+   Reordering is now a drag from the grip, with the arrows kept as the precise
+   and keyboard-reachable path. Which of the two leads depends on the input:
+   a mouse gets the arrows on hover so the column stays clean, a touch screen
+   has no hover to reveal them, so they are always there at full size. */
+.q-lead { display: inline-flex; align-items: center; gap: 4px; }
+.q-grip {
+  /* the drag handle must own its gesture — without this the browser reads the
+     vertical drag as a scroll of .pool-table-wrap and the row never moves */
+  touch-action: none;
+  cursor: grab; background: transparent; border: none; color: var(--faint);
+  padding: 4px 2px; min-width: 22px; min-height: 28px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+/* Drawn, not typed. The obvious glyph for a grip is U+283F ⠿, but Nunito has
+   no braille block, so it would land on whatever the platform substitutes —
+   fine on macOS, tofu on some Android builds. Two columns of dots from a
+   repeating radial-gradient costs nothing and renders identically everywhere. */
+.q-grip::before {
+  content: ''; display: block; width: 10px; height: 16px;
+  background-image: radial-gradient(currentColor 1.1px, transparent 1.3px);
+  background-size: 5px 5.34px;
+}
+.q-grip:hover { color: var(--accent-text); }
+.q-grip:active { cursor: grabbing; }
+
+.mv-ctl { display: inline-flex; gap: 4px; margin-top: 4px; }
+.mv {
+  font-size: var(--fs-11); line-height: 1; cursor: pointer;
+  min-width: 28px; min-height: 28px; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; color: inherit; border: 1px solid var(--border); border-radius: 6px;
+}
+.mv:hover { border-color: var(--accent-line); color: var(--accent-text); background: var(--accent-soft); }
+
+@media (hover: hover) {
+  /* revealed by hovering the row or by tabbing to the button itself, so the
+     keyboard path is never hidden from the person using it */
+  .mv-ctl { opacity: 0; transition: opacity 0.12s ease; }
+  .pool-table tbody tr:hover .mv-ctl,
+  .mv-ctl:focus-within { opacity: 1; }
+}
+@media (hover: none) {
+  .mv { min-width: 44px; min-height: 44px; font-size: var(--fs-13); }
+  .q-grip { min-width: 32px; min-height: 44px; }
+  .q-grip::before { width: 12px; height: 19px; background-size: 6px 6.34px; }
+}
+
+/* the row being dragged rides above its neighbours and under the cursor */
+.pool-table tbody tr.q-dragging {
+  position: relative; z-index: 3; opacity: 0.9;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
+  background: var(--panel2);
+}
+:root[data-theme="light"] .pool-table tbody tr.q-dragging { box-shadow: 0 10px 26px rgba(20, 22, 28, 0.18); }
+/* where it will land, drawn on the row it will sit above or below */
+.pool-table tbody tr.q-drop-above td { box-shadow: inset 0 2px 0 var(--accent); }
+.pool-table tbody tr.q-drop-below td { box-shadow: inset 0 -2px 0 var(--accent); }
+
+/* Un-starred, still holding its slot until you leave the view. It reads as
+   "gone but recoverable" — dimmed like a drafted row, with the star hollow
+   again, so tapping it once more is the obvious undo. */
+.pool-table tbody tr.q-ghost { opacity: 0.4; }
+.pool-table tbody tr.q-ghost .q-grip,
+.pool-table tbody tr.q-ghost .mv-ctl { visibility: hidden; }
+.pool-table tbody tr.q-ghost .star { opacity: 1; }
+.myrank-row {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin: 10px 0 2px; font-size: var(--fs-12); font-weight: 600;
+}
+.myrank-row input {
+  width: 64px; padding: 4px 6px; border-radius: 6px;
+  background: transparent; color: inherit; border: 1px solid var(--border);
+}
+.keeper-entry { position: relative; }
+.k-remove { padding: 2px 7px; font-size: var(--fs-11); margin-left: auto; align-self: flex-start; }
+.keeper-editor { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px; }
+.keeper-editor h4 { margin: 0 0 8px; }
+.k-form { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.k-form input[list] { flex: 1; min-width: 180px; }
+.k-form input, .k-form select {
+  padding: 6px 8px; border-radius: 6px; font-size: var(--fs-13);
+  background: transparent; color: inherit; border: 1px solid var(--border);
+}
+.k-form input[type="number"] { width: 64px; }
+.trade-console { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px; }
+.trade-console h4 { margin: 0 0 8px; }
+.trade-console .k-form { margin-bottom: 8px; }
+.trade-console .k-form span { font-size: var(--fs-12); opacity: 0.8; }
+.trade-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.action-cell { display: inline-flex; align-items: center; gap: 4px; }
+/* the queue star sits at the head of the player cell, Sleeper-style, and
+   must read clearly in BOTH themes — var(--border) was near-invisible */
+.star {
+  background: transparent; border: none; cursor: pointer; flex: 0 0 auto;
+  font-size: var(--fs-17); line-height: 1; padding: 2px 5px; color: var(--muted);
+  opacity: 0.75;
+}
+.star:hover { color: #f0b429; opacity: 1; }
+.star.on { color: #f0b429; opacity: 1; text-shadow: 0 0 8px rgba(240, 180, 41, 0.45); }
+:root[data-theme="light"] .star.on { color: #d99a06; text-shadow: none; }
+.star-gap { flex: 0 0 auto; width: 27px; }
+#team-roster-card { max-width: 860px; }
+#team-roster .roster-slot[data-pid] { cursor: pointer; }
+#team-roster .roster-slot[data-pid]:hover { background: var(--accent-soft); }
+.board-cell[data-pid] { cursor: pointer; }
+.col-view {
+  font-size: var(--fs-11); padding: 4px 6px; border-radius: 6px;
+  background: transparent; color: inherit; border: 1px solid var(--border);
+}
+/* the stats view keeps all its columns on phones — it scrolls inside the
+   table wrap instead of dropping data */
+.pool-table.stats-view { min-width: 640px; }
+.sort-mobile { display: none; }
+.sort-mobile select {
+  font-size: var(--fs-11); padding: 4px 6px; border-radius: 6px;
+  background: transparent; color: inherit; border: 1px solid var(--border);
+}
+@media (max-width: 820px) {
+  .sort-mobile { display: inline-flex; gap: 4px; align-items: center; }
+}
+
+/* ---- team hot-take modal ---- */
+.grade-card.clickable { cursor: pointer; }
+.grade-hint { margin-top: 8px; font-size: var(--fs-10-5); color: var(--accent2); font-weight: 700; opacity: 0; }
+.grade-card.clickable:hover .grade-hint { opacity: 1; }
+.team-take { width: 460px; }
+.team-take-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.team-take-head h2 { margin: 0; }
+.grade-letter.big { font-size: var(--fs-44); line-height: 1; }
+.team-blurb { font-size: var(--fs-14-5); line-height: 1.65; margin-bottom: 12px; font-family: var(--font-body); }
+@media (prefers-reduced-motion: no-preference) {
+  .grade-card.clickable { transition: transform 0.15s ease, border-color 0.15s ease; }
+  .grade-card.clickable:hover { transform: translateY(-3px); border-color: var(--accent-line); }
+  .grade-hint { transition: opacity 0.15s ease; }
+}
+
+/* ---- prominent profile links in the player card ---- */
+.drawer-links a {
+  display: inline-block; background: var(--panel); border: 1px solid var(--border);
+  border-radius: 10px; padding: 9px 14px; font-size: var(--fs-12-5); font-weight: 700;
+  color: var(--accent2); text-decoration: none;
+}
+.drawer-links a:hover { border-color: var(--accent2); text-decoration: none; }
+
+/* ---- draft confirmation ----
+   The twin of the pick celebration: same card shape, same position-coloured
+   border, so "about to draft" and "drafted" read as one pair. Sits on the
+   shared .modal scrim, so backdrop-click and the mobile bottom-sheet
+   treatment come for free. */
+.dconf-card {
+  position: relative; display: flex; align-items: center; gap: 22px;
+  width: 540px; max-width: min(540px, calc(100vw - 150px));
+  padding: 24px 30px 24px 24px; border: 2px solid var(--border); border-radius: 24px;
+  background: var(--bg2); box-shadow: 0 26px 70px rgba(0, 0, 0, 0.55);
+  /* .modal-card sets overflow-y:auto, which clipped the club mark hanging off
+     the corner. Nothing here scrolls, so the card opts back out. */
+  overflow: visible;
+}
+:root[data-theme="light"] .dconf-card { box-shadow: 0 26px 70px rgba(20, 22, 28, 0.22); }
+.dconf-modal.g-QB .dconf-card { border-color: var(--qb); }
+.dconf-modal.g-RB .dconf-card { border-color: var(--rb); }
+.dconf-modal.g-WR .dconf-card { border-color: var(--wr); }
+.dconf-modal.g-TE .dconf-card { border-color: var(--te); }
+.dconf-modal.g-K  .dconf-card { border-color: var(--k); }
+.dconf-modal.g-IDP .dconf-card { border-color: var(--idp); }
+
+/* club mark on the corner, exactly as the celebration hangs it */
+.dconf-logo {
+  position: absolute; top: 0; right: 0; transform: translate(50%, -50%);
+  z-index: 3; width: 84px; height: 84px; object-fit: contain;
+  filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.55));
+}
+:root[data-theme="light"] .dconf-logo { filter: drop-shadow(0 3px 10px rgba(20, 22, 28, 0.28)); }
+.dconf-shot {
+  width: 96px; height: 96px; border-radius: 50%; object-fit: cover;
+  background: var(--panel2); flex-shrink: 0;
+}
+.dconf-body { min-width: 0; flex: 1; }
+.dconf-label {
+  color: var(--muted); font-family: var(--font-data); font-size: 11px;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+}
+/* Long names WRAP rather than truncate — "Jaxon Smith-Njigba" ellipsised to
+   "JAXON SMITH-NJI…", and a confirmation that hides which player it is
+   defeats the point of asking. */
+.dconf-name {
+  font-family: var(--font-display); font-weight: 900; font-style: italic;
+  text-transform: uppercase; letter-spacing: -0.01em;
+  font-size: 30px; line-height: 1.05; margin: 5px 0 9px;
+  overflow-wrap: anywhere; hyphens: auto;
+}
+.dconf-sub { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; color: var(--muted); font-size: 15px; }
+.dconf-sub b { color: var(--text); }
+.dconf-pts { color: var(--accent-text); font-family: var(--font-data); font-weight: 700; font-variant-numeric: tabular-nums; }
+.dconf-mock {
+  display: inline-block; margin-top: 10px; padding: 3px 10px; border-radius: 999px;
+  background: var(--te-soft); border: 1px solid rgba(245, 158, 11, 0.35); color: var(--te);
+  font-family: var(--font-data); font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+:root[data-theme="light"] .dconf-mock { color: #b45309; }
+.dconf-actions { display: flex; gap: 10px; margin-top: 18px; }
+.dconf-actions .btn { padding: 10px 18px; font-size: 13px; }
+.dconf-actions .btn.primary { flex: 1; }
+
+/* phones: stack the photo above the text so the name never squeezes */
+@media (max-width: 560px) {
+  .dconf-card {
+    flex-direction: column; align-items: flex-start; gap: 14px;
+    width: 100%; max-width: 100%; padding: 20px 18px;
+    border-radius: 18px 18px 0 0;
+  }
+  /* the sheet is full-bleed here, so there is no margin to hang into —
+     keep the vertical straddle but tuck it inside the right edge */
+  .dconf-logo { width: 58px; height: 58px; right: 18px; transform: translateY(-46%); }
+  .dconf-shot { width: 68px; height: 68px; }
+  .dconf-name { font-size: 24px; }
+  .dconf-sub { font-size: 13.5px; gap: 8px; }
+  .dconf-actions { width: 100%; }
+  .dconf-actions .btn { flex: 1; min-height: 44px; }
+}

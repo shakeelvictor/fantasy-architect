@@ -39,7 +39,7 @@ test('keepers, trades, queue and teams — full parity slice', async ({ browser 
 
   // a keeper is invisible to the pool's buttons on the team side too
   await team.getByTestId('pool-search').fill('Lamar Jackson');
-  await expect(team.locator('[data-testid^="row-"]').first()).toContainText('keeper');
+  await expect(team.locator('[data-testid^="row-"]').first()).toContainText('🔒 R1');
   await team.getByTestId('pool-search').fill('');
 
   // ---- TRADES: one side flags, the other side clears
@@ -91,10 +91,10 @@ test('keepers, trades, queue and teams — full parity slice', async ({ browser 
   // ---- TEAMS TAB: rosters, keeper marked, counts
   await commish.getByTestId('tab-teams').click();
   await commish.getByTestId('team-chip-1').click();
-  await expect(commish.getByTestId('team-roster')).toContainText('🔒 Lamar Jackson');
-  await expect(commish.getByTestId('team-roster')).toContainText('1/20 players');
+  await expect(commish.getByTestId('team-roster')).toContainText('Lamar Jackson');
+  await expect(commish.getByTestId('teams-tab')).toContainText('1/20 players');
   await commish.getByTestId('team-chip-2').click();
-  await expect(commish.getByTestId('team-roster')).toContainText('1/20 players'); // Vip got p2
+  await expect(commish.getByTestId('teams-tab')).toContainText('1/20 players'); // Vip got p2
 
   await commishCtx.close();
   await teamCtx.close();

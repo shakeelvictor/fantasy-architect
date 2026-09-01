@@ -33,7 +33,7 @@ test('a full slice of draft night, in two browsers', async ({ browser }) => {
   // ---- commissioner drafts the top player; the team browser sees it FAST
   const topRow = commish.locator('[data-testid^="row-"]').first();
   // innerText merges the inline <small>, so only the first token is safe
-  const firstName = (await topRow.locator('span >> nth=2').innerText()).split(/\s/)[0]!;
+  const firstName = (await topRow.locator('.p-name').innerText()).split(/\s/)[0]!;
   await topRow.locator('[data-testid^="draft-"]').click();
   const t0 = Date.now();
   await expect(team.getByTestId('cell-1')).toContainText(firstName, { timeout: 1000 });
@@ -45,7 +45,7 @@ test('a full slice of draft night, in two browsers', async ({ browser }) => {
   // data-independent: whoever tops the available list after pick #1
   const askBtn = team.locator('[data-testid^="ask-"]').first();
   const askedPid = (await askBtn.getAttribute('data-testid'))!.replace('ask-', '');
-  const askedName = (await team.getByTestId(`row-${askedPid}`).locator('span >> nth=2').innerText()).split(/\s/)[0]!;
+  const askedName = (await team.getByTestId(`row-${askedPid}`).locator('.p-name').innerText()).split(/\s/)[0]!;
   await askBtn.click();
   await expect(team.getByTestId(`ask-${askedPid}`)).toContainText('Asked');
   await expect(commish.getByTestId('req-banner')).toContainText('Vip');
