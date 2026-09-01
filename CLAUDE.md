@@ -47,8 +47,12 @@ everyone (corrections are compensating events).
   `public/actuals/<season>.json` for BOTH the prior and the current season —
   per-player real points scored week by week under IMP rules (never off a
   season total; the yardage bonuses are per-game). ~28KB a season, and it is
-  what lets the Analyzer mark an archived draft's grades against reality. A
-  bake-time assert cross-checks it against the drawer's `lastSeason`.
+  what lets the Analyzer regrade an archived draft. Scoped to FANTASY weeks
+  1–17 (14 regular + the 15–17 playoff window): week 18 is NFL-only and falls
+  outside the season a draft was built for. The drawer's `lastSeason` stays a
+  full 18-week NFL total, which is v1's number — a bake-time assert checks
+  that one against the full sum and that 1–17 never exceeds it, so the two
+  cannot be quietly conflated.
 - `tools/dev-api` — local Supabase stand-in: real migration in PGlite, real
   RLS per request, real JWT crypto, SSE for realtime, `/reset` for e2e.
   Dev PINs: commish 1111, teams 2201–2211.
@@ -158,14 +162,16 @@ The Analyzer tab picks its source: the live draft, or any season in
 its document — the assessment as it stood that night, not what today's
 formula would say.
 
-`hindsight.ts` then marks those grades against `actuals/<season>.json`. Two
-rules keep it fair mid-season: both grades are league-relative z-scores (so a
-half-played season is noisier, never lopsided), and player hits/misses
-compare PER-GAME rates, because a season projection would call everyone a
-bust through week 4. Each team gets draft grade → actual grade, a
+`hindsight.ts` then regrades against `actuals/<season>.json`, and only once
+the fantasy season is FINISHED (all 17 weeks). A draft grade is a claim about
+a whole season, so marking it mid-season measures luck rather than the claim
+— and holding that line is what lets everything else compare season totals
+directly, with no proration and no hedging. Part-way through, the panel shows
+"N of 17 weeks" and no grades. Each team then gets draft grade → actual grade
+(same per-pick, league-relative basis, so the letters mean the same thing), a
 called-it/underrated/overrated verdict from rank movement, and its best hit
-and worst miss. **The 2026 season had not kicked off as of Sep 2026**, so the
-panel shows its empty state and fills in from week 1 as the daily bake runs.
+and worst miss against what the board projected. **The 2026 season had not
+kicked off as of Sep 2026**, so the panel shows the not-yet state.
 
 Known gaps, deliberate: Sleepers & Busts has no trending "buzz" column yet
 (the drawer's 🔥 badge is the only trending consumer); `player_moved` is

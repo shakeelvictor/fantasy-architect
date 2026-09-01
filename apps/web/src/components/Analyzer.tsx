@@ -157,14 +157,22 @@ function Retrospective({ season, retro, actuals }: {
   if (actuals === undefined) {
     return <p className="p-meta" style={{ marginTop: 16 }}>Checking the {season} results…</p>;
   }
+  // A draft grade is a claim about a whole season, so it is only marked once
+  // that season is finished — weeks 1-17 here, the regular season plus the
+  // 15-17 playoff window. Part-way through, this shows where the season is up
+  // to and nothing more.
   if (!retro) {
+    const weeks = actuals?.seasonWeeks ?? 17;
+    const played = actuals?.throughWeek ?? 0;
     return (
       <div className="card" style={{ marginTop: 16 }}>
         <h3>Were the grades right?</h3>
-        <p className="p-meta">
-          No {season} games have been played yet, so there is nothing to check these grades against.
-          This fills in from week 1 — the daily bake records what every drafted player actually
-          scored under this league's rules, and the grades get marked against it.
+        <p className="p-meta" data-testid="retro-pending">
+          {played === 0
+            ? `The ${season} season has not kicked off yet.`
+            : `The ${season} season is ${played} of ${weeks} weeks in.`}{' '}
+          These grades get marked once it finishes — a draft grade is a claim about a whole
+          season, and scoring it week by week would measure luck more than the claim.
         </p>
       </div>
     );
@@ -175,14 +183,12 @@ function Retrospective({ season, retro, actuals }: {
       <div className="values-head">
         <h3 style={{ margin: 0 }}>Were the grades right?</h3>
         <span className="p-meta">
-          {retro.complete ? 'Full season' : `Through week ${retro.throughWeek}`} · actual points
-          scored under this league's rules
+          Final · weeks 1–{retro.seasonWeeks} scored under this league's rules
         </span>
       </div>
       <p className="p-meta" style={{ margin: '6px 0 12px' }}>
         <b>{retro.withinOne}</b> of {retro.teams.length} teams finished within one place of where
         the board ranked them; the average miss was <b>{retro.meanRankError}</b> places.
-        {!retro.complete && ' Early weeks are noisy — a grade is a season-long claim.'}
       </p>
       <div className="grade-grid" data-testid="retro-grid">
         {retro.teams.map((t) => (
@@ -204,9 +210,9 @@ function Retrospective({ season, retro, actuals }: {
                 <span className="p-meta"> · finished #{t.actualRank}, board said #{t.projRank}</span>
               )}
               <br />
-              Actual points: <b>{t.actualPts.toFixed(0)}</b> <span className="p-meta">(projected {t.projPts})</span><br />
-              <Verdict label="Best hit" p={t.bestHit} sign="+" />
-              <Verdict label="Worst miss" p={t.worstMiss} sign="" />
+              Scored: <b>{t.actualPts.toFixed(0)}</b> <span className="p-meta">(board said {t.projPts})</span><br />
+              <Verdict label="Best hit" p={t.bestHit} />
+              <Verdict label="Worst miss" p={t.worstMiss} />
             </div>
           </div>
         ))}
@@ -215,14 +221,13 @@ function Retrospective({ season, retro, actuals }: {
   );
 }
 
-function Verdict({ label, p, sign }: { label: string; p: PlayerVerdict | null; sign: string }): React.JSX.Element | null {
+function Verdict({ label, p }: { label: string; p: PlayerVerdict | null }): React.JSX.Element | null {
   if (!p) return null;
-  const d = p.delta;
   return (
     <>
       {label}: <b>{p.name}</b>{' '}
       <span className="p-meta">
-        {d >= 0 ? sign || '+' : ''}{d.toFixed(1)}/gm vs projection
+        {p.delta >= 0 ? '+' : ''}{p.delta.toFixed(0)} vs projection
         {p.games ? ` · ${p.games} gm` : ' · never played'}
       </span>
       <br />

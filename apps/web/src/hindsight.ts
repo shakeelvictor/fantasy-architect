@@ -6,23 +6,24 @@
 // bake writes (`/actuals/<season>.json`, scored week by week under IMP rules,
 // never off a season total — the yardage bonuses are per-game).
 //
-// Two rules keep the comparison fair while a season is still being played:
+// It only runs once the fantasy season is OVER — weeks 1-17 for this league,
+// the 14-week regular season plus a 15-17 playoff window. A draft grade is a
+// season-long claim, so marking it through week 4 measures variance rather
+// than the claim, and week 18 falls outside the season the draft was built
+// for. That single rule is what lets everything else compare season totals
+// directly, with no proration and no hedging.
 //
-//  1. Both grades are LEAGUE-RELATIVE z-scores, so a half-played season is
-//     noisier but not biased — every team has played the same weeks.
-//  2. Player hits and misses compare PER-GAME rates, never season totals. A
-//     projection is for a full season; through week 4 it would call everyone
-//     a bust.
-//
-// A team's actual grade is graded on the same per-pick basis as draft night,
-// so the two letters mean the same thing and can be put side by side.
+// A team's actual grade is graded on the same per-pick, league-relative basis
+// as draft night, so the two letters mean the same thing side by side.
 
 import { computeGrades, letterGrade, zScores } from './grades';
 import type { ArchiveDoc } from './archive';
 
 export interface Actuals {
   season: string;
-  throughWeek: number;
+  throughWeek: number;   // fantasy weeks played so far
+  seasonWeeks?: number;  // how many the fantasy season has (17 here)
+  complete?: boolean;
   players: Record<string, [number, number]>; // pid -> [points, games]
 }
 
@@ -42,11 +43,10 @@ export interface PlayerVerdict {
   pos: string;
   round: number;
   overall: number;
-  projPerGame: number;
-  actualPerGame: number;
+  proj: number;
   actualPts: number;
   games: number;
-  delta: number; // per-game points above/below what was projected
+  delta: number; // season points above/below what the board projected
 }
 
 export interface TeamRetro {
@@ -66,8 +66,7 @@ export interface TeamRetro {
 }
 
 export interface Retro {
-  throughWeek: number;
-  complete: boolean;
+  seasonWeeks: number;
   teams: TeamRetro[];
   withinOne: number; // teams whose actual finish was within one place
   meanRankError: number;
@@ -86,9 +85,11 @@ function rankDesc(values: number[]): number[] {
   return out;
 }
 
+/** The season's grades, or null while it is still being played. */
 export function buildRetro(doc: ArchiveDoc, actuals: Actuals): Retro | null {
-  if (!actuals.throughWeek) return null;
-  const weeks = actuals.throughWeek;
+  const seasonWeeks = actuals.seasonWeeks ?? 17;
+  const done = actuals.complete ?? actuals.throughWeek >= seasonWeeks;
+  if (!done) return null;
 
   // Draft-night grades: prefer the ones pinned into the document, so the
   // retrospective judges what was actually SAID at the time rather than what
@@ -113,19 +114,19 @@ export function buildRetro(doc: ArchiveDoc, actuals: Actuals): Retro | null {
       const games = hit ? hit[1] : 0;
       if (hit) scored++;
       actualPts += pts;
-      // a projection is a SEASON number; compare rates, not totals, or a
-      // part-played season calls every pick a bust
-      const projPerGame = (r.proj ?? 0) / 17;
-      const actualPerGame = games ? pts / games : 0;
+      // the season is over, so this is the honest comparison: the board said
+      // he would score this much, and he scored that much. Games missed are
+      // part of the miss — availability is production in fantasy.
+      const proj = r.proj ?? 0;
       players.push({
         pid: r.pid, name: r.name, pos: r.pos, round: r.round, overall: r.overall,
-        projPerGame, actualPerGame, actualPts, games,
-        delta: actualPerGame - projPerGame,
+        proj, actualPts: pts, games,
+        delta: pts - proj,
       });
     }
     // only judge players the board actually expected something from — a
     // 20th-round flier beating a ~0 projection is not the story
-    const judged = players.filter((p) => p.projPerGame >= 3);
+    const judged = players.filter((p) => p.proj >= 50);
     const sorted = [...judged].sort((a, b) => b.delta - a.delta);
     return {
       slot: t.slot,
@@ -169,8 +170,7 @@ export function buildRetro(doc: ArchiveDoc, actuals: Actuals): Retro | null {
 
   const errors = teams.map((t) => Math.abs(t.projRank - t.actualRank));
   return {
-    throughWeek: weeks,
-    complete: weeks >= 18,
+    seasonWeeks,
     teams,
     withinOne: errors.filter((e) => e <= 1).length,
     meanRankError: errors.length

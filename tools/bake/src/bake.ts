@@ -25,6 +25,12 @@ const SEASON = process.env.BAKE_SEASON ?? '2026';
 const PRIOR = process.env.BAKE_PRIOR ?? '2025';
 const TEAMS = Number(process.env.BAKE_TEAMS ?? 11);
 const WEEKS = 18;
+// This league's fantasy season is weeks 1-14 plus a 15-17 playoff window, so
+// it ENDS at 17. Week 18 is NFL-only — starters rest, and any points scored
+// in it fall outside the season a draft was built for. The drawer's "last
+// season" line stays a full 18-week NFL total (v1's number, unchanged); the
+// actuals the retrospective grades on stop at 17.
+const FANTASY_WEEKS = 17;
 
 const OFF_POS = ['QB', 'RB', 'WR', 'TE', 'K'];
 const REQUEST_POS = [...OFF_POS, 'DL', 'LB', 'DB'];
@@ -95,7 +101,8 @@ const allowed: Record<string, Record<string, number>> = {};
 const defGames: Record<string, number> = {};
 // Per-player prior-season totals under custom scoring (drawer's "last season
 // actual" line) — same rows the SOS pass already walks, so no extra fetches.
-const prior: Record<string, number> = {};
+const prior: Record<string, number> = {};       // all 18 NFL weeks (v1's lastSeason)
+const priorFantasy: Record<string, number> = {}; // weeks 1-17 only (see FANTASY_WEEKS)
 const priorGames: Record<string, number> = {};
 let priorWeeks = 0;
 for (let w = 1; w <= WEEKS; w++) {
@@ -105,12 +112,15 @@ for (let w = 1; w <= WEEKS; w++) {
   } catch {
     continue;
   }
-  if (rows.length) priorWeeks++;
+  if (rows.length && w <= FANTASY_WEEKS) priorWeeks++;
   const seenOpp: Record<string, boolean> = {};
   for (const row of rows) {
     const pts0 = scoreWeek(row.stats ?? {}, true); // finished games — exact tiers
     prior[row.player_id] = (prior[row.player_id] ?? 0) + pts0;
-    if (Number(row.stats?.gp) > 0) priorGames[row.player_id] = (priorGames[row.player_id] ?? 0) + 1;
+    if (w <= FANTASY_WEEKS) {
+      priorFantasy[row.player_id] = (priorFantasy[row.player_id] ?? 0) + pts0;
+      if (Number(row.stats?.gp) > 0) priorGames[row.player_id] = (priorGames[row.player_id] ?? 0) + 1;
+    }
     const opp = row.opponent;
     const pos = normalizePos(row.player?.position);
     if (!opp || !pos) continue;
@@ -143,7 +153,7 @@ const priorRank: Record<string, number> = {};
 const curActual: Record<string, number> = {};
 const curGames: Record<string, number> = {};
 let curWeeks = 0;
-for (let w = 1; w <= WEEKS; w++) {
+for (let w = 1; w <= FANTASY_WEEKS; w++) {
   let rows: Row[];
   try {
     rows = await fetchJson<Row[]>(actualUrl(w));
@@ -157,7 +167,7 @@ for (let w = 1; w <= WEEKS; w++) {
     if (Number(row.stats?.gp) > 0) curGames[row.player_id] = (curGames[row.player_id] ?? 0) + 1;
   }
 }
-console.log(`actuals: ${PRIOR} through week ${priorWeeks}, ${SEASON} through week ${curWeeks}`);
+console.log(`actuals (fantasy weeks 1-${FANTASY_WEEKS}): ${PRIOR} through ${priorWeeks}, ${SEASON} through ${curWeeks}`);
 
 const sosRanks: Record<string, Record<string, number>> = {};
 {
@@ -380,17 +390,19 @@ function writeActuals(season: string, pts: Record<string, number>, games: Record
     out[pid] = [Math.round(v * 10) / 10, games[pid] ?? 0];
   }
   writeFileSync(join(pub, 'actuals', `${season}.json`), JSON.stringify({
-    season, throughWeek: weeks, bakedAt: new Date().toISOString(),
-    scoring: 'IMP league rules', players: out,
+    season, throughWeek: weeks, seasonWeeks: FANTASY_WEEKS,
+    complete: weeks >= FANTASY_WEEKS,
+    bakedAt: new Date().toISOString(),
+    scoring: 'IMP league rules, fantasy weeks 1-' + FANTASY_WEEKS, players: out,
   }));
-  console.log(`actuals/${season}.json — ${Object.keys(out).length} players, through week ${weeks}`);
+  console.log(`actuals/${season}.json — ${Object.keys(out).length} players, through week ${weeks}/${FANTASY_WEEKS}`);
 }
-writeActuals(PRIOR, prior, priorGames, priorWeeks);
+writeActuals(PRIOR, priorFantasy, priorGames, priorWeeks);
 writeActuals(SEASON, curActual, curGames, curWeeks);
 
-// The prior-season actuals feed the drawer's "last season" line AND the
-// retrospective. They are the same week-by-week sum, so they must agree —
-// a mismatch means one of the two paths drifted.
+// lastSeason is the full 18-week NFL total, so it is checked against the full
+// sum — not against the 1-17 fantasy total now written to the actuals file.
+// Guarding both keeps the two numbers from being quietly conflated again.
 {
   const sample = players.find((p) => p.lastSeason != null);
   if (sample) {
@@ -398,7 +410,11 @@ writeActuals(SEASON, curActual, curGames, curWeeks);
     if (Math.abs(fromActuals - sample.lastSeason!) > 0.05) {
       throw new Error(`actuals/${PRIOR} disagrees with lastSeason for ${sample.name}: ${fromActuals} vs ${sample.lastSeason}`);
     }
-    console.log(`actuals cross-check ok (${sample.name}: ${fromActuals})`);
+    const fantasy = Math.round((priorFantasy[sample.pid] ?? 0) * 10) / 10;
+    if (fantasy > fromActuals + 0.05) {
+      throw new Error(`fantasy weeks 1-${FANTASY_WEEKS} exceed the full season for ${sample.name}`);
+    }
+    console.log(`cross-check ok (${sample.name}: ${fromActuals} full, ${fantasy} fantasy)`);
   }
 }
 console.log(`${players.length} players baked`);
