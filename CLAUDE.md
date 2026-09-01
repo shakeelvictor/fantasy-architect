@@ -198,6 +198,27 @@ secret; mutation-checked), `apps/web/e2e/mfl-guard.spec.ts` (the REAL dev-api
 route, since exports.spec stubs the proxy, plus "a team never even sees the
 button"), and a live check against the hosted function after each deploy.
 
+## Signing out mid-draft
+
+The ⏻ asks before signing out, but ONLY while a draft is live (started, not
+complete) — a prompt on a dead board is noise, and noise is how prompts stop
+being read. The wording says what is actually at stake, because a sign-out
+prompt must not read as a warning about losing the draft.
+
+Nothing IS at stake. Sign-out removes one localStorage key (`fa2-session`)
+and shows the Gate. The board is the server's log, so it cannot be touched
+from a client at all; the queue, the mock, the MFL franchise map and the
+theme all live under their own keys and survive. The only real cost is the
+minute of getting back in — and for the commissioner, that nobody can make
+picks while they are out (teams can still ask). `signout.spec.ts` drives both
+roles through it mid-draft and checks the board, the queue and the event log
+come back identical.
+
+Sign-out now also calls `disconnect()`. It never did: the stream stayed open
+behind the PIN screen, holding a Realtime connection on a tier that counts
+them, and `connect()` would early-return on the next login believing it was
+still connected.
+
 ## The public draft record — `/{year}`
 
 `fantasy-architect.netlify.app/2026` — no PIN. Not a hole: the archive under

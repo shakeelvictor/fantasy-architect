@@ -194,7 +194,23 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
             ⚙
           </button>
         )}
-        <button className="icon-btn" title={`${isCommish ? 'Commissioner' : `${teamName(mySlot)} (you)`} — sign out`} onClick={onLogout}>
+        <button className="icon-btn" data-testid="sign-out"
+          title={`${isCommish ? 'Commissioner' : `${teamName(mySlot)} (you)`} — sign out`}
+          onClick={() => {
+            // Signing out cannot cost the board anything — the draft is the
+            // server's event log and every device folds it, so this only
+            // forgets a PIN. What it DOES cost is the minute of getting back
+            // in, which is worth a question mid-draft and is not worth one
+            // otherwise. The wording says what is actually at stake so nobody
+            // reads a sign-out prompt as a warning about losing the draft.
+            const live = draft.started && !done;
+            if (live && !window.confirm(
+              isCommish
+                ? 'Sign out of the commissioner board?\n\nThe draft is live. Nothing is lost — every pick is saved on the server — but no one else can make picks until you sign back in with your PIN.'
+                : 'Sign out?\n\nThe draft is live. Nothing is lost — the board and your queue are saved — but you will need your PIN to get back in.',
+            )) return;
+            onLogout();
+          }}>
           ⏻
         </button>
       </header>

@@ -3,7 +3,7 @@ import type { Session } from './api';
 import { Gate } from './components/Gate';
 import { PublicSeason } from './components/PublicSeason';
 import { Room } from './components/Room';
-import { connect } from './store';
+import { connect, disconnect } from './store';
 
 const KEY = 'fa2-session';
 
@@ -47,6 +47,12 @@ export function App(): React.JSX.Element {
     <Room
       session={session}
       onLogout={() => {
+        // Close the live subscription before dropping the session. Without
+        // this the stream stayed open behind the PIN screen — harmless to the
+        // board, but it holds a Realtime connection open on a tier that
+        // counts them, and connect() then early-returns on the next login
+        // because it thinks it is still connected.
+        disconnect();
         localStorage.removeItem(KEY);
         setSession(null);
       }}
