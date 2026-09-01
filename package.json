@@ -1,0 +1,9 @@
+{
+  "name": "fantasy-architect-2",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck"
+  }
+}
