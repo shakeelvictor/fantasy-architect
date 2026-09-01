@@ -10,6 +10,17 @@ export const STARTERS = { QB: 1, RB: 2, WR: 3, TE: 1, FLEX: 1, K: 1, IDP: 3 } as
 export const headshot = (pid: string): string =>
   `https://sleepercdn.com/content/nfl/players/thumb/${pid}.jpg`;
 
+// v1's boardName(): the board stacks a small muted forename over a bold
+// surname, so a cell stays readable at 112px. A one-word name (or an empty
+// prefix) leaves .bc-first empty, which the CSS collapses rather than
+// leaving a blank line.
+export function splitName(name: string): { first: string; last: string } {
+  const parts = String(name || '').trim().split(/\s+/);
+  return parts.length > 1
+    ? { first: parts[0]!, last: parts.slice(1).join(' ') }
+    : { first: '', last: parts[0] ?? '' };
+}
+
 export function myNextPickOverall(config: SeasonConfig, state: DraftState, slot: number): number | null {
   const total = config.teams * config.rounds;
   for (let ov = state.picks.length + 1; ov <= total; ov++) {

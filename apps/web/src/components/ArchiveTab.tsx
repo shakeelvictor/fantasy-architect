@@ -10,6 +10,7 @@ import { SEASON, type PoolPlayer } from '../api';
 import { buildArchive, type ArchiveDoc } from '../archive';
 import { downloadBlob } from '../exports';
 import { headshot } from '../profile';
+import { splitName } from '../v1logic';
 
 interface Entry { season: number; label: string; file?: string; doc?: ArchiveDoc }
 
@@ -113,9 +114,7 @@ function ArchiveDocView({ doc }: { doc: ArchiveDoc }): React.JSX.Element {
       const pk = byOverall.get((r - 1) * teams + s);
       if (!pk) { cells.push(<div key={`c${r}-${s}`} className="board-cell"></div>); continue; }
       const moved = pk.origSlot != null && pk.origSlot !== pk.slot;
-      const parts = String(pk.name || '').trim().split(/\s+/);
-      const first = parts.length > 1 ? parts[0] : '';
-      const last = parts.length > 1 ? parts.slice(1).join(' ') : (parts[0] ?? '');
+      const { first, last } = splitName(pk.name);
       cells.push(
         <div key={`c${r}-${s}`} className={`board-cell ${pk.pid ? 'has-shot ' : ''}c-${OFF.has(pk.pos) ? pk.pos : 'IDP'}`}>
           {pk.pid && <img className="bc-shot" loading="lazy" src={headshot(pk.pid)} alt=""

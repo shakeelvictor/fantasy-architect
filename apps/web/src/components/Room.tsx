@@ -7,6 +7,7 @@ import { currentOverall, ownerOf, redoablePids, rosterBalance, roundOf } from '@
 import { fetchPool, transport, type PoolDoc, type Session } from '../api';
 import { useRoom } from '../store';
 import { useTopbarFit } from '../topbar';
+import { suppressNextPickPop, useCelebrations } from '../celebrate';
 import { mockEvents, mockState, mockSubmit, stopBots, useMock } from '../mock';
 import { Analyzer } from './Analyzer';
 import { ArchiveTab } from './ArchiveTab';
@@ -92,7 +93,20 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
 
   const byPid = useMemo(() => new Map(players.map((p) => [p.pid, p])), [players]);
 
-  if (!room.ready || !room.config) {
+  // Derived above the loading-screen early return, because useCelebrations
+  // below is a hook and must run on every render — including the ones where
+  // the room is still connecting. It no-ops on a null config.
+  const cfg = room.config;
+  const draft = isMock && cfg ? mockState(room.events) : room.draft;
+  const cur = currentOverall(draft);
+  const total = cfg ? cfg.teams * cfg.rounds : 0;
+  const done = !!cfg && (draft.completed || cur > total);
+  const teamName = (slot: number): string => cfg?.order?.[slot - 1] ?? `Team ${slot}`;
+  const mySlot = session.slot ?? (cfg as { commish_slot?: number } | null)?.commish_slot ?? 11;
+
+  useCelebrations({ config: cfg, draft, byPid, teamName, mySlot, done, isMock, botsRunning: mock.running });
+
+  if (!room.ready || !cfg) {
     return (
       <div className="loading-screen"><div className="loading-card">
         <div className="spinner"></div><h2>Fantasy Architect</h2>
@@ -101,16 +115,9 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
     );
   }
 
-  const { config } = room;
-  const draft = isMock ? mockState(room.events) : room.draft;
-  const cur = currentOverall(draft);
-  const total = config.teams * config.rounds;
-  const boardFull = cur > total;
-  const done = draft.completed || boardFull;
+  const config = cfg;
   const onClockSlot = done ? null : ownerOf(config, draft, cur);
-  const teamName = (slot: number): string => config.order?.[slot - 1] ?? `Team ${slot}`;
   const isCommish = session.role === 'commish';
-  const mySlot = session.slot ?? (config as { commish_slot?: number }).commish_slot ?? 11;
   const openRequest = draft.requests.find((r) => !r.resolved);
   const redoPid = redoablePids(isMock ? mockEvents(room.events) : room.events).at(-1) ?? null;
   // v1's rule: the confirm guard sits on the three HUMAN buttons only —
@@ -254,7 +261,7 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
           </div>
         </section>
         <section className={`tab-panel ${tab === 'board' ? 'active' : ''}`} id="tab-board">
-          <Board config={config} draft={draft} byPid={byPid} teamName={teamName} cur={done ? null : cur} onOpen={setDrawerPid} />
+          <Board config={config} draft={draft} byPid={byPid} teamName={teamName} cur={done ? null : cur} mySlot={mySlot} onOpen={setDrawerPid} />
         </section>
         <section className={`tab-panel ${tab === 'teams' ? 'active' : ''}`} id="tab-teams">
           <TeamsTab config={config} draft={draft} byPid={byPid} teamName={teamName} mySlot={session.slot} onOpen={setDrawerPid} />
@@ -279,6 +286,10 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
       {panel === 'mfl' && (
         <MflPanel config={config} draft={room.draft} byPid={byPid} teamName={teamName} session={session} onClose={() => setPanel(null)} />
       )}
+      {/* celebration overlays — never take pointer events, remove themselves */}
+      <div id="pick-pop" className="pick-pop" aria-live="polite"></div>
+      <div id="draft-finale" className="finale hidden" aria-hidden="true"></div>
+
       {drawerPid && pool && (
         <Drawer
           pid={drawerPid}

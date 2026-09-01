@@ -5,6 +5,7 @@
 
 import type { DraftEvent, DraftState, SeasonConfig } from '@fa/rules';
 import { SEASON, type PoolPlayer, type Session } from '../api';
+import { suppressNextPickPop } from '../celebrate';
 import { exportXlsx } from '../exports';
 import { headshot, recommendations } from '../v1logic';
 
@@ -53,7 +54,7 @@ export function SidePanel({ players, byPid, config, draft, session, mySlot, team
             </button>
             <button className="btn" data-testid="redo" disabled={!redoPid || !draft.started || done}
               title={redoPid ? 'Put back the pick the last undo removed' : 'Nothing undone to put back'}
-              onClick={() => redoPid && act('pick_made', { pid: redoPid })}>
+              onClick={() => { if (!redoPid) return; suppressNextPickPop(); act('pick_made', { pid: redoPid }); }}>
               Redo Pick
             </button>
             {isCommish && (
