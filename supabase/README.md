@@ -1,5 +1,17 @@
 # Supabase deployment
 
+**Deployed 1 Sep 2026** — project `fantasy-architect`, ref
+`prkdvoyxtdwwzeqqrzcq`, us-east-2, Postgres 17. Both migrations applied,
+auth-pin live with FA_JWT_SECRET, season 2027 + teams + PINs seeded.
+Verified end-to-end: 20/20 hosted checks (PIN auth, guards, keeper chain,
+RLS slot cage, append-only log). Credentials: `~/.config/fa2/supabase.env`;
+league PINs: `~/.config/fa2/pins-2027.txt` (both local-only, mode 600).
+
+Note: on new-generation projects the legacy JWT secret is dashboard-only
+(Settings → JWT Keys → Legacy JWT Secret) — no Management API reveals it,
+and `app.settings.jwt_secret` is absent from the database. Validate a copied
+secret locally by recomputing the legacy anon key's HMAC before setting it.
+
 Everything here is tested locally against PGlite (real Postgres semantics,
 including RLS under the anon/authenticated roles) — no cloud project needed
 for development. To stand up the real thing:
