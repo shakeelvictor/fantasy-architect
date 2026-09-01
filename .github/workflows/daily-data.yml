@@ -2,6 +2,12 @@
 # Sleeper, commit if changed, build + deploy. (The bake commits with the
 # default token, whose pushes deliberately do NOT retrigger workflows — so
 # this job deploys itself rather than relying on deploy.yml.)
+#
+# It also publishes a finished draft. Archiving used to be a manual ritual —
+# click the button, let the JSON land in a Downloads folder, hand-commit it —
+# which put the league's permanent record one forgotten step away from being
+# a spreadsheet on somebody's laptop. Now the day after a draft completes,
+# this writes it. The step is a no-op every other day of the year.
 name: daily-data
 on:
   schedule:
@@ -19,12 +25,22 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: bake players.json from Sleeper
         run: pnpm --filter @fa/bake bake
+      # Runs after the bake so it sees today's pool, and skips unless the
+      # draft is complete AND that pool is the season being archived.
+      - name: publish a finished draft, if there is one
+        run: pnpm --filter @fa/archive archive
+        env:
+          ARCHIVE_SEASON: '2027'
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
       - name: commit if changed
         run: |
           git config user.name "fa-bake"
           git config user.email "bake@users.noreply.github.com"
-          git add apps/web/public/players.json
-          git diff --cached --quiet || git commit -m "Daily data bake" && git push
+          git add apps/web/public/players.json apps/web/public/actuals apps/web/public/drafts
+          git diff --cached --quiet && echo "nothing changed" || {
+            git commit -m "Daily data bake" && git push
+          }
       - name: build
         run: pnpm --filter @fa/web build
         env:

@@ -53,6 +53,20 @@ everyone (corrections are compensating events).
   full 18-week NFL total, which is v1's number — a bake-time assert checks
   that one against the full sum and that 1–17 never exceeds it, so the two
   cannot be quietly conflated.
+- `tools/archive` — publishes a finished draft as a permanent record, so the
+  league's history does not depend on anyone remembering to. Reads the
+  season's log from Supabase (anon), folds it, and builds the document with
+  `apps/web/src/archive.ts` — the SAME module the "Archive current draft"
+  button uses, so a CI-published archive and a hand-downloaded one are
+  identical by construction rather than by two implementations agreeing to
+  stay in step. Runs daily from `daily-data.yml` after the bake; the decision
+  logic (`plan.ts`) is pure and unit-tested. Two guards do the work: it skips
+  unless the draft is COMPLETE, and unless `players.json` is that same
+  season's pool — once the bake rolls forward, re-deriving an old year would
+  restate its grades with projections nobody drafted against, which makes an
+  archive frozen the moment the pool moves on. Also idempotent: an unchanged
+  board is recognised through the `archivedAt` timestamp, so the daily run
+  commits nothing.
 - `tools/dev-api` — local Supabase stand-in: real migration in PGlite, real
   RLS per request, real JWT crypto, SSE for realtime, `/reset` for e2e.
   Dev PINs: commish 1111, teams 2201–2211.
@@ -93,7 +107,8 @@ everyone (corrections are compensating events).
 
 ## Testing
 
-- `pnpm -r test` — scoring goldens (23) + rules/DB integration (26).
+- `pnpm -r test` — scoring goldens (23) + rules/DB integration (38) +
+  archive planning (7).
 - `pnpm --filter @fa/web test` — two-browser Playwright e2e (draft-night
   slice + parity slice) against dev-api; kill ports 8787/5173 first
   (`lsof -ti tcp:8787 | xargs kill -9`). Keep every data-testid stable.
@@ -164,6 +179,11 @@ R3"). Below that: the board, the rosters, and the Analyzer's pinned grades,
 rendered by the SAME components the signed-in app uses (`ArchiveDocView`,
 `GradeGrid`, `Retrospective`), so the public view cannot drift from the
 private one.
+
+Publishing a year is automatic: `daily-data.yml` writes the archive the day
+after a draft completes (see `tools/archive`). The manual route still exists —
+Past Drafts → Archive current draft → commit the JSON — but nothing depends on
+anyone remembering it.
 
 Reads `public/drafts/<year>.json` only — no Supabase, no player pool, ~108KB.
 A year with no archive says so and lists what is archived. `App.tsx` matches

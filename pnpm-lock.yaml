@@ -81,6 +81,25 @@ importers:
         specifier: ^3.0.5
         version: 3.2.7(@types/node@22.20.1)(terser@5.51.2)(tsx@4.23.13)
 
+  tools/archive:
+    dependencies:
+      '@fa/rules':
+        specifier: workspace:*
+        version: link:../../packages/rules
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.0
+        version: 22.20.1
+      tsx:
+        specifier: ^4.19.2
+        version: 4.23.13
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.5
+        version: 3.2.7(@types/node@22.20.1)(terser@5.51.2)(tsx@4.23.13)
+
   tools/bake:
     dependencies:
       '@fa/scoring':

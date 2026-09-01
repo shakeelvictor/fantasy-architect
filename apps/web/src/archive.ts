@@ -5,7 +5,7 @@
 // archive renders here and a v2 archive would render there.
 
 import { rosterBalance, type DraftState, type SeasonConfig } from '@fa/rules';
-import type { PoolPlayer } from './api';
+import type { PoolPlayer } from './pool';
 import { computeGrades, type TeamGrade } from './grades';
 
 export interface ArchivePick {
