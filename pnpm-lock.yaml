@@ -13,6 +13,9 @@ importers:
       '@fa/rules':
         specifier: workspace:*
         version: link:../../packages/rules
+      '@supabase/supabase-js':
+        specifier: ^2.112.4
+        version: 2.112.4
       '@tanstack/react-virtual':
         specifier: ^3.13.0
         version: 3.14.10(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -639,6 +642,38 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@supabase/auth-js@2.112.4':
+    resolution: {integrity: sha512-z8DesgwLzKM5PiT0yNmJU8VJyh1zAhYi+20Z7drdJQLXg/wWW4yGt/un+He5ERYUo94Vz66t5aeyr1DIDemI5A==}
+    engines: {node: '>=22.0.0'}
+
+  '@supabase/functions-js@2.112.4':
+    resolution: {integrity: sha512-DQ0aVH8wSQAccVqNoEkec62qCu2QRNyoGN53RqsVZ1k6F1zq4/v8scrlR6LNT2RJmT97apiTmORijPVhErCS2g==}
+    engines: {node: '>=22.0.0'}
+
+  '@supabase/phoenix@0.4.5':
+    resolution: {integrity: sha512-aAn9H9ovVyeApKy11OWOrrOGq8DV68yWeH4ud2lN9fzn4aO8Zb5GLL9m1pUg9nLqIcT+ZDfAcsZe0E/nqdv2lw==}
+
+  '@supabase/postgrest-js@2.112.4':
+    resolution: {integrity: sha512-uaubtPSeg2TR4wrtfQoQWgkTAe+a0qWX2KhmwvTfNl5mGN9+U7owiJt6abk3o/V6O899PSRD1yzxs5RlF4xTug==}
+    engines: {node: '>=22.0.0'}
+
+  '@supabase/realtime-js@2.112.4':
+    resolution: {integrity: sha512-vZ+j079SKrM0Xiq7MJCvQKLDpaH2kfKfLY68xuQE1sqsCsMmx1CyrDBJHsxZ3cX01VOs5SI9igmoZAF3BmdZxw==}
+    engines: {node: '>=22.0.0'}
+
+  '@supabase/storage-js@2.112.4':
+    resolution: {integrity: sha512-lQ0JemuTlMIXVKgSci1qez8yPnM5hyDngeAfEBjZS2Om4D+Cus0EE5BE6glFobrxdyii1OF4UzWfF0zcQgDq5A==}
+    engines: {node: '>=22.0.0'}
+
+  '@supabase/supabase-js@2.112.4':
+    resolution: {integrity: sha512-UiCX1udlFY1fQQrO7Z3GU7obQsju0w5Vk9mOOwalfo/+Gy+tahWVenSSuu5E/GTy/q//HxvGv2IrCdW66/61kw==}
+    engines: {node: '>=22.0.0'}
+    peerDependencies:
+      '@opentelemetry/api': '>=1.0.0'
+    peerDependenciesMeta:
+      '@opentelemetry/api':
+        optional: true
+
   '@tanstack/react-virtual@3.14.10':
     resolution: {integrity: sha512-SRyoUbdFMRHuYXMijV5H4ZarQWpXkj3iANq8OFre+pybeVap8ZJjZ3Nz9bVjx4d8PfobVUQUdKyyyHYk3E+djw==}
     peerDependencies:
@@ -813,6 +848,10 @@ packages:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
     engines: {node: '>=6.9.0'}
 
+  iceberg-js@0.8.1:
+    resolution: {integrity: sha512-1dhVQZXhcHje7798IVM+xoo/1ZdVfzOMIc8/rgVSijRK38EDqOJoGula9N/8ZI5RD8QTxNQtK/Gozpr+qUqRRA==}
+    engines: {node: '>=20.0.0'}
+
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -940,6 +979,9 @@ packages:
   tinyspy@4.0.4:
     resolution: {integrity: sha512-azl+t0z7pw/z958Gy9svOTuzqIk6xq+NSheJzn5MMWtWTFywIacg2wUlzKFGtt3cthx0r2SxMK0yzJOR0IES7Q==}
     engines: {node: '>=14.0.0'}
+
+  tslib@2.8.1:
+    resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
   tsx@4.23.13:
     resolution: {integrity: sha512-BL5MGkRln6aDYhb0xbQlEAGw743BaZYWdbWtdJOBriYJboKgUUYCadFp2/FpBBZquBC/ezNBn7wMMPx7FDZUDw==}
@@ -1456,6 +1498,38 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.63.1':
     optional: true
 
+  '@supabase/auth-js@2.112.4':
+    dependencies:
+      tslib: 2.8.1
+
+  '@supabase/functions-js@2.112.4':
+    dependencies:
+      tslib: 2.8.1
+
+  '@supabase/phoenix@0.4.5': {}
+
+  '@supabase/postgrest-js@2.112.4':
+    dependencies:
+      tslib: 2.8.1
+
+  '@supabase/realtime-js@2.112.4':
+    dependencies:
+      '@supabase/phoenix': 0.4.5
+      tslib: 2.8.1
+
+  '@supabase/storage-js@2.112.4':
+    dependencies:
+      iceberg-js: 0.8.1
+      tslib: 2.8.1
+
+  '@supabase/supabase-js@2.112.4':
+    dependencies:
+      '@supabase/auth-js': 2.112.4
+      '@supabase/functions-js': 2.112.4
+      '@supabase/postgrest-js': 2.112.4
+      '@supabase/realtime-js': 2.112.4
+      '@supabase/storage-js': 2.112.4
+
   '@tanstack/react-virtual@3.14.10(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@tanstack/virtual-core': 3.17.8
@@ -1678,6 +1752,8 @@ snapshots:
 
   gensync@1.0.0-beta.2: {}
 
+  iceberg-js@0.8.1: {}
+
   js-tokens@4.0.0: {}
 
   js-tokens@9.0.1: {}
@@ -1795,6 +1871,8 @@ snapshots:
   tinyrainbow@2.0.0: {}
 
   tinyspy@4.0.4: {}
+
+  tslib@2.8.1: {}
 
   tsx@4.23.13:
     dependencies:

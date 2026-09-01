@@ -5,7 +5,7 @@
 
 import { useSyncExternalStore } from 'react';
 import { foldEvents, initialState, type DraftEvent, type DraftState, type SeasonConfig } from '@fa/rules';
-import { fetchBootstrap, streamEvents } from './api';
+import { transport } from './transport';
 
 export interface RoomState {
   ready: boolean;
@@ -34,10 +34,10 @@ function ingest(incoming: DraftEvent[]): void {
 
 export async function connect(): Promise<void> {
   if (stop) return;
-  const boot = await fetchBootstrap();
+  const boot = await transport.bootstrap();
   emit({ ready: true, config: boot.config });
   ingest(boot.events);
-  stop = streamEvents(
+  stop = transport.stream(
     () => state.events.at(-1)?.seq ?? 0,
     (e) => ingest([e]),
     (connected) => emit({ connected }),

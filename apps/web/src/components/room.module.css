@@ -30,3 +30,8 @@
 @media (max-width: 900px) {
   .main { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); }
 }
+.tabs { display: flex; gap: 4px; }
+.tabs button { font-size: 12.5px; padding: 4px 10px; }
+.tabActive { border-color: var(--accent); color: var(--accent); }
+.balanceChip { color: var(--warn); font-size: 12px; }
+.mainSingle { flex: 1; min-height: 0; padding: 14px; overflow: auto; }

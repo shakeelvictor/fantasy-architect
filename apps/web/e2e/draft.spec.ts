@@ -5,6 +5,10 @@
 
 import { expect, test, type Page } from '@playwright/test';
 
+test.beforeAll(async ({ request }) => {
+  await request.post('http://localhost:8787/reset?season=2027');
+});
+
 async function login(page: Page, pin: string): Promise<void> {
   await page.goto('/');
   await page.getByTestId('pin-input').fill(pin);
@@ -30,7 +34,7 @@ test('a full slice of draft night, in two browsers', async ({ browser }) => {
   const topRow = commish.locator('[data-testid^="row-"]').first();
   // innerText merges the inline <small>, so only the first token is safe
   const firstName = (await topRow.locator('span >> nth=2').innerText()).split(/\s/)[0]!;
-  await topRow.locator('button').click();
+  await topRow.locator('[data-testid^="draft-"]').click();
   const t0 = Date.now();
   await expect(team.getByTestId('cell-1')).toContainText(firstName, { timeout: 1000 });
   const propagation = Date.now() - t0;

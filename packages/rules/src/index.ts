@@ -163,3 +163,32 @@ export function foldEvents(events: readonly DraftEvent[]): DraftState {
   for (const e of events) state = applyEvent(state, e);
   return state;
 }
+
+// ------------------------------------------------------- roster balance
+// The league's hard rule: every team finishes on exactly `rounds` players.
+// Trades move ownership, so a one-sided entry leaves someone owning 21 picks
+// and someone else 19 — flagged, never blocked (mid-entry is briefly uneven
+// and that's fine; v1 semantics).
+
+export function ownedPickCounts(config: SeasonConfig, state: DraftState): number[] {
+  const counts = new Array<number>(config.teams).fill(0);
+  const total = config.teams * config.rounds;
+  for (let overall = 1; overall <= total; overall++) {
+    counts[ownerOf(config, state, overall) - 1]!++;
+  }
+  return counts;
+}
+
+export interface RosterBalance {
+  balanced: boolean;
+  target: number;
+  offenders: { slot: number; owns: number }[];
+}
+
+export function rosterBalance(config: SeasonConfig, state: DraftState): RosterBalance {
+  const counts = ownedPickCounts(config, state);
+  const offenders = counts
+    .map((owns, i) => ({ slot: i + 1, owns }))
+    .filter((x) => x.owns !== config.rounds);
+  return { balanced: offenders.length === 0, target: config.rounds, offenders };
+}

@@ -26,3 +26,16 @@
   .name small { display: none; }
   .rank { display: none; }
 }
+.views { display: flex; gap: 6px; margin-top: 8px; }
+.views button { font-size: 12px; padding: 4px 10px; }
+.viewActive { border-color: var(--accent); color: var(--accent); }
+.star {
+  border: none; background: transparent; padding: 2px 4px; flex: none;
+  font-size: 16px; color: var(--muted); opacity: 0.75;
+}
+.star:hover:not(:disabled) { color: var(--warn); opacity: 1; border: none; }
+.starOn { color: var(--warn); opacity: 1; }
+.starGap { width: 26px; flex: none; }
+.mv { display: inline-flex; align-items: center; gap: 3px; flex: none; }
+.mv button { font-size: 9px; padding: 2px 5px; line-height: 1; }
+.emptyQueue { color: var(--muted); font-size: 13px; padding: 16px; }

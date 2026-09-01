@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { login, type Session } from '../api';
+import { transport, type Session } from '../api';
 import styles from './gate.module.css';
 
 export function Gate({ onLogin }: { onLogin: (s: Session) => void }): React.JSX.Element {
@@ -11,7 +11,7 @@ export function Gate({ onLogin }: { onLogin: (s: Session) => void }): React.JSX.
     setBusy(true);
     setError(null);
     try {
-      onLogin(await login(pin));
+      onLogin(await transport.login(pin));
     } catch (e) {
       setError((e as Error).message);
     } finally {

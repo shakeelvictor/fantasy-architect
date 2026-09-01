@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@fa/rules": "workspace:*",
+    "@supabase/supabase-js": "^2.112.4",
     "@tanstack/react-virtual": "^3.13.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

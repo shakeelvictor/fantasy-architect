@@ -145,6 +145,14 @@ const server = createServer((req, res) => {
       return json(res, 401, { error: 'wrong PIN' });
     }
 
+    if (req.method === 'POST' && url.pathname === '/reset') {
+      // e2e isolation only: wipe the season's log (superuser, bypasses RLS —
+      // exactly what production must never allow, which is why this endpoint
+      // exists only in the dev server)
+      await exclusive(() => db.query(`delete from draft_events where season = $1`, [season]));
+      return json(res, 200, { reset: true });
+    }
+
     if (req.method === 'GET' && url.pathname === '/bootstrap') {
       const [config, events] = await exclusive(async () => {
         const c = await asIdentity({ role: 'anon' }, () =>

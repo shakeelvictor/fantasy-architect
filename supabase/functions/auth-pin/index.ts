@@ -20,7 +20,7 @@ interface PinRow {
 
 const CORS = {
   'access-control-allow-origin': '*',
-  'access-control-allow-headers': 'authorization, content-type',
+  'access-control-allow-headers': 'authorization, apikey, content-type, x-client-info',
   'content-type': 'application/json',
 };
 
