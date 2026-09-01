@@ -11,6 +11,7 @@ import {
   SORT_DEFAULT_DIR, sortValue, sosClass, STAT_COLS,
 } from '../v1logic';
 import { moveQueued, toggleQueued, useQueue } from '../queue';
+import { withViewTransition } from '../viewTransition';
 
 const POS_TABS = ['ALL', 'QB', 'RB', 'WR', 'TE', 'K', 'IDP', 'SLEEPERS'] as const;
 type PosTab = (typeof POS_TABS)[number];
@@ -41,9 +42,14 @@ export function Pool({ players, draft, config, teamName, mode, mySlot, disabled,
   const [queueMode, setQueueMode] = useState(false);
   const queue = useQueue();
 
+  // the four controls that reorder or replace the row set. Wrapping the
+  // state change (not the render) is the whole integration — React re-renders
+  // inside the browser's snapshot and it cross-fades the difference.
   const setSort = (next: Sort): void => {
-    setSortPrev(sort);
-    setSortState(next);
+    withViewTransition(() => {
+      setSortPrev(sort);
+      setSortState(next);
+    });
   };
 
   const rankByPid = useMemo(() => new Map(players.map((p, i) => [p.pid, i + 1])), [players]);
@@ -163,10 +169,10 @@ export function Pool({ players, draft, config, teamName, mode, mySlot, disabled,
               data-testid={`pos-${t}`}
               className={!queueMode && posFilter === t ? 'active' : ''}
               title={t === 'SLEEPERS' ? 'Late-ADP players our scoring ranks well ahead of their price' : undefined}
-              onClick={() => {
+              onClick={() => withViewTransition(() => {
                 setPosFilter(t);
                 setQueueMode(false);
-              }}
+              })}
             >
               {t === 'ALL' ? 'All' : t === 'SLEEPERS' ? '💎 Sleepers' : t}
               {t !== 'SLEEPERS' && (
@@ -210,7 +216,7 @@ export function Pool({ players, draft, config, teamName, mode, mySlot, disabled,
           id="myboard-btn"
           data-testid="view-queue"
           title="Your queue — star players onto it, draft straight off it"
-          onClick={() => setQueueMode(!queueMode)}
+          onClick={() => withViewTransition(() => setQueueMode(!queueMode))}
         >
           ★ Queue{visibleQueue.length ? ` (${visibleQueue.length})` : ''}
         </button>
@@ -235,7 +241,8 @@ export function Pool({ players, draft, config, teamName, mode, mySlot, disabled,
           </button>
         </span>
         <label className="chk">
-          <input type="checkbox" checked={hideDrafted} onChange={(e) => setHideDrafted(e.target.checked)} /> Hide drafted
+          <input type="checkbox" checked={hideDrafted}
+            onChange={(e) => withViewTransition(() => setHideDrafted(e.target.checked))} /> Hide drafted
         </label>
       </div>
       <div className="pool-table-wrap">

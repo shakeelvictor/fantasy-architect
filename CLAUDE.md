@@ -313,12 +313,31 @@ panel appear at its end state and every after-the-fact check still passes.
 It asserts the rule exists in the CSSOM, scoped to that panel's own hashed
 class (a global scan silently matches the Gate's instead).
 
-Still open if the appetite is there, in value order: pool rows snapping on
-re-sort (the one place a library would earn its weight), the drawer's
-hand-rolled close (`animationend` + a 400ms backstop timer — `@starting-style`
-with `allow-discrete` would delete both), the news rail's fade-at-end
-(a `ResizeObserver` that `animation-timeline: view()` replaces), and tab
-switching via the View Transitions API.
+`styles/native-motion.css` holds everything that enhances a v1 class —
+ADDITIVE only, loaded after v1.css, which stays verbatim. Delete the sheet
+and the app looks and behaves exactly as before, minus the movement; that is
+also the fallback on a browser without these features, which is why none of
+it is wrapped in `@supports`. Two more landed there:
+
+- **The pool re-sorting** cross-fades via the View Transitions API
+  (`viewTransition.ts`, ~10 lines, guarded for support and reduced motion).
+  ONE `view-transition-name` on the wrapper, not one per row: per-row names
+  give true FLIP but cost a snapshot each across 250 rows, and that is the
+  version where a library would earn its weight.
+- **The news rail's bottom veil** is now a scroll-driven animation. The rail
+  publishes a named timeline, the veil borrows it through `timeline-scope`,
+  and `watchRailEnd`'s scroll listener + ResizeObserver + two refs are gone.
+
+Together with the panels: **+120 bytes of CSS, −60 bytes of JS**, net
+smaller, versus 18–34KB for a library.
+
+NOT done, deliberately: the drawer's close (`animationend` + a 400ms backstop
+timer). Native exit needs the element to stay mounted for `allow-discrete` to
+transition `display`, which for the drawer means restructuring per-pid
+fetching and keeping the previous player's content rendered through the
+exit — not a light change to the most-used component on draft night. The
+timer is also not a wart: a backgrounded tab never fires `animationend`, so
+something must always fire. Left alone on purpose.
 
 Known gaps, deliberate: Sleepers & Busts has no trending "buzz" column yet
 (the drawer's 🔥 badge is the only trending consumer); `player_moved` is

@@ -642,34 +642,20 @@ function NewsList({ items, playerName }: { items: NewsItem[] | null; playerName:
 }
 
 // The rail and the News tab share one cached promise — no extra request, and
-// on a phone the rail is display:none and simply never seen. The rail fades
-// its bottom edge to signal there's more below; drop the fade once you've
-// actually reached the end (v1's watchRailEnd).
+// on a phone the rail is display:none and simply never seen.
+//
+// v1's watchRailEnd used to live here: a scroll listener plus a
+// ResizeObserver, both running for as long as the card was open, keeping an
+// .at-end class in sync so the bottom veil lifted at the end of the list.
+// styles/native-motion.css now says the same thing as a scroll-driven
+// animation, which the browser runs off the main thread — so the listeners,
+// the observer, the two refs and the effect are all gone.
 function NewsRail({ news, playerName }: { news: NewsItem[] | null | undefined; playerName: string }): React.JSX.Element {
-  const colRef = useRef<HTMLElement>(null);
-  const railRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const rail = railRef.current;
-    const col = colRef.current;
-    if (!rail || !col) return;
-    const sync = (): void => {
-      const atEnd = rail.scrollTop + rail.clientHeight >= rail.scrollHeight - 4;
-      col.classList.toggle('at-end', atEnd);
-    };
-    rail.addEventListener('scroll', sync, { passive: true });
-    const ro = window.ResizeObserver ? new ResizeObserver(sync) : null;
-    ro?.observe(rail);
-    sync();
-    return () => {
-      rail.removeEventListener('scroll', sync);
-      ro?.disconnect();
-    };
-  }, [news]);
   return (
-    <aside className="pc-news" ref={colRef}>
+    <aside className="pc-news">
       <div className="pc-news-inner">
         <h4>News</h4>
-        <div id="pc-news-rail" ref={railRef}>
+        <div id="pc-news-rail">
           {news === undefined
             ? <p className="p-meta">Loading news…</p>
             : <NewsList items={news} playerName={playerName} />}

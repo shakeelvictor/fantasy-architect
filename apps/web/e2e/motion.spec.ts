@@ -80,3 +80,57 @@ test('reduced motion turns it off, matching v1.css', async ({ browser }) => {
 
   await ctx.close();
 });
+
+test('the pool cross-fades when it re-orders, and still re-orders', async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  await page.route(/sleeper(cdn)?\.(app|com)/, (r) => r.abort());
+  await login(page, '1111');
+
+  // named so the browser animates the TABLE rather than cross-fading the
+  // whole page behind it
+  await expect(page.locator('.pool-table-wrap')).toHaveCSS('view-transition-name', 'pool');
+
+  // and the animation must not have eaten the interaction it wraps: the
+  // state change happens inside the browser's snapshot callback, so a
+  // mistake here would leave the board looking sorted but ordered wrongly
+  const first = () => page.locator('[data-testid^="row-"]').first();
+  // proj, not adp: Gibbs happens to top the board AND have the lowest ADP, so
+  // sorting by ADP legitimately leaves the same name on top and proves nothing
+  const byBoard = await first().locator('.p-name').innerText();
+  await page.locator('th[data-sort="proj"]').click();
+  await expect
+    .poll(async () => (await first().locator('.p-name').innerText()))
+    .not.toBe(byBoard);
+
+  // and a filter still filters
+  await page.getByTestId('pos-QB').click();
+  await expect(first().locator('.p-meta')).toContainText('QB');
+
+  await ctx.close();
+});
+
+test('the news rail fades its edge from scroll, with no JS driving it', async ({ browser }) => {
+  const ctx = await browser.newContext({ viewport: { width: 1400, height: 900 } });
+  const page = await ctx.newPage();
+  await page.route(/sleepercdn\.com/, (r) => r.abort());
+  await login(page, '1111');
+  await page.locator('[data-testid^="row-"]').first().click();
+  await expect(page.getByTestId('player-drawer')).toBeVisible();
+
+  // the rail publishes a timeline; the veil on the column borrows it
+  await expect(page.locator('#pc-news-rail')).toHaveCSS('scroll-timeline-name', '--rail');
+  await expect(page.locator('.pc-news')).toHaveCSS('timeline-scope', '--rail');
+
+  // and the veil is genuinely driven by that scroll, not by a class someone
+  // has to keep in sync — a ScrollTimeline is the proof
+  const drivenByScroll = await page.evaluate(() => {
+    const col = document.querySelector('.pc-news');
+    if (!col) return 'no rail at this width';
+    return col.getAnimations({ subtree: true })
+      .some((a) => a.timeline?.constructor.name === 'ScrollTimeline');
+  });
+  expect(drivenByScroll).toBe(true);
+
+  await ctx.close();
+});

@@ -1,0 +1,60 @@
+/* Motion added with platform features that did not exist when v1 was written.
+ *
+ * ADDITIVE ONLY. v1.css stays verbatim — that is the fidelity method — so
+ * anything that enhances a v1 class layers on from here instead, loaded after
+ * it. Nothing in this file changes a colour, a size or a position: remove the
+ * whole sheet and the app looks and behaves exactly as it did, just without
+ * the movement. That is also the fallback on any browser missing these
+ * features, which is why none of it is wrapped in @supports.
+ *
+ * Everything animates opacity or transform only, and everything is inside a
+ * reduced-motion guard, matching the discipline already in v1.css. */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* ---- the pool, re-sorting -------------------------------------------
+   * The pool re-orders constantly during a draft — the three-tap sort cycle,
+   * the position tabs, hide-drafted — and rows used to teleport. A view
+   * transition cross-fades the old table against the new one, which reads as
+   * "this list changed" instead of a jump.
+   *
+   * Deliberately ONE name on the wrapper, not a name per row. Per-row names
+   * would give true FLIP movement, but they cost a snapshot each and the
+   * table renders up to 250 rows — that is the version where a library earns
+   * its weight, and it is not worth it for a list nobody tracks individual
+   * rows through. */
+  .pool-table-wrap { view-transition-name: pool; }
+
+  /* Without this the browser also cross-fades the whole page behind the
+   * table, which looks like a flicker on every sort. */
+  ::view-transition-group(root) { animation: none; }
+
+  ::view-transition-old(pool),
+  ::view-transition-new(pool) { animation-duration: 160ms; }
+
+  /* ---- the news rail's bottom fade ------------------------------------
+   * v1 veils the rail's bottom edge to signal there is more below, and drops
+   * the veil once you reach the end. That used to need a scroll listener and
+   * a ResizeObserver in Drawer.tsx keeping a class in sync; a scroll-driven
+   * animation expresses the same thing declaratively, and the browser runs it
+   * off the main thread.
+   *
+   * The veil lives on .pc-news::after but the scroller is #pc-news-rail
+   * inside it, so the rail publishes a named timeline and the veil borrows
+   * it through timeline-scope. Where scroll-driven animations are missing the
+   * veil simply stays put — the text under it is still legible, it is a
+   * gradient rather than a curtain. */
+  .pc-news { timeline-scope: --rail; }
+  #pc-news-rail { scroll-timeline: --rail block; }
+  .pc-news::after {
+    animation: rail-veil linear both;
+    animation-timeline: --rail;
+    /* fade it out over the last slice of the scroll, so it is gone exactly
+       when the last line arrives rather than easing away the whole way down */
+    animation-range: 85% 100%;
+  }
+}
+
+@keyframes rail-veil {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
