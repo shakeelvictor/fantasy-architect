@@ -8,6 +8,7 @@ import { fetchPool, transport, type PoolDoc, type Session } from '../api';
 import { useRoom } from '../store';
 import { mockEvents, mockState, mockSubmit, stopBots, useMock } from '../mock';
 import { Analyzer } from './Analyzer';
+import { ArchiveTab } from './ArchiveTab';
 import { Board } from './Board';
 import { DraftConfirm } from './DraftConfirm';
 import { Drawer } from './Drawer';
@@ -262,13 +263,7 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
           <Values players={players} draft={draft} onOpen={setDrawerPid} />
         </section>
         <section className={`tab-panel ${tab === 'archive' ? 'active' : ''}`} id="tab-archive">
-          <div className="card" style={{ maxWidth: 560 }}>
-            <h3>Past Drafts</h3>
-            <p className="p-meta">
-              Nothing archived yet — the 2027 draft lands here when it's done. (The 2026 draft lives in
-              the v1 app's archive.)
-            </p>
-          </div>
+          <ArchiveTab config={config} draft={room.draft} byPid={byPid} teamName={teamName} />
         </section>
       </main>
 

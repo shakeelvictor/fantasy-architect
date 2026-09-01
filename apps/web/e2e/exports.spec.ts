@@ -95,6 +95,29 @@ test('xlsx download and the MFL panel (proxy stubbed)', async ({ browser }) => {
   page.once('dialog', (d) => void d.accept());
   await page.getByTestId('mfl-push-btn').click();
   await expect(page.getByTestId('mfl-status')).toContainText('✓ Draft results pushed to MFL');
+  await page.getByTestId('mfl-panel').getByRole('button', { name: 'Close' }).click();
+  await expect(page.getByTestId('mfl-panel')).toHaveCount(0);
+
+  // ---- Past Drafts: the committed 2026 archive renders, and the current
+  // draft archives to the same document shape
+  await page.getByTestId('tab-archive').click();
+  await page.getByTestId('archive-2026').click();
+  await expect(page.locator('#archive-doc')).toContainText('220 picks');
+  await expect(page.locator('#archive-doc .bc-last').first()).toContainText('Gibbs');
+  await expect(page.locator('#archive-doc')).toContainText('Every team finished on 20 players');
+
+  page.once('dialog', (d) => void d.accept()); // "2 of 220 picks — archive as-is?"
+  const arcPromise = page.waitForEvent('download');
+  await page.getByTestId('archive-now').click();
+  const arc = await arcPromise;
+  expect(arc.suggestedFilename()).toBe('fa-draft-2027.json');
+  const doc = JSON.parse(readFileSync((await arc.path())!).toString()) as {
+    kind: string; season: number; picks: unknown[]; complete: boolean;
+  };
+  expect(doc.kind).toBe('imp-draft-archive');
+  expect(doc.season).toBe(2027);
+  expect(doc.picks).toHaveLength(2);
+  expect(doc.complete).toBe(false);
 
   await ctx.close();
 });

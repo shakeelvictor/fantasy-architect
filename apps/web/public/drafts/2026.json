@@ -1,0 +1,4964 @@
+{
+  "schema": 1,
+  "kind": "imp-draft-archive",
+  "season": 2026,
+  "league": "MFL",
+  "archivedAt": "2026-08-31T16:51:23.187861Z",
+  "complete": true,
+  "rosterBalance": {
+    "target": 20,
+    "balanced": true,
+    "offenders": []
+  },
+  "scoring": "IMP league rules (fflr.netlify.app/rules#scoring)",
+  "config": {
+    "v": 2,
+    "teams": 11,
+    "rounds": 20,
+    "type": "linear",
+    "mySlot": 11,
+    "order": [
+      "Anand",
+      "Vip",
+      "Andres",
+      "Ryaan",
+      "Dante",
+      "Hoss",
+      "Asher",
+      "Imran",
+      "Samson",
+      "Laura",
+      "Shak"
+    ]
+  },
+  "teams": [
+    {
+      "slot": 1,
+      "name": "Anand",
+      "roster": [
+        {
+          "pid": "9221",
+          "name": "Jahmyr Gibbs",
+          "pos": "RB",
+          "team": "DET",
+          "round": 1,
+          "overall": 1,
+          "keeper": false,
+          "proj": 416.3,
+          "adp": 1.2
+        },
+        {
+          "pid": "8137",
+          "name": "George Pickens",
+          "pos": "WR",
+          "team": "DAL",
+          "round": 2,
+          "overall": 12,
+          "keeper": false,
+          "proj": 224.4,
+          "adp": 23.7
+        },
+        {
+          "pid": "8112",
+          "name": "Drake London",
+          "pos": "WR",
+          "team": "ATL",
+          "round": 3,
+          "overall": 23,
+          "keeper": false,
+          "proj": 239.8,
+          "adp": 18
+        },
+        {
+          "pid": "11632",
+          "name": "Malik Nabers",
+          "pos": "WR",
+          "team": "NYG",
+          "round": 4,
+          "overall": 34,
+          "keeper": false,
+          "proj": 178.9,
+          "adp": 26.5
+        },
+        {
+          "pid": "12529",
+          "name": "TreVeyon Henderson",
+          "pos": "RB",
+          "team": "NE",
+          "round": 5,
+          "overall": 45,
+          "keeper": false,
+          "proj": 209.5,
+          "adp": 53.4
+        },
+        {
+          "pid": "7021",
+          "name": "Rico Dowdle",
+          "pos": "RB",
+          "team": "PIT",
+          "round": 6,
+          "overall": 56,
+          "keeper": false,
+          "proj": 218.8,
+          "adp": 97.1
+        },
+        {
+          "pid": "5850",
+          "name": "Josh Jacobs",
+          "pos": "RB",
+          "team": "GB",
+          "round": 7,
+          "overall": 67,
+          "keeper": false,
+          "proj": 244.8,
+          "adp": 34.9
+        },
+        {
+          "pid": "1466",
+          "name": "Travis Kelce",
+          "pos": "TE",
+          "team": "KC",
+          "round": 8,
+          "overall": 78,
+          "keeper": false,
+          "proj": 160.8,
+          "adp": 100.3
+        },
+        {
+          "pid": "6806",
+          "name": "J.K. Dobbins",
+          "pos": "RB",
+          "team": "DEN",
+          "round": 9,
+          "overall": 89,
+          "keeper": false,
+          "proj": 151.3,
+          "adp": 106.9
+        },
+        {
+          "pid": "4199",
+          "name": "Aaron Jones",
+          "pos": "RB",
+          "team": "MIN",
+          "round": 10,
+          "overall": 100,
+          "keeper": false,
+          "proj": 149.2,
+          "adp": 134.4
+        },
+        {
+          "pid": "12508",
+          "name": "Jaxson Dart",
+          "pos": "QB",
+          "team": "NYG",
+          "round": 11,
+          "overall": 111,
+          "keeper": true,
+          "proj": 381.6,
+          "adp": 89.1
+        },
+        {
+          "pid": "10236",
+          "name": "Dalton Kincaid",
+          "pos": "TE",
+          "team": "BUF",
+          "round": 12,
+          "overall": 122,
+          "keeper": false,
+          "proj": 125.5,
+          "adp": 84.2
+        },
+        {
+          "pid": "8110",
+          "name": "Jake Ferguson",
+          "pos": "TE",
+          "team": "DAL",
+          "round": 13,
+          "overall": 133,
+          "keeper": false,
+          "proj": 130.8,
+          "adp": 107.2
+        },
+        {
+          "pid": "10892",
+          "name": "Will Anderson",
+          "pos": "DL",
+          "team": "HOU",
+          "round": 14,
+          "overall": 144,
+          "keeper": false,
+          "proj": 95.6,
+          "adp": 94.1
+        },
+        {
+          "pid": "2449",
+          "name": "Stefon Diggs",
+          "pos": "WR",
+          "team": "WAS",
+          "round": 15,
+          "overall": 155,
+          "keeper": false,
+          "proj": 153.9,
+          "adp": 124.1
+        },
+        {
+          "pid": "5872",
+          "name": "Deebo Samuel",
+          "pos": "WR",
+          "team": "SF",
+          "round": 16,
+          "overall": 166,
+          "keeper": false,
+          "proj": 152.9,
+          "adp": 161.6
+        },
+        {
+          "pid": "8676",
+          "name": "Rashid Shaheed",
+          "pos": "WR",
+          "team": "SEA",
+          "round": 17,
+          "overall": 177,
+          "keeper": false,
+          "proj": 141.8,
+          "adp": 194.1
+        },
+        {
+          "pid": "9753",
+          "name": "Zach Charbonnet",
+          "pos": "RB",
+          "team": "SEA",
+          "round": 18,
+          "overall": 188,
+          "keeper": false,
+          "proj": 57.2,
+          "adp": 164
+        },
+        {
+          "pid": "421",
+          "name": "Matthew Stafford",
+          "pos": "QB",
+          "team": "LAR",
+          "round": 19,
+          "overall": 199,
+          "keeper": true,
+          "proj": 357.8,
+          "adp": 96.8
+        },
+        {
+          "pid": "5816",
+          "name": "Nick Bosa",
+          "pos": "DL",
+          "team": "SF",
+          "round": 20,
+          "overall": 210,
+          "keeper": false,
+          "proj": 79.6,
+          "adp": 137.4
+        }
+      ],
+      "projectedPoints": 3870
+    },
+    {
+      "slot": 2,
+      "name": "Vip",
+      "roster": [
+        {
+          "pid": "9509",
+          "name": "Bijan Robinson",
+          "pos": "RB",
+          "team": "ATL",
+          "round": 1,
+          "overall": 2,
+          "keeper": false,
+          "proj": 405.3,
+          "adp": 2.9
+        },
+        {
+          "pid": "4866",
+          "name": "Saquon Barkley",
+          "pos": "RB",
+          "team": "PHI",
+          "round": 2,
+          "overall": 13,
+          "keeper": false,
+          "proj": 278.2,
+          "adp": 12.8
+        },
+        {
+          "pid": "11604",
+          "name": "Brock Bowers",
+          "pos": "TE",
+          "team": "LV",
+          "round": 3,
+          "overall": 24,
+          "keeper": false,
+          "proj": 220.5,
+          "adp": 21
+        },
+        {
+          "pid": "8144",
+          "name": "Chris Olave",
+          "pos": "WR",
+          "team": "NO",
+          "round": 3,
+          "overall": 30,
+          "keeper": false,
+          "proj": 223.3,
+          "adp": 30.5
+        },
+        {
+          "pid": "7525",
+          "name": "DeVonta Smith",
+          "pos": "WR",
+          "team": "PHI",
+          "round": 4,
+          "overall": 35,
+          "keeper": false,
+          "proj": 210.9,
+          "adp": 38.5
+        },
+        {
+          "pid": "5927",
+          "name": "Terry McLaurin",
+          "pos": "WR",
+          "team": "WAS",
+          "round": 5,
+          "overall": 46,
+          "keeper": false,
+          "proj": 197,
+          "adp": 60.4
+        },
+        {
+          "pid": "11566",
+          "name": "Jayden Daniels",
+          "pos": "QB",
+          "team": "WAS",
+          "round": 6,
+          "overall": 57,
+          "keeper": false,
+          "proj": 393.4,
+          "adp": 61.1
+        },
+        {
+          "pid": "8146",
+          "name": "Garrett Wilson",
+          "pos": "WR",
+          "team": "NYJ",
+          "round": 7,
+          "overall": 68,
+          "keeper": false,
+          "proj": 183.1,
+          "adp": 45
+        },
+        {
+          "pid": "5967",
+          "name": "Tony Pollard",
+          "pos": "RB",
+          "team": "TEN",
+          "round": 8,
+          "overall": 79,
+          "keeper": false,
+          "proj": 184.6,
+          "adp": 89
+        },
+        {
+          "pid": "4960",
+          "name": "Roquan Smith",
+          "pos": "LB",
+          "team": "BAL",
+          "round": 9,
+          "overall": 90,
+          "keeper": false,
+          "proj": 127,
+          "adp": 83.9
+        },
+        {
+          "pid": "8126",
+          "name": "Wan'Dale Robinson",
+          "pos": "WR",
+          "team": "TEN",
+          "round": 10,
+          "overall": 101,
+          "keeper": false,
+          "proj": 136.4,
+          "adp": 130.8
+        },
+        {
+          "pid": "13330",
+          "name": "Kenyon Sadiq",
+          "pos": "TE",
+          "team": "NYJ",
+          "round": 11,
+          "overall": 112,
+          "keeper": false,
+          "proj": 51.6,
+          "adp": 188.7
+        },
+        {
+          "pid": "5041",
+          "name": "Fred Warner",
+          "pos": "LB",
+          "team": "SF",
+          "round": 12,
+          "overall": 123,
+          "keeper": false,
+          "proj": 116.7,
+          "adp": 103.6
+        },
+        {
+          "pid": "13417",
+          "name": "De'Zhaun Stribling",
+          "pos": "WR",
+          "team": "SF",
+          "round": 13,
+          "overall": 134,
+          "keeper": false,
+          "proj": 102.6,
+          "adp": 149.7
+        },
+        {
+          "pid": "5849",
+          "name": "Kyler Murray",
+          "pos": "QB",
+          "team": "MIN",
+          "round": 14,
+          "overall": 145,
+          "keeper": false,
+          "proj": 353.4,
+          "adp": 160.3
+        },
+        {
+          "pid": "7841",
+          "name": "Jamien Sherwood",
+          "pos": "LB",
+          "team": "NYJ",
+          "round": 15,
+          "overall": 156,
+          "keeper": false,
+          "proj": 111.2,
+          "adp": 152.4
+        },
+        {
+          "pid": "13377",
+          "name": "Arvell Reese",
+          "pos": "LB",
+          "team": "NYG",
+          "round": 16,
+          "overall": 167,
+          "keeper": false,
+          "proj": 92.3,
+          "adp": 192.7
+        },
+        {
+          "pid": "3451",
+          "name": "Ka'imi Fairbairn",
+          "pos": "K",
+          "team": "HOU",
+          "round": 17,
+          "overall": 178,
+          "keeper": false,
+          "proj": 127.6,
+          "adp": 150.4
+        },
+        {
+          "pid": "5844",
+          "name": "T.J. Hockenson",
+          "pos": "TE",
+          "team": "MIN",
+          "round": 19,
+          "overall": 200,
+          "keeper": false,
+          "proj": 112,
+          "adp": 203.4
+        },
+        {
+          "pid": "6826",
+          "name": "Cole Kmet",
+          "pos": "TE",
+          "team": "CHI",
+          "round": 20,
+          "overall": 211,
+          "keeper": false,
+          "proj": 60.5,
+          "adp": null
+        }
+      ],
+      "projectedPoints": 3688
+    },
+    {
+      "slot": 3,
+      "name": "Andres",
+      "roster": [
+        {
+          "pid": "7564",
+          "name": "Ja'Marr Chase",
+          "pos": "WR",
+          "team": "CIN",
+          "round": 1,
+          "overall": 3,
+          "keeper": false,
+          "proj": 284.3,
+          "adp": 3.7
+        },
+        {
+          "pid": "9224",
+          "name": "Chase Brown",
+          "pos": "RB",
+          "team": "CIN",
+          "round": 2,
+          "overall": 14,
+          "keeper": false,
+          "proj": 290.2,
+          "adp": 19.6
+        },
+        {
+          "pid": "8130",
+          "name": "Trey McBride",
+          "pos": "TE",
+          "team": "ARI",
+          "round": 3,
+          "overall": 25,
+          "keeper": false,
+          "proj": 209.6,
+          "adp": 22.7
+        },
+        {
+          "pid": "6801",
+          "name": "Tee Higgins",
+          "pos": "WR",
+          "team": "CIN",
+          "round": 4,
+          "overall": 36,
+          "keeper": false,
+          "proj": 225.8,
+          "adp": 35.3
+        },
+        {
+          "pid": "12490",
+          "name": "Bhayshul Tuten",
+          "pos": "RB",
+          "team": "JAX",
+          "round": 5,
+          "overall": 47,
+          "keeper": false,
+          "proj": 196.3,
+          "adp": 62.4
+        },
+        {
+          "pid": "12526",
+          "name": "Tetairoa McMillan",
+          "pos": "WR",
+          "team": "CAR",
+          "round": 6,
+          "overall": 58,
+          "keeper": false,
+          "proj": 205,
+          "adp": 33.5
+        },
+        {
+          "pid": "12534",
+          "name": "Kyle Monangai",
+          "pos": "RB",
+          "team": "CHI",
+          "round": 7,
+          "overall": 69,
+          "keeper": false,
+          "proj": 150.2,
+          "adp": 110.2
+        },
+        {
+          "pid": "7523",
+          "name": "Trevor Lawrence",
+          "pos": "QB",
+          "team": "JAX",
+          "round": 8,
+          "overall": 80,
+          "keeper": false,
+          "proj": 356.7,
+          "adp": 98.7
+        },
+        {
+          "pid": "13294",
+          "name": "Makai Lemon",
+          "pos": "WR",
+          "team": "PHI",
+          "round": 9,
+          "overall": 91,
+          "keeper": false,
+          "proj": 98.8,
+          "adp": 92.8
+        },
+        {
+          "pid": "4070",
+          "name": "T.J. Watt",
+          "pos": "LB",
+          "team": "PIT",
+          "round": 10,
+          "overall": 102,
+          "keeper": false,
+          "proj": 104,
+          "adp": 88.2
+        },
+        {
+          "pid": "11564",
+          "name": "Drake Maye",
+          "pos": "QB",
+          "team": "NE",
+          "round": 11,
+          "overall": 113,
+          "keeper": true,
+          "proj": 386.8,
+          "adp": 41.6
+        },
+        {
+          "pid": "9500",
+          "name": "Josh Downs",
+          "pos": "WR",
+          "team": "IND",
+          "round": 12,
+          "overall": 124,
+          "keeper": false,
+          "proj": 174.4,
+          "adp": 132.3
+        },
+        {
+          "pid": "12493",
+          "name": "Oronde Gadsden",
+          "pos": "TE",
+          "team": "LAC",
+          "round": 13,
+          "overall": 135,
+          "keeper": false,
+          "proj": 66.8,
+          "adp": 156.1
+        },
+        {
+          "pid": "13305",
+          "name": "Mike Washington",
+          "pos": "RB",
+          "team": "LV",
+          "round": 13,
+          "overall": 136,
+          "keeper": false,
+          "proj": 51.5,
+          "adp": 179.2
+        },
+        {
+          "pid": "7611",
+          "name": "Rhamondre Stevenson",
+          "pos": "RB",
+          "team": "NE",
+          "round": 14,
+          "overall": 146,
+          "keeper": true,
+          "proj": 200.6,
+          "adp": 85.6
+        },
+        {
+          "pid": "13269",
+          "name": "Fernando Mendoza",
+          "pos": "QB",
+          "team": "LV",
+          "round": 14,
+          "overall": 147,
+          "keeper": false,
+          "proj": 240.9,
+          "adp": 202.7
+        },
+        {
+          "pid": "10917",
+          "name": "Byron Young",
+          "pos": "LB",
+          "team": "LAR",
+          "round": 18,
+          "overall": 190,
+          "keeper": false,
+          "proj": 91.8,
+          "adp": 148.1
+        },
+        {
+          "pid": "4971",
+          "name": "Derwin James",
+          "pos": "DB",
+          "team": "LAC",
+          "round": 19,
+          "overall": 201,
+          "keeper": false,
+          "proj": 112.3,
+          "adp": 145.1
+        },
+        {
+          "pid": "12015",
+          "name": "Harrison Mevis",
+          "pos": "K",
+          "team": "LAR",
+          "round": 20,
+          "overall": 212,
+          "keeper": false,
+          "proj": 126.9,
+          "adp": 170.9
+        },
+        {
+          "pid": "13345",
+          "name": "Jonah Coleman",
+          "pos": "RB",
+          "team": "DEN",
+          "round": 20,
+          "overall": 213,
+          "keeper": false,
+          "proj": 60.6,
+          "adp": 199.6
+        }
+      ],
+      "projectedPoints": 3634
+    },
+    {
+      "slot": 4,
+      "name": "Ryaan",
+      "roster": [
+        {
+          "pid": "9493",
+          "name": "Puka Nacua",
+          "pos": "WR",
+          "team": "LAR",
+          "round": 1,
+          "overall": 4,
+          "keeper": false,
+          "proj": 304.3,
+          "adp": 4.4
+        },
+        {
+          "pid": "12507",
+          "name": "Omarion Hampton",
+          "pos": "RB",
+          "team": "LAC",
+          "round": 2,
+          "overall": 15,
+          "keeper": false,
+          "proj": 262.3,
+          "adp": 17.5
+        },
+        {
+          "pid": "7569",
+          "name": "Nico Collins",
+          "pos": "WR",
+          "team": "HOU",
+          "round": 3,
+          "overall": 26,
+          "keeper": false,
+          "proj": 256.3,
+          "adp": 25.1
+        },
+        {
+          "pid": "7543",
+          "name": "Travis Etienne",
+          "pos": "RB",
+          "team": "NO",
+          "round": 4,
+          "overall": 37,
+          "keeper": false,
+          "proj": 228.1,
+          "adp": 47.8
+        },
+        {
+          "pid": "11635",
+          "name": "Ladd McConkey",
+          "pos": "WR",
+          "team": "LAC",
+          "round": 5,
+          "overall": 48,
+          "keeper": false,
+          "proj": 185.1,
+          "adp": 43.8
+        },
+        {
+          "pid": "12519",
+          "name": "Luther Burden",
+          "pos": "WR",
+          "team": "CHI",
+          "round": 6,
+          "overall": 59,
+          "keeper": false,
+          "proj": 191.5,
+          "adp": 57
+        },
+        {
+          "pid": "3294",
+          "name": "Dak Prescott",
+          "pos": "QB",
+          "team": "DAL",
+          "round": 7,
+          "overall": 70,
+          "keeper": false,
+          "proj": 407.6,
+          "adp": 77.6
+        },
+        {
+          "pid": "5045",
+          "name": "Courtland Sutton",
+          "pos": "WR",
+          "team": "DEN",
+          "round": 8,
+          "overall": 81,
+          "keeper": false,
+          "proj": 150.9,
+          "adp": 86.4
+        },
+        {
+          "pid": "11586",
+          "name": "Blake Corum",
+          "pos": "RB",
+          "team": "LAR",
+          "round": 9,
+          "overall": 92,
+          "keeper": false,
+          "proj": 169,
+          "adp": 112.7
+        },
+        {
+          "pid": "5022",
+          "name": "Dallas Goedert",
+          "pos": "TE",
+          "team": "PHI",
+          "round": 10,
+          "overall": 103,
+          "keeper": false,
+          "proj": 132.6,
+          "adp": 125.7
+        },
+        {
+          "pid": "3973",
+          "name": "Myles Garrett",
+          "pos": "DL",
+          "team": "LAR",
+          "round": 11,
+          "overall": 114,
+          "keeper": true,
+          "proj": 110.9,
+          "adp": 71.2
+        },
+        {
+          "pid": "8289",
+          "name": "Aidan Hutchinson",
+          "pos": "DL",
+          "team": "DET",
+          "round": 12,
+          "overall": 125,
+          "keeper": false,
+          "proj": 111,
+          "adp": 75.5
+        },
+        {
+          "pid": "11533",
+          "name": "Brandon Aubrey",
+          "pos": "K",
+          "team": "DAL",
+          "round": 15,
+          "overall": 157,
+          "keeper": false,
+          "proj": 126.5,
+          "adp": 134.6
+        },
+        {
+          "pid": "11624",
+          "name": "Xavier Worthy",
+          "pos": "WR",
+          "team": "KC",
+          "round": 15,
+          "overall": 158,
+          "keeper": false,
+          "proj": 153.6,
+          "adp": 159.8
+        },
+        {
+          "pid": "13281",
+          "name": "Jordyn Tyson",
+          "pos": "WR",
+          "team": "NO",
+          "round": 16,
+          "overall": 168,
+          "keeper": false,
+          "proj": 117.3,
+          "adp": 105.3
+        },
+        {
+          "pid": "4943",
+          "name": "Sam Darnold",
+          "pos": "QB",
+          "team": "SEA",
+          "round": 16,
+          "overall": 169,
+          "keeper": false,
+          "proj": 356.1,
+          "adp": 190.1
+        },
+        {
+          "pid": "8280",
+          "name": "Nik Bonitto",
+          "pos": "LB",
+          "team": "DEN",
+          "round": 17,
+          "overall": 179,
+          "keeper": false,
+          "proj": 93.2,
+          "adp": 140.3
+        },
+        {
+          "pid": "13293",
+          "name": "Ja'Kobi Lane",
+          "pos": "WR",
+          "team": "BAL",
+          "round": 17,
+          "overall": 180,
+          "keeper": false,
+          "proj": 45.5,
+          "adp": 193.1
+        },
+        {
+          "pid": "5001",
+          "name": "Dalton Schultz",
+          "pos": "TE",
+          "team": "HOU",
+          "round": 18,
+          "overall": 191,
+          "keeper": false,
+          "proj": 129.9,
+          "adp": 211.4
+        },
+        {
+          "pid": "8266",
+          "name": "Quay Walker",
+          "pos": "LB",
+          "team": "LV",
+          "round": 19,
+          "overall": 202,
+          "keeper": false,
+          "proj": 112.3,
+          "adp": 187.8
+        }
+      ],
+      "projectedPoints": 3644
+    },
+    {
+      "slot": 5,
+      "name": "Dante",
+      "roster": [
+        {
+          "pid": "6813",
+          "name": "Jonathan Taylor",
+          "pos": "RB",
+          "team": "IND",
+          "round": 1,
+          "overall": 5,
+          "keeper": false,
+          "proj": 365.6,
+          "adp": 5.6
+        },
+        {
+          "pid": "3198",
+          "name": "Derrick Henry",
+          "pos": "RB",
+          "team": "BAL",
+          "round": 2,
+          "overall": 16,
+          "keeper": false,
+          "proj": 313.8,
+          "adp": 20.6
+        },
+        {
+          "pid": "12517",
+          "name": "Colston Loveland",
+          "pos": "TE",
+          "team": "CHI",
+          "round": 3,
+          "overall": 27,
+          "keeper": false,
+          "proj": 196.9,
+          "adp": 35.5
+        },
+        {
+          "pid": "5892",
+          "name": "David Montgomery",
+          "pos": "RB",
+          "team": "HOU",
+          "round": 4,
+          "overall": 38,
+          "keeper": false,
+          "proj": 263.1,
+          "adp": 52.2
+        },
+        {
+          "pid": "10229",
+          "name": "Rashee Rice",
+          "pos": "WR",
+          "team": "KC",
+          "round": 5,
+          "overall": 49,
+          "keeper": false,
+          "proj": 217.1,
+          "adp": 31.7
+        },
+        {
+          "pid": "2216",
+          "name": "Mike Evans",
+          "pos": "WR",
+          "team": "SF",
+          "round": 6,
+          "overall": 60,
+          "keeper": false,
+          "proj": 191.6,
+          "adp": 65.1
+        },
+        {
+          "pid": "4046",
+          "name": "Patrick Mahomes",
+          "pos": "QB",
+          "team": "KC",
+          "round": 7,
+          "overall": 71,
+          "keeper": false,
+          "proj": 387.2,
+          "adp": 102.5
+        },
+        {
+          "pid": "12489",
+          "name": "RJ Harvey",
+          "pos": "RB",
+          "team": "DEN",
+          "round": 8,
+          "overall": 82,
+          "keeper": false,
+          "proj": 170.4,
+          "adp": 76.9
+        },
+        {
+          "pid": "5947",
+          "name": "Jakobi Meyers",
+          "pos": "WR",
+          "team": "JAX",
+          "round": 9,
+          "overall": 93,
+          "keeper": false,
+          "proj": 143.2,
+          "adp": 131.7
+        },
+        {
+          "pid": "8267",
+          "name": "Nakobe Dean",
+          "pos": "LB",
+          "team": "LV",
+          "round": 10,
+          "overall": 104,
+          "keeper": false,
+          "proj": 137.7,
+          "adp": 143.3
+        },
+        {
+          "pid": "8183",
+          "name": "Brock Purdy",
+          "pos": "QB",
+          "team": "SF",
+          "round": 11,
+          "overall": 115,
+          "keeper": true,
+          "proj": 410.6,
+          "adp": 116.8
+        },
+        {
+          "pid": "8167",
+          "name": "Christian Watson",
+          "pos": "WR",
+          "team": "GB",
+          "round": 12,
+          "overall": 126,
+          "keeper": true,
+          "proj": 202.6,
+          "adp": 71.2
+        },
+        {
+          "pid": "5012",
+          "name": "Mark Andrews",
+          "pos": "TE",
+          "team": "BAL",
+          "round": 13,
+          "overall": 137,
+          "keeper": false,
+          "proj": 145.7,
+          "adp": 129.8
+        },
+        {
+          "pid": "6815",
+          "name": "Zack Baun",
+          "pos": "LB",
+          "team": "PHI",
+          "round": 14,
+          "overall": 148,
+          "keeper": false,
+          "proj": 125.1,
+          "adp": 122.1
+        },
+        {
+          "pid": "11646",
+          "name": "Jalen Coker",
+          "pos": "WR",
+          "team": "CAR",
+          "round": 15,
+          "overall": 159,
+          "keeper": false,
+          "proj": 165.5,
+          "adp": 200.5
+        },
+        {
+          "pid": "13337",
+          "name": "Emmett Johnson",
+          "pos": "RB",
+          "team": "KC",
+          "round": 16,
+          "overall": 170,
+          "keeper": false,
+          "proj": 58,
+          "adp": 269.5
+        },
+        {
+          "pid": "13296",
+          "name": "Caleb Douglas",
+          "pos": "WR",
+          "team": "MIA",
+          "round": 17,
+          "overall": 181,
+          "keeper": false,
+          "proj": 76.1,
+          "adp": 289.7
+        },
+        {
+          "pid": "13414",
+          "name": "Kaelon Black",
+          "pos": "RB",
+          "team": "SF",
+          "round": 18,
+          "overall": 192,
+          "keeper": false,
+          "proj": 38.3,
+          "adp": 233.1
+        },
+        {
+          "pid": "12617",
+          "name": "Demetrius Knight",
+          "pos": "LB",
+          "team": "CIN",
+          "round": 19,
+          "overall": 203,
+          "keeper": false,
+          "proj": 113,
+          "adp": 299.6
+        },
+        {
+          "pid": "8259",
+          "name": "Cameron Dicker",
+          "pos": "K",
+          "team": "LAC",
+          "round": 20,
+          "overall": 214,
+          "keeper": false,
+          "proj": 130.3,
+          "adp": 142.9
+        }
+      ],
+      "projectedPoints": 3852
+    },
+    {
+      "slot": 6,
+      "name": "Hoss",
+      "roster": [
+        {
+          "pid": "9488",
+          "name": "Jaxon Smith-Njigba",
+          "pos": "WR",
+          "team": "SEA",
+          "round": 1,
+          "overall": 6,
+          "keeper": false,
+          "proj": 312.8,
+          "adp": 6
+        },
+        {
+          "pid": "13287",
+          "name": "Jeremiyah Love",
+          "pos": "RB",
+          "team": "ARI",
+          "round": 2,
+          "overall": 17,
+          "keeper": false,
+          "proj": 259.1,
+          "adp": 26.5
+        },
+        {
+          "pid": "8151",
+          "name": "Kenneth Walker",
+          "pos": "RB",
+          "team": "KC",
+          "round": 3,
+          "overall": 28,
+          "keeper": false,
+          "proj": 272,
+          "adp": 15.1
+        },
+        {
+          "pid": "6770",
+          "name": "Joe Burrow",
+          "pos": "QB",
+          "team": "CIN",
+          "round": 4,
+          "overall": 39,
+          "keeper": false,
+          "proj": 425.9,
+          "adp": 46.2
+        },
+        {
+          "pid": "7526",
+          "name": "Jaylen Waddle",
+          "pos": "WR",
+          "team": "DEN",
+          "round": 5,
+          "overall": 50,
+          "keeper": false,
+          "proj": 211.1,
+          "adp": 48.1
+        },
+        {
+          "pid": "5846",
+          "name": "DK Metcalf",
+          "pos": "WR",
+          "team": "PIT",
+          "round": 6,
+          "overall": 61,
+          "keeper": false,
+          "proj": 169.6,
+          "adp": 78.5
+        },
+        {
+          "pid": "13279",
+          "name": "Carnell Tate",
+          "pos": "WR",
+          "team": "TEN",
+          "round": 7,
+          "overall": 72,
+          "keeper": false,
+          "proj": 156.9,
+          "adp": 67.9
+        },
+        {
+          "pid": "13375",
+          "name": "Sonny Styles",
+          "pos": "LB",
+          "team": "WAS",
+          "round": 8,
+          "overall": 83,
+          "keeper": false,
+          "proj": 123.9,
+          "adp": 118.5
+        },
+        {
+          "pid": "12533",
+          "name": "Jacory Croskey-Merritt",
+          "pos": "RB",
+          "team": "WAS",
+          "round": 9,
+          "overall": 94,
+          "keeper": false,
+          "proj": 161.4,
+          "adp": 123.6
+        },
+        {
+          "pid": "7648",
+          "name": "Nick Bolton",
+          "pos": "LB",
+          "team": "KC",
+          "round": 10,
+          "overall": 105,
+          "keeper": false,
+          "proj": 130.5,
+          "adp": 154.3
+        },
+        {
+          "pid": "7002",
+          "name": "Juwan Johnson",
+          "pos": "TE",
+          "team": "NO",
+          "round": 11,
+          "overall": 116,
+          "keeper": false,
+          "proj": 133.1,
+          "adp": 252
+        },
+        {
+          "pid": "9484",
+          "name": "Tucker Kraft",
+          "pos": "TE",
+          "team": "GB",
+          "round": 12,
+          "overall": 127,
+          "keeper": true,
+          "proj": 174.4,
+          "adp": 62.6
+        },
+        {
+          "pid": "13376",
+          "name": "Caleb Downs",
+          "pos": "DB",
+          "team": "DAL",
+          "round": 13,
+          "overall": 138,
+          "keeper": false,
+          "proj": 96.8,
+          "adp": 141.7
+        },
+        {
+          "pid": "4227",
+          "name": "Harrison Butker",
+          "pos": "K",
+          "team": "KC",
+          "round": 14,
+          "overall": 149,
+          "keeper": false,
+          "proj": 118.2,
+          "adp": 168.2
+        },
+        {
+          "pid": "8132",
+          "name": "Tyler Allgeier",
+          "pos": "RB",
+          "team": "ARI",
+          "round": 15,
+          "overall": 160,
+          "keeper": false,
+          "proj": 104.2,
+          "adp": 167.1
+        },
+        {
+          "pid": "5960",
+          "name": "T.J. Edwards",
+          "pos": "LB",
+          "team": "CHI",
+          "round": 16,
+          "overall": 171,
+          "keeper": false,
+          "proj": 79.4,
+          "adp": 366
+        },
+        {
+          "pid": "11563",
+          "name": "Bo Nix",
+          "pos": "QB",
+          "team": "DEN",
+          "round": 17,
+          "overall": 182,
+          "keeper": true,
+          "proj": 367,
+          "adp": 104.9
+        },
+        {
+          "pid": "13276",
+          "name": "Omar Cooper",
+          "pos": "WR",
+          "team": "NYJ",
+          "round": 18,
+          "overall": 193,
+          "keeper": false,
+          "proj": 67.6,
+          "adp": 264.5
+        },
+        {
+          "pid": "11559",
+          "name": "Michael Penix",
+          "pos": "QB",
+          "team": "ATL",
+          "round": 19,
+          "overall": 204,
+          "keeper": false,
+          "proj": 155.2,
+          "adp": 435.2
+        },
+        {
+          "pid": "4195",
+          "name": "Jake Elliott",
+          "pos": "K",
+          "team": "PHI",
+          "round": 20,
+          "overall": 215,
+          "keeper": false,
+          "proj": 110,
+          "adp": 361.5
+        }
+      ],
+      "projectedPoints": 3629
+    },
+    {
+      "slot": 7,
+      "name": "Asher",
+      "roster": [
+        {
+          "pid": "7547",
+          "name": "Amon-Ra St. Brown",
+          "pos": "WR",
+          "team": "DET",
+          "round": 1,
+          "overall": 7,
+          "keeper": false,
+          "proj": 286.4,
+          "adp": 7.9
+        },
+        {
+          "pid": "8150",
+          "name": "Kyren Williams",
+          "pos": "RB",
+          "team": "LAR",
+          "round": 2,
+          "overall": 18,
+          "keeper": false,
+          "proj": 274.4,
+          "adp": 29.9
+        },
+        {
+          "pid": "7588",
+          "name": "Javonte Williams",
+          "pos": "RB",
+          "team": "DAL",
+          "round": 3,
+          "overall": 29,
+          "keeper": false,
+          "proj": 263.4,
+          "adp": 37
+        },
+        {
+          "pid": "12518",
+          "name": "Tyler Warren",
+          "pos": "TE",
+          "team": "IND",
+          "round": 4,
+          "overall": 40,
+          "keeper": false,
+          "proj": 179.1,
+          "adp": 49.9
+        },
+        {
+          "pid": "13286",
+          "name": "Jadarian Price",
+          "pos": "RB",
+          "team": "SEA",
+          "round": 5,
+          "overall": 51,
+          "keeper": false,
+          "proj": 178.9,
+          "adp": 69.7
+        },
+        {
+          "pid": "2133",
+          "name": "Davante Adams",
+          "pos": "WR",
+          "team": "LAR",
+          "round": 6,
+          "overall": 62,
+          "keeper": false,
+          "proj": 177.7,
+          "adp": 51.6
+        },
+        {
+          "pid": "9487",
+          "name": "Parker Washington",
+          "pos": "WR",
+          "team": "JAX",
+          "round": 7,
+          "overall": 73,
+          "keeper": false,
+          "proj": 178.3,
+          "adp": 82.9
+        },
+        {
+          "pid": "3163",
+          "name": "Jared Goff",
+          "pos": "QB",
+          "team": "DET",
+          "round": 8,
+          "overall": 84,
+          "keeper": false,
+          "proj": 390.8,
+          "adp": 128.5
+        },
+        {
+          "pid": "11583",
+          "name": "Jonathon Brooks",
+          "pos": "RB",
+          "team": "CAR",
+          "round": 9,
+          "overall": 95,
+          "keeper": false,
+          "proj": 148.9,
+          "adp": 111
+        },
+        {
+          "pid": "10219",
+          "name": "Chris Rodriguez",
+          "pos": "RB",
+          "team": "JAX",
+          "round": 10,
+          "overall": 106,
+          "keeper": false,
+          "proj": 154.9,
+          "adp": 195.7
+        },
+        {
+          "pid": "10232",
+          "name": "Michael Wilson",
+          "pos": "WR",
+          "team": "ARI",
+          "round": 11,
+          "overall": 117,
+          "keeper": false,
+          "proj": 160,
+          "adp": 101.5
+        },
+        {
+          "pid": "8148",
+          "name": "Jameson Williams",
+          "pos": "WR",
+          "team": "DET",
+          "round": 12,
+          "overall": 128,
+          "keeper": true,
+          "proj": 205.8,
+          "adp": 58.1
+        },
+        {
+          "pid": "3214",
+          "name": "Hunter Henry",
+          "pos": "TE",
+          "team": "NE",
+          "round": 13,
+          "overall": 139,
+          "keeper": false,
+          "proj": 125.5,
+          "adp": 158.7
+        },
+        {
+          "pid": "7672",
+          "name": "Ernest Jones",
+          "pos": "LB",
+          "team": "SEA",
+          "round": 14,
+          "overall": 150,
+          "keeper": false,
+          "proj": 107.9,
+          "adp": 191
+        },
+        {
+          "pid": "6949",
+          "name": "Jordyn Brooks",
+          "pos": "LB",
+          "team": "MIA",
+          "round": 15,
+          "overall": 161,
+          "keeper": true,
+          "proj": 86,
+          "adp": 139.5
+        },
+        {
+          "pid": "6804",
+          "name": "Jordan Love",
+          "pos": "QB",
+          "team": "GB",
+          "round": 16,
+          "overall": 172,
+          "keeper": false,
+          "proj": 367.8,
+          "adp": 155.6
+        },
+        {
+          "pid": "11742",
+          "name": "Cedric Gray",
+          "pos": "LB",
+          "team": "TEN",
+          "round": 17,
+          "overall": 183,
+          "keeper": false,
+          "proj": 108.8,
+          "adp": 222.2
+        },
+        {
+          "pid": "8659",
+          "name": "Nate Landman",
+          "pos": "LB",
+          "team": "LAR",
+          "round": 18,
+          "overall": 194,
+          "keeper": false,
+          "proj": 120.8,
+          "adp": 231
+        },
+        {
+          "pid": "2747",
+          "name": "Jason Myers",
+          "pos": "K",
+          "team": "SEA",
+          "round": 19,
+          "overall": 205,
+          "keeper": false,
+          "proj": 126.5,
+          "adp": 146.9
+        },
+        {
+          "pid": "11581",
+          "name": "MarShawn Lloyd",
+          "pos": "RB",
+          "team": "GB",
+          "round": 20,
+          "overall": 216,
+          "keeper": false,
+          "proj": 82.2,
+          "adp": 178.1
+        }
+      ],
+      "projectedPoints": 3724
+    },
+    {
+      "slot": 8,
+      "name": "Imran",
+      "roster": [
+        {
+          "pid": "4034",
+          "name": "Christian McCaffrey",
+          "pos": "RB",
+          "team": "SF",
+          "round": 1,
+          "overall": 8,
+          "keeper": false,
+          "proj": 390.1,
+          "adp": 8.3
+        },
+        {
+          "pid": "6794",
+          "name": "Justin Jefferson",
+          "pos": "WR",
+          "team": "MIN",
+          "round": 2,
+          "overall": 19,
+          "keeper": false,
+          "proj": 242.7,
+          "adp": 11.6
+        },
+        {
+          "pid": "4983",
+          "name": "DJ Moore",
+          "pos": "WR",
+          "team": "BUF",
+          "round": 4,
+          "overall": 41,
+          "keeper": false,
+          "proj": 164.2,
+          "adp": 59.9
+        },
+        {
+          "pid": "12514",
+          "name": "Emeka Egbuka",
+          "pos": "WR",
+          "team": "TB",
+          "round": 5,
+          "overall": 52,
+          "keeper": false,
+          "proj": 167.3,
+          "adp": 39.6
+        },
+        {
+          "pid": "8131",
+          "name": "Isaiah Likely",
+          "pos": "TE",
+          "team": "NYG",
+          "round": 6,
+          "overall": 63,
+          "keeper": false,
+          "proj": 130.3,
+          "adp": 113.4
+        },
+        {
+          "pid": "6797",
+          "name": "Justin Herbert",
+          "pos": "QB",
+          "team": "LAC",
+          "round": 7,
+          "overall": 74,
+          "keeper": false,
+          "proj": 363.8,
+          "adp": 73.2
+        },
+        {
+          "pid": "9754",
+          "name": "Quentin Johnston",
+          "pos": "WR",
+          "team": "LAC",
+          "round": 8,
+          "overall": 85,
+          "keeper": false,
+          "proj": 158.6,
+          "adp": 133
+        },
+        {
+          "pid": "7567",
+          "name": "Kenny Gainwell",
+          "pos": "RB",
+          "team": "TB",
+          "round": 9,
+          "overall": 96,
+          "keeper": false,
+          "proj": 153.2,
+          "adp": 127.4
+        },
+        {
+          "pid": "6904",
+          "name": "Jalen Hurts",
+          "pos": "QB",
+          "team": "PHI",
+          "round": 10,
+          "overall": 107,
+          "keeper": false,
+          "proj": 391.8,
+          "adp": 55.4
+        },
+        {
+          "pid": "5991",
+          "name": "Maxx Crosby",
+          "pos": "DL",
+          "team": "LV",
+          "round": 11,
+          "overall": 118,
+          "keeper": true,
+          "proj": 103.9,
+          "adp": 80.5
+        },
+        {
+          "pid": "8121",
+          "name": "Romeo Doubs",
+          "pos": "WR",
+          "team": "NE",
+          "round": 12,
+          "overall": 129,
+          "keeper": false,
+          "proj": 144.5,
+          "adp": 161.4
+        },
+        {
+          "pid": "9480",
+          "name": "Brenton Strange",
+          "pos": "TE",
+          "team": "JAX",
+          "round": 13,
+          "overall": 140,
+          "keeper": false,
+          "proj": 111.7,
+          "adp": 170.1
+        },
+        {
+          "pid": "5862",
+          "name": "Brian Burns",
+          "pos": "DL",
+          "team": "NYG",
+          "round": 14,
+          "overall": 151,
+          "keeper": false,
+          "proj": 110.8,
+          "adp": 136.8
+        },
+        {
+          "pid": "2393",
+          "name": "Danielle Hunter",
+          "pos": "DL",
+          "team": "HOU",
+          "round": 15,
+          "overall": 162,
+          "keeper": false,
+          "proj": 97.3,
+          "adp": 179.9
+        },
+        {
+          "pid": "11584",
+          "name": "Bucky Irving",
+          "pos": "RB",
+          "team": "TB",
+          "round": 16,
+          "overall": 173,
+          "keeper": true,
+          "proj": 215.5,
+          "adp": 40.5
+        },
+        {
+          "pid": "9508",
+          "name": "Tyjae Spears",
+          "pos": "RB",
+          "team": "TEN",
+          "round": 17,
+          "overall": 184,
+          "keeper": false,
+          "proj": 118,
+          "adp": 210.1
+        },
+        {
+          "pid": "8180",
+          "name": "Jalen Nailor",
+          "pos": "WR",
+          "team": "LV",
+          "round": 18,
+          "overall": 189,
+          "keeper": false,
+          "proj": 119.4,
+          "adp": 254.1
+        },
+        {
+          "pid": "6302",
+          "name": "Kaden Elliss",
+          "pos": "LB",
+          "team": "NO",
+          "round": 18,
+          "overall": 195,
+          "keeper": false,
+          "proj": 100.6,
+          "adp": 260.5
+        },
+        {
+          "pid": "5995",
+          "name": "Justice Hill",
+          "pos": "RB",
+          "team": "BAL",
+          "round": 19,
+          "overall": 206,
+          "keeper": false,
+          "proj": 75.3,
+          "adp": 367.8
+        },
+        {
+          "pid": "1945",
+          "name": "Chris Boswell",
+          "pos": "K",
+          "team": "PIT",
+          "round": 20,
+          "overall": 217,
+          "keeper": false,
+          "proj": 113.5,
+          "adp": 197.3
+        }
+      ],
+      "projectedPoints": 3473
+    },
+    {
+      "slot": 9,
+      "name": "Samson",
+      "roster": [
+        {
+          "pid": "9226",
+          "name": "De'Von Achane",
+          "pos": "RB",
+          "team": "MIA",
+          "round": 1,
+          "overall": 9,
+          "keeper": false,
+          "proj": 319.1,
+          "adp": 13.5
+        },
+        {
+          "pid": "12527",
+          "name": "Ashton Jeanty",
+          "pos": "RB",
+          "team": "LV",
+          "round": 2,
+          "overall": 20,
+          "keeper": false,
+          "proj": 256,
+          "adp": 14
+        },
+        {
+          "pid": "4984",
+          "name": "Josh Allen",
+          "pos": "QB",
+          "team": "BUF",
+          "round": 3,
+          "overall": 31,
+          "keeper": false,
+          "proj": 422.3,
+          "adp": 16
+        },
+        {
+          "pid": "6790",
+          "name": "D'Andre Swift",
+          "pos": "RB",
+          "team": "CHI",
+          "round": 4,
+          "overall": 42,
+          "keeper": false,
+          "proj": 223.8,
+          "adp": 50.1
+        },
+        {
+          "pid": "7553",
+          "name": "Kyle Pitts",
+          "pos": "TE",
+          "team": "ATL",
+          "round": 5,
+          "overall": 53,
+          "keeper": false,
+          "proj": 156.7,
+          "adp": 66.2
+        },
+        {
+          "pid": "11628",
+          "name": "Marvin Harrison",
+          "pos": "WR",
+          "team": "ARI",
+          "round": 6,
+          "overall": 64,
+          "keeper": false,
+          "proj": 154.5,
+          "adp": 79.8
+        },
+        {
+          "pid": "8142",
+          "name": "Alec Pierce",
+          "pos": "WR",
+          "team": "IND",
+          "round": 7,
+          "overall": 75,
+          "keeper": false,
+          "proj": 181,
+          "adp": 114.4
+        },
+        {
+          "pid": "13298",
+          "name": "KC Concepcion",
+          "pos": "WR",
+          "team": "CLE",
+          "round": 8,
+          "overall": 86,
+          "keeper": false,
+          "proj": 140.9,
+          "adp": 121.1
+        },
+        {
+          "pid": "4981",
+          "name": "Calvin Ridley",
+          "pos": "WR",
+          "team": "TEN",
+          "round": 9,
+          "overall": 97,
+          "keeper": false,
+          "proj": 96.4,
+          "adp": 431.6
+        },
+        {
+          "pid": "12530",
+          "name": "Travis Hunter",
+          "pos": "WR",
+          "team": "JAX",
+          "round": 10,
+          "overall": 108,
+          "keeper": false,
+          "proj": 50.9,
+          "adp": 91
+        },
+        {
+          "pid": "9756",
+          "name": "Jordan Addison",
+          "pos": "WR",
+          "team": "MIN",
+          "round": 11,
+          "overall": 119,
+          "keeper": true,
+          "proj": 163.2,
+          "adp": 115.3
+        },
+        {
+          "pid": "11631",
+          "name": "Brian Thomas",
+          "pos": "WR",
+          "team": "JAX",
+          "round": 12,
+          "overall": 130,
+          "keeper": true,
+          "proj": 154.8,
+          "adp": 80.3
+        },
+        {
+          "pid": "4035",
+          "name": "Alvin Kamara",
+          "pos": "RB",
+          "team": "NO",
+          "round": 13,
+          "overall": 141,
+          "keeper": false,
+          "proj": 90.7,
+          "adp": 209.7
+        },
+        {
+          "pid": "13371",
+          "name": "Dillon Thieneman",
+          "pos": "DB",
+          "team": "CHI",
+          "round": 14,
+          "overall": 152,
+          "keeper": false,
+          "proj": 79.3,
+          "adp": 196
+        },
+        {
+          "pid": "13411",
+          "name": "Zavion Thomas",
+          "pos": "WR",
+          "team": "CHI",
+          "round": 15,
+          "overall": 163,
+          "keeper": false,
+          "proj": 28.9,
+          "adp": 515.8
+        },
+        {
+          "pid": "2020",
+          "name": "Cairo Santos",
+          "pos": "K",
+          "team": "CHI",
+          "round": 16,
+          "overall": 174,
+          "keeper": false,
+          "proj": 118.1,
+          "adp": 409
+        },
+        {
+          "pid": "4963",
+          "name": "Minkah Fitzpatrick",
+          "pos": "DB",
+          "team": "NYJ",
+          "round": 17,
+          "overall": 185,
+          "keeper": false,
+          "proj": 85.8,
+          "adp": 376.8
+        },
+        {
+          "pid": "8339",
+          "name": "Kyle Hamilton",
+          "pos": "DB",
+          "team": "BAL",
+          "round": 18,
+          "overall": 196,
+          "keeper": false,
+          "proj": 116.7,
+          "adp": 107.7
+        },
+        {
+          "pid": "5843",
+          "name": "Devin Bush",
+          "pos": "LB",
+          "team": "CHI",
+          "round": 19,
+          "overall": 207,
+          "keeper": false,
+          "proj": 115.3,
+          "adp": 251
+        },
+        {
+          "pid": "5726",
+          "name": "Robert Spillane",
+          "pos": "LB",
+          "team": "NE",
+          "round": 20,
+          "overall": 218,
+          "keeper": false,
+          "proj": 108.5,
+          "adp": 305.8
+        }
+      ],
+      "projectedPoints": 3063
+    },
+    {
+      "slot": 10,
+      "name": "Laura",
+      "roster": [
+        {
+          "pid": "6786",
+          "name": "CeeDee Lamb",
+          "pos": "WR",
+          "team": "DAL",
+          "round": 1,
+          "overall": 10,
+          "keeper": false,
+          "proj": 250.4,
+          "adp": 10.9
+        },
+        {
+          "pid": "8155",
+          "name": "Breece Hall",
+          "pos": "RB",
+          "team": "NYJ",
+          "round": 2,
+          "overall": 21,
+          "keeper": false,
+          "proj": 268.9,
+          "adp": 32.4
+        },
+        {
+          "pid": "4881",
+          "name": "Lamar Jackson",
+          "pos": "QB",
+          "team": "BAL",
+          "round": 3,
+          "overall": 32,
+          "keeper": false,
+          "proj": 415.5,
+          "adp": 28.6
+        },
+        {
+          "pid": "12481",
+          "name": "Cam Skattebo",
+          "pos": "RB",
+          "team": "NYG",
+          "round": 4,
+          "overall": 43,
+          "keeper": false,
+          "proj": 235.6,
+          "adp": 42.6
+        },
+        {
+          "pid": "10859",
+          "name": "Sam LaPorta",
+          "pos": "TE",
+          "team": "DET",
+          "round": 5,
+          "overall": 54,
+          "keeper": false,
+          "proj": 166.8,
+          "adp": 56.2
+        },
+        {
+          "pid": "11620",
+          "name": "Rome Odunze",
+          "pos": "WR",
+          "team": "CHI",
+          "round": 6,
+          "overall": 65,
+          "keeper": false,
+          "proj": 163.3,
+          "adp": 68.9
+        },
+        {
+          "pid": "12501",
+          "name": "Matthew Golden",
+          "pos": "WR",
+          "team": "GB",
+          "round": 7,
+          "overall": 76,
+          "keeper": false,
+          "proj": 145.1,
+          "adp": 151.4
+        },
+        {
+          "pid": "7594",
+          "name": "Chuba Hubbard",
+          "pos": "RB",
+          "team": "CAR",
+          "round": 8,
+          "overall": 87,
+          "keeper": false,
+          "proj": 185.8,
+          "adp": 99
+        },
+        {
+          "pid": "8134",
+          "name": "Khalil Shakir",
+          "pos": "WR",
+          "team": "BUF",
+          "round": 9,
+          "overall": 98,
+          "keeper": false,
+          "proj": 156.8,
+          "adp": 166.6
+        },
+        {
+          "pid": "5346",
+          "name": "Zaire Franklin",
+          "pos": "LB",
+          "team": "GB",
+          "round": 10,
+          "overall": 109,
+          "keeper": false,
+          "proj": 103.5,
+          "adp": 227.3
+        },
+        {
+          "pid": "12578",
+          "name": "Carson Schwesinger",
+          "pos": "LB",
+          "team": "CLE",
+          "round": 11,
+          "overall": 120,
+          "keeper": true,
+          "proj": 131.8,
+          "adp": 93.9
+        },
+        {
+          "pid": "10222",
+          "name": "Jayden Reed",
+          "pos": "WR",
+          "team": "GB",
+          "round": 12,
+          "overall": 131,
+          "keeper": true,
+          "proj": 198.9,
+          "adp": 116.7
+        },
+        {
+          "pid": "8136",
+          "name": "Rachaad White",
+          "pos": "RB",
+          "team": "WAS",
+          "round": 13,
+          "overall": 142,
+          "keeper": false,
+          "proj": 163,
+          "adp": 163.2
+        },
+        {
+          "pid": "11575",
+          "name": "Ray Davis",
+          "pos": "RB",
+          "team": "BUF",
+          "round": 14,
+          "overall": 153,
+          "keeper": false,
+          "proj": 72.3,
+          "adp": 372.5
+        },
+        {
+          "pid": "4892",
+          "name": "Baker Mayfield",
+          "pos": "QB",
+          "team": "TB",
+          "round": 15,
+          "overall": 164,
+          "keeper": false,
+          "proj": 347.4,
+          "adp": 157.5
+        },
+        {
+          "pid": "11665",
+          "name": "Jared Verse",
+          "pos": "DL",
+          "team": "CLE",
+          "round": 16,
+          "overall": 175,
+          "keeper": false,
+          "proj": 92.4,
+          "adp": 138.9
+        },
+        {
+          "pid": "11786",
+          "name": "Cam Little",
+          "pos": "K",
+          "team": "JAX",
+          "round": 17,
+          "overall": 186,
+          "keeper": false,
+          "proj": 120.3,
+          "adp": 153
+        },
+        {
+          "pid": "13413",
+          "name": "Cyrus Allen",
+          "pos": "WR",
+          "team": "KC",
+          "round": 18,
+          "overall": 197,
+          "keeper": false,
+          "proj": 24.9,
+          "adp": 235
+        },
+        {
+          "pid": "9225",
+          "name": "Tank Bigsby",
+          "pos": "RB",
+          "team": "PHI",
+          "round": 19,
+          "overall": 208,
+          "keeper": false,
+          "proj": 70,
+          "adp": 267
+        },
+        {
+          "pid": "13288",
+          "name": "Nicholas Singleton",
+          "pos": "RB",
+          "team": "TEN",
+          "round": 20,
+          "overall": 219,
+          "keeper": false,
+          "proj": 40.7,
+          "adp": 271.6
+        }
+      ],
+      "projectedPoints": 3353
+    },
+    {
+      "slot": 11,
+      "name": "Shak",
+      "roster": [
+        {
+          "pid": "8138",
+          "name": "James Cook",
+          "pos": "RB",
+          "team": "BUF",
+          "round": 1,
+          "overall": 11,
+          "keeper": false,
+          "proj": 336,
+          "adp": 8.2
+        },
+        {
+          "pid": "5859",
+          "name": "A.J. Brown",
+          "pos": "WR",
+          "team": "NE",
+          "round": 2,
+          "overall": 22,
+          "keeper": false,
+          "proj": 236.2,
+          "adp": 24.1
+        },
+        {
+          "pid": "9997",
+          "name": "Zay Flowers",
+          "pos": "WR",
+          "team": "BAL",
+          "round": 3,
+          "overall": 33,
+          "keeper": false,
+          "proj": 217.3,
+          "adp": 44.4
+        },
+        {
+          "pid": "11560",
+          "name": "Caleb Williams",
+          "pos": "QB",
+          "team": "CHI",
+          "round": 4,
+          "overall": 44,
+          "keeper": false,
+          "proj": 404.5,
+          "adp": 64.9
+        },
+        {
+          "pid": "12512",
+          "name": "Quinshon Judkins",
+          "pos": "RB",
+          "team": "CLE",
+          "round": 5,
+          "overall": 55,
+          "keeper": false,
+          "proj": 241.2,
+          "adp": 53.4
+        },
+        {
+          "pid": "4217",
+          "name": "George Kittle",
+          "pos": "TE",
+          "team": "SF",
+          "round": 6,
+          "overall": 66,
+          "keeper": false,
+          "proj": 164.6,
+          "adp": 95.3
+        },
+        {
+          "pid": "8228",
+          "name": "Jaylen Warren",
+          "pos": "RB",
+          "team": "PIT",
+          "round": 7,
+          "overall": 77,
+          "keeper": false,
+          "proj": 231.3,
+          "adp": 74.5
+        },
+        {
+          "pid": "10880",
+          "name": "Jack Campbell",
+          "pos": "LB",
+          "team": "DET",
+          "round": 8,
+          "overall": 88,
+          "keeper": false,
+          "proj": 138.8,
+          "adp": 87.5
+        },
+        {
+          "pid": "8408",
+          "name": "Jordan Mason",
+          "pos": "RB",
+          "team": "MIN",
+          "round": 9,
+          "overall": 99,
+          "keeper": false,
+          "proj": 175.6,
+          "adp": 120.1
+        },
+        {
+          "pid": "8329",
+          "name": "Devin Lloyd",
+          "pos": "LB",
+          "team": "CAR",
+          "round": 10,
+          "overall": 110,
+          "keeper": false,
+          "proj": 126.4,
+          "adp": 230.1
+        },
+        {
+          "pid": "12506",
+          "name": "Harold Fannin",
+          "pos": "TE",
+          "team": "CLE",
+          "round": 11,
+          "overall": 121,
+          "keeper": true,
+          "proj": 145.6,
+          "adp": 70.2
+        },
+        {
+          "pid": "12474",
+          "name": "Woody Marks",
+          "pos": "RB",
+          "team": "HOU",
+          "round": 12,
+          "overall": 132,
+          "keeper": false,
+          "proj": 126.8,
+          "adp": 169.6
+        },
+        {
+          "pid": "5332",
+          "name": "Foyesade Oluokun",
+          "pos": "LB",
+          "team": "JAX",
+          "round": 13,
+          "overall": 143,
+          "keeper": false,
+          "proj": 126,
+          "adp": 143.8
+        },
+        {
+          "pid": "4037",
+          "name": "Chris Godwin",
+          "pos": "WR",
+          "team": "TB",
+          "round": 14,
+          "overall": 154,
+          "keeper": true,
+          "proj": 149.4,
+          "adp": 109.6
+        },
+        {
+          "pid": "9511",
+          "name": "Keaton Mitchell",
+          "pos": "RB",
+          "team": "LAC",
+          "round": 15,
+          "overall": 165,
+          "keeper": false,
+          "proj": 125.6,
+          "adp": 259.5
+        },
+        {
+          "pid": "6819",
+          "name": "Michael Pittman",
+          "pos": "WR",
+          "team": "PIT",
+          "round": 16,
+          "overall": 176,
+          "keeper": false,
+          "proj": 145.1,
+          "adp": 125.7
+        },
+        {
+          "pid": "12469",
+          "name": "Dylan Sampson",
+          "pos": "RB",
+          "team": "CLE",
+          "round": 17,
+          "overall": 187,
+          "keeper": false,
+          "proj": 108.6,
+          "adp": 275.9
+        },
+        {
+          "pid": "9504",
+          "name": "Kayshon Boutte",
+          "pos": "WR",
+          "team": "HOU",
+          "round": 18,
+          "overall": 198,
+          "keeper": false,
+          "proj": 122.7,
+          "adp": 295.8
+        },
+        {
+          "pid": "11576",
+          "name": "Braelon Allen",
+          "pos": "RB",
+          "team": "NYJ",
+          "round": 19,
+          "overall": 209,
+          "keeper": false,
+          "proj": 63.6,
+          "adp": 310.5
+        },
+        {
+          "pid": "7839",
+          "name": "Evan McPherson",
+          "pos": "K",
+          "team": "CIN",
+          "round": 20,
+          "overall": 220,
+          "keeper": false,
+          "proj": 124.1,
+          "adp": 204.7
+        }
+      ],
+      "projectedPoints": 3509
+    }
+  ],
+  "picks": [
+    {
+      "overall": 1,
+      "round": 1,
+      "slot": 1,
+      "pid": "9221",
+      "name": "Jahmyr Gibbs",
+      "pos": "RB",
+      "team": "DET",
+      "keeper": false
+    },
+    {
+      "overall": 2,
+      "round": 1,
+      "slot": 2,
+      "pid": "9509",
+      "name": "Bijan Robinson",
+      "pos": "RB",
+      "team": "ATL",
+      "keeper": false
+    },
+    {
+      "overall": 3,
+      "round": 1,
+      "slot": 3,
+      "pid": "7564",
+      "name": "Ja'Marr Chase",
+      "pos": "WR",
+      "team": "CIN",
+      "keeper": false
+    },
+    {
+      "overall": 4,
+      "round": 1,
+      "slot": 4,
+      "pid": "9493",
+      "name": "Puka Nacua",
+      "pos": "WR",
+      "team": "LAR",
+      "keeper": false
+    },
+    {
+      "overall": 5,
+      "round": 1,
+      "slot": 5,
+      "pid": "6813",
+      "name": "Jonathan Taylor",
+      "pos": "RB",
+      "team": "IND",
+      "keeper": false
+    },
+    {
+      "overall": 6,
+      "round": 1,
+      "slot": 6,
+      "pid": "9488",
+      "name": "Jaxon Smith-Njigba",
+      "pos": "WR",
+      "team": "SEA",
+      "keeper": false
+    },
+    {
+      "overall": 7,
+      "round": 1,
+      "slot": 7,
+      "pid": "7547",
+      "name": "Amon-Ra St. Brown",
+      "pos": "WR",
+      "team": "DET",
+      "keeper": false
+    },
+    {
+      "overall": 8,
+      "round": 1,
+      "slot": 8,
+      "pid": "4034",
+      "name": "Christian McCaffrey",
+      "pos": "RB",
+      "team": "SF",
+      "keeper": false
+    },
+    {
+      "overall": 9,
+      "round": 1,
+      "slot": 9,
+      "pid": "9226",
+      "name": "De'Von Achane",
+      "pos": "RB",
+      "team": "MIA",
+      "keeper": false
+    },
+    {
+      "overall": 10,
+      "round": 1,
+      "slot": 10,
+      "pid": "6786",
+      "name": "CeeDee Lamb",
+      "pos": "WR",
+      "team": "DAL",
+      "keeper": false
+    },
+    {
+      "overall": 11,
+      "round": 1,
+      "slot": 11,
+      "pid": "8138",
+      "name": "James Cook",
+      "pos": "RB",
+      "team": "BUF",
+      "keeper": false
+    },
+    {
+      "overall": 12,
+      "round": 2,
+      "slot": 1,
+      "pid": "8137",
+      "name": "George Pickens",
+      "pos": "WR",
+      "team": "DAL",
+      "keeper": false
+    },
+    {
+      "overall": 13,
+      "round": 2,
+      "slot": 2,
+      "pid": "4866",
+      "name": "Saquon Barkley",
+      "pos": "RB",
+      "team": "PHI",
+      "keeper": false
+    },
+    {
+      "overall": 14,
+      "round": 2,
+      "slot": 3,
+      "pid": "9224",
+      "name": "Chase Brown",
+      "pos": "RB",
+      "team": "CIN",
+      "keeper": false
+    },
+    {
+      "overall": 15,
+      "round": 2,
+      "slot": 4,
+      "pid": "12507",
+      "name": "Omarion Hampton",
+      "pos": "RB",
+      "team": "LAC",
+      "keeper": false
+    },
+    {
+      "overall": 16,
+      "round": 2,
+      "slot": 5,
+      "pid": "3198",
+      "name": "Derrick Henry",
+      "pos": "RB",
+      "team": "BAL",
+      "keeper": false
+    },
+    {
+      "overall": 17,
+      "round": 2,
+      "slot": 6,
+      "pid": "13287",
+      "name": "Jeremiyah Love",
+      "pos": "RB",
+      "team": "ARI",
+      "keeper": false
+    },
+    {
+      "overall": 18,
+      "round": 2,
+      "slot": 7,
+      "pid": "8150",
+      "name": "Kyren Williams",
+      "pos": "RB",
+      "team": "LAR",
+      "keeper": false
+    },
+    {
+      "overall": 19,
+      "round": 2,
+      "slot": 8,
+      "pid": "6794",
+      "name": "Justin Jefferson",
+      "pos": "WR",
+      "team": "MIN",
+      "keeper": false
+    },
+    {
+      "overall": 20,
+      "round": 2,
+      "slot": 9,
+      "pid": "12527",
+      "name": "Ashton Jeanty",
+      "pos": "RB",
+      "team": "LV",
+      "keeper": false
+    },
+    {
+      "overall": 21,
+      "round": 2,
+      "slot": 10,
+      "pid": "8155",
+      "name": "Breece Hall",
+      "pos": "RB",
+      "team": "NYJ",
+      "keeper": false
+    },
+    {
+      "overall": 22,
+      "round": 2,
+      "slot": 11,
+      "pid": "5859",
+      "name": "A.J. Brown",
+      "pos": "WR",
+      "team": "NE",
+      "keeper": false
+    },
+    {
+      "overall": 23,
+      "round": 3,
+      "slot": 1,
+      "pid": "8112",
+      "name": "Drake London",
+      "pos": "WR",
+      "team": "ATL",
+      "keeper": false
+    },
+    {
+      "overall": 24,
+      "round": 3,
+      "slot": 2,
+      "pid": "11604",
+      "name": "Brock Bowers",
+      "pos": "TE",
+      "team": "LV",
+      "keeper": false
+    },
+    {
+      "overall": 25,
+      "round": 3,
+      "slot": 3,
+      "pid": "8130",
+      "name": "Trey McBride",
+      "pos": "TE",
+      "team": "ARI",
+      "keeper": false
+    },
+    {
+      "overall": 26,
+      "round": 3,
+      "slot": 4,
+      "pid": "7569",
+      "name": "Nico Collins",
+      "pos": "WR",
+      "team": "HOU",
+      "keeper": false
+    },
+    {
+      "overall": 27,
+      "round": 3,
+      "slot": 5,
+      "pid": "12517",
+      "name": "Colston Loveland",
+      "pos": "TE",
+      "team": "CHI",
+      "keeper": false
+    },
+    {
+      "overall": 28,
+      "round": 3,
+      "slot": 6,
+      "pid": "8151",
+      "name": "Kenneth Walker",
+      "pos": "RB",
+      "team": "KC",
+      "keeper": false
+    },
+    {
+      "overall": 29,
+      "round": 3,
+      "slot": 7,
+      "pid": "7588",
+      "name": "Javonte Williams",
+      "pos": "RB",
+      "team": "DAL",
+      "keeper": false
+    },
+    {
+      "overall": 30,
+      "round": 3,
+      "slot": 2,
+      "origSlot": 8,
+      "pid": "8144",
+      "name": "Chris Olave",
+      "pos": "WR",
+      "team": "NO",
+      "keeper": false
+    },
+    {
+      "overall": 31,
+      "round": 3,
+      "slot": 9,
+      "pid": "4984",
+      "name": "Josh Allen",
+      "pos": "QB",
+      "team": "BUF",
+      "keeper": false
+    },
+    {
+      "overall": 32,
+      "round": 3,
+      "slot": 10,
+      "pid": "4881",
+      "name": "Lamar Jackson",
+      "pos": "QB",
+      "team": "BAL",
+      "keeper": false
+    },
+    {
+      "overall": 33,
+      "round": 3,
+      "slot": 11,
+      "pid": "9997",
+      "name": "Zay Flowers",
+      "pos": "WR",
+      "team": "BAL",
+      "keeper": false
+    },
+    {
+      "overall": 34,
+      "round": 4,
+      "slot": 1,
+      "pid": "11632",
+      "name": "Malik Nabers",
+      "pos": "WR",
+      "team": "NYG",
+      "keeper": false
+    },
+    {
+      "overall": 35,
+      "round": 4,
+      "slot": 2,
+      "pid": "7525",
+      "name": "DeVonta Smith",
+      "pos": "WR",
+      "team": "PHI",
+      "keeper": false
+    },
+    {
+      "overall": 36,
+      "round": 4,
+      "slot": 3,
+      "pid": "6801",
+      "name": "Tee Higgins",
+      "pos": "WR",
+      "team": "CIN",
+      "keeper": false
+    },
+    {
+      "overall": 37,
+      "round": 4,
+      "slot": 4,
+      "pid": "7543",
+      "name": "Travis Etienne",
+      "pos": "RB",
+      "team": "NO",
+      "keeper": false
+    },
+    {
+      "overall": 38,
+      "round": 4,
+      "slot": 5,
+      "pid": "5892",
+      "name": "David Montgomery",
+      "pos": "RB",
+      "team": "HOU",
+      "keeper": false
+    },
+    {
+      "overall": 39,
+      "round": 4,
+      "slot": 6,
+      "pid": "6770",
+      "name": "Joe Burrow",
+      "pos": "QB",
+      "team": "CIN",
+      "keeper": false
+    },
+    {
+      "overall": 40,
+      "round": 4,
+      "slot": 7,
+      "pid": "12518",
+      "name": "Tyler Warren",
+      "pos": "TE",
+      "team": "IND",
+      "keeper": false
+    },
+    {
+      "overall": 41,
+      "round": 4,
+      "slot": 8,
+      "pid": "4983",
+      "name": "DJ Moore",
+      "pos": "WR",
+      "team": "BUF",
+      "keeper": false
+    },
+    {
+      "overall": 42,
+      "round": 4,
+      "slot": 9,
+      "pid": "6790",
+      "name": "D'Andre Swift",
+      "pos": "RB",
+      "team": "CHI",
+      "keeper": false
+    },
+    {
+      "overall": 43,
+      "round": 4,
+      "slot": 10,
+      "pid": "12481",
+      "name": "Cam Skattebo",
+      "pos": "RB",
+      "team": "NYG",
+      "keeper": false
+    },
+    {
+      "overall": 44,
+      "round": 4,
+      "slot": 11,
+      "pid": "11560",
+      "name": "Caleb Williams",
+      "pos": "QB",
+      "team": "CHI",
+      "keeper": false
+    },
+    {
+      "overall": 45,
+      "round": 5,
+      "slot": 1,
+      "pid": "12529",
+      "name": "TreVeyon Henderson",
+      "pos": "RB",
+      "team": "NE",
+      "keeper": false
+    },
+    {
+      "overall": 46,
+      "round": 5,
+      "slot": 2,
+      "pid": "5927",
+      "name": "Terry McLaurin",
+      "pos": "WR",
+      "team": "WAS",
+      "keeper": false
+    },
+    {
+      "overall": 47,
+      "round": 5,
+      "slot": 3,
+      "pid": "12490",
+      "name": "Bhayshul Tuten",
+      "pos": "RB",
+      "team": "JAX",
+      "keeper": false
+    },
+    {
+      "overall": 48,
+      "round": 5,
+      "slot": 4,
+      "pid": "11635",
+      "name": "Ladd McConkey",
+      "pos": "WR",
+      "team": "LAC",
+      "keeper": false
+    },
+    {
+      "overall": 49,
+      "round": 5,
+      "slot": 5,
+      "pid": "10229",
+      "name": "Rashee Rice",
+      "pos": "WR",
+      "team": "KC",
+      "keeper": false
+    },
+    {
+      "overall": 50,
+      "round": 5,
+      "slot": 6,
+      "pid": "7526",
+      "name": "Jaylen Waddle",
+      "pos": "WR",
+      "team": "DEN",
+      "keeper": false
+    },
+    {
+      "overall": 51,
+      "round": 5,
+      "slot": 7,
+      "pid": "13286",
+      "name": "Jadarian Price",
+      "pos": "RB",
+      "team": "SEA",
+      "keeper": false
+    },
+    {
+      "overall": 52,
+      "round": 5,
+      "slot": 8,
+      "pid": "12514",
+      "name": "Emeka Egbuka",
+      "pos": "WR",
+      "team": "TB",
+      "keeper": false
+    },
+    {
+      "overall": 53,
+      "round": 5,
+      "slot": 9,
+      "pid": "7553",
+      "name": "Kyle Pitts",
+      "pos": "TE",
+      "team": "ATL",
+      "keeper": false
+    },
+    {
+      "overall": 54,
+      "round": 5,
+      "slot": 10,
+      "pid": "10859",
+      "name": "Sam LaPorta",
+      "pos": "TE",
+      "team": "DET",
+      "keeper": false
+    },
+    {
+      "overall": 55,
+      "round": 5,
+      "slot": 11,
+      "pid": "12512",
+      "name": "Quinshon Judkins",
+      "pos": "RB",
+      "team": "CLE",
+      "keeper": false
+    },
+    {
+      "overall": 56,
+      "round": 6,
+      "slot": 1,
+      "pid": "7021",
+      "name": "Rico Dowdle",
+      "pos": "RB",
+      "team": "PIT",
+      "keeper": false
+    },
+    {
+      "overall": 57,
+      "round": 6,
+      "slot": 2,
+      "pid": "11566",
+      "name": "Jayden Daniels",
+      "pos": "QB",
+      "team": "WAS",
+      "keeper": false
+    },
+    {
+      "overall": 58,
+      "round": 6,
+      "slot": 3,
+      "pid": "12526",
+      "name": "Tetairoa McMillan",
+      "pos": "WR",
+      "team": "CAR",
+      "keeper": false
+    },
+    {
+      "overall": 59,
+      "round": 6,
+      "slot": 4,
+      "pid": "12519",
+      "name": "Luther Burden",
+      "pos": "WR",
+      "team": "CHI",
+      "keeper": false
+    },
+    {
+      "overall": 60,
+      "round": 6,
+      "slot": 5,
+      "pid": "2216",
+      "name": "Mike Evans",
+      "pos": "WR",
+      "team": "SF",
+      "keeper": false
+    },
+    {
+      "overall": 61,
+      "round": 6,
+      "slot": 6,
+      "pid": "5846",
+      "name": "DK Metcalf",
+      "pos": "WR",
+      "team": "PIT",
+      "keeper": false
+    },
+    {
+      "overall": 62,
+      "round": 6,
+      "slot": 7,
+      "pid": "2133",
+      "name": "Davante Adams",
+      "pos": "WR",
+      "team": "LAR",
+      "keeper": false
+    },
+    {
+      "overall": 63,
+      "round": 6,
+      "slot": 8,
+      "pid": "8131",
+      "name": "Isaiah Likely",
+      "pos": "TE",
+      "team": "NYG",
+      "keeper": false
+    },
+    {
+      "overall": 64,
+      "round": 6,
+      "slot": 9,
+      "pid": "11628",
+      "name": "Marvin Harrison",
+      "pos": "WR",
+      "team": "ARI",
+      "keeper": false
+    },
+    {
+      "overall": 65,
+      "round": 6,
+      "slot": 10,
+      "pid": "11620",
+      "name": "Rome Odunze",
+      "pos": "WR",
+      "team": "CHI",
+      "keeper": false
+    },
+    {
+      "overall": 66,
+      "round": 6,
+      "slot": 11,
+      "pid": "4217",
+      "name": "George Kittle",
+      "pos": "TE",
+      "team": "SF",
+      "keeper": false
+    },
+    {
+      "overall": 67,
+      "round": 7,
+      "slot": 1,
+      "pid": "5850",
+      "name": "Josh Jacobs",
+      "pos": "RB",
+      "team": "GB",
+      "keeper": false
+    },
+    {
+      "overall": 68,
+      "round": 7,
+      "slot": 2,
+      "pid": "8146",
+      "name": "Garrett Wilson",
+      "pos": "WR",
+      "team": "NYJ",
+      "keeper": false
+    },
+    {
+      "overall": 69,
+      "round": 7,
+      "slot": 3,
+      "pid": "12534",
+      "name": "Kyle Monangai",
+      "pos": "RB",
+      "team": "CHI",
+      "keeper": false
+    },
+    {
+      "overall": 70,
+      "round": 7,
+      "slot": 4,
+      "pid": "3294",
+      "name": "Dak Prescott",
+      "pos": "QB",
+      "team": "DAL",
+      "keeper": false
+    },
+    {
+      "overall": 71,
+      "round": 7,
+      "slot": 5,
+      "pid": "4046",
+      "name": "Patrick Mahomes",
+      "pos": "QB",
+      "team": "KC",
+      "keeper": false
+    },
+    {
+      "overall": 72,
+      "round": 7,
+      "slot": 6,
+      "pid": "13279",
+      "name": "Carnell Tate",
+      "pos": "WR",
+      "team": "TEN",
+      "keeper": false
+    },
+    {
+      "overall": 73,
+      "round": 7,
+      "slot": 7,
+      "pid": "9487",
+      "name": "Parker Washington",
+      "pos": "WR",
+      "team": "JAX",
+      "keeper": false
+    },
+    {
+      "overall": 74,
+      "round": 7,
+      "slot": 8,
+      "pid": "6797",
+      "name": "Justin Herbert",
+      "pos": "QB",
+      "team": "LAC",
+      "keeper": false
+    },
+    {
+      "overall": 75,
+      "round": 7,
+      "slot": 9,
+      "pid": "8142",
+      "name": "Alec Pierce",
+      "pos": "WR",
+      "team": "IND",
+      "keeper": false
+    },
+    {
+      "overall": 76,
+      "round": 7,
+      "slot": 10,
+      "pid": "12501",
+      "name": "Matthew Golden",
+      "pos": "WR",
+      "team": "GB",
+      "keeper": false
+    },
+    {
+      "overall": 77,
+      "round": 7,
+      "slot": 11,
+      "pid": "8228",
+      "name": "Jaylen Warren",
+      "pos": "RB",
+      "team": "PIT",
+      "keeper": false
+    },
+    {
+      "overall": 78,
+      "round": 8,
+      "slot": 1,
+      "pid": "1466",
+      "name": "Travis Kelce",
+      "pos": "TE",
+      "team": "KC",
+      "keeper": false
+    },
+    {
+      "overall": 79,
+      "round": 8,
+      "slot": 2,
+      "pid": "5967",
+      "name": "Tony Pollard",
+      "pos": "RB",
+      "team": "TEN",
+      "keeper": false
+    },
+    {
+      "overall": 80,
+      "round": 8,
+      "slot": 3,
+      "pid": "7523",
+      "name": "Trevor Lawrence",
+      "pos": "QB",
+      "team": "JAX",
+      "keeper": false
+    },
+    {
+      "overall": 81,
+      "round": 8,
+      "slot": 4,
+      "pid": "5045",
+      "name": "Courtland Sutton",
+      "pos": "WR",
+      "team": "DEN",
+      "keeper": false
+    },
+    {
+      "overall": 82,
+      "round": 8,
+      "slot": 5,
+      "pid": "12489",
+      "name": "RJ Harvey",
+      "pos": "RB",
+      "team": "DEN",
+      "keeper": false
+    },
+    {
+      "overall": 83,
+      "round": 8,
+      "slot": 6,
+      "pid": "13375",
+      "name": "Sonny Styles",
+      "pos": "LB",
+      "team": "WAS",
+      "keeper": false
+    },
+    {
+      "overall": 84,
+      "round": 8,
+      "slot": 7,
+      "pid": "3163",
+      "name": "Jared Goff",
+      "pos": "QB",
+      "team": "DET",
+      "keeper": false
+    },
+    {
+      "overall": 85,
+      "round": 8,
+      "slot": 8,
+      "pid": "9754",
+      "name": "Quentin Johnston",
+      "pos": "WR",
+      "team": "LAC",
+      "keeper": false
+    },
+    {
+      "overall": 86,
+      "round": 8,
+      "slot": 9,
+      "pid": "13298",
+      "name": "KC Concepcion",
+      "pos": "WR",
+      "team": "CLE",
+      "keeper": false
+    },
+    {
+      "overall": 87,
+      "round": 8,
+      "slot": 10,
+      "pid": "7594",
+      "name": "Chuba Hubbard",
+      "pos": "RB",
+      "team": "CAR",
+      "keeper": false
+    },
+    {
+      "overall": 88,
+      "round": 8,
+      "slot": 11,
+      "pid": "10880",
+      "name": "Jack Campbell",
+      "pos": "LB",
+      "team": "DET",
+      "keeper": false
+    },
+    {
+      "overall": 89,
+      "round": 9,
+      "slot": 1,
+      "pid": "6806",
+      "name": "J.K. Dobbins",
+      "pos": "RB",
+      "team": "DEN",
+      "keeper": false
+    },
+    {
+      "overall": 90,
+      "round": 9,
+      "slot": 2,
+      "pid": "4960",
+      "name": "Roquan Smith",
+      "pos": "LB",
+      "team": "BAL",
+      "keeper": false
+    },
+    {
+      "overall": 91,
+      "round": 9,
+      "slot": 3,
+      "pid": "13294",
+      "name": "Makai Lemon",
+      "pos": "WR",
+      "team": "PHI",
+      "keeper": false
+    },
+    {
+      "overall": 92,
+      "round": 9,
+      "slot": 4,
+      "pid": "11586",
+      "name": "Blake Corum",
+      "pos": "RB",
+      "team": "LAR",
+      "keeper": false
+    },
+    {
+      "overall": 93,
+      "round": 9,
+      "slot": 5,
+      "pid": "5947",
+      "name": "Jakobi Meyers",
+      "pos": "WR",
+      "team": "JAX",
+      "keeper": false
+    },
+    {
+      "overall": 94,
+      "round": 9,
+      "slot": 6,
+      "pid": "12533",
+      "name": "Jacory Croskey-Merritt",
+      "pos": "RB",
+      "team": "WAS",
+      "keeper": false
+    },
+    {
+      "overall": 95,
+      "round": 9,
+      "slot": 7,
+      "pid": "11583",
+      "name": "Jonathon Brooks",
+      "pos": "RB",
+      "team": "CAR",
+      "keeper": false
+    },
+    {
+      "overall": 96,
+      "round": 9,
+      "slot": 8,
+      "pid": "7567",
+      "name": "Kenny Gainwell",
+      "pos": "RB",
+      "team": "TB",
+      "keeper": false
+    },
+    {
+      "overall": 97,
+      "round": 9,
+      "slot": 9,
+      "pid": "4981",
+      "name": "Calvin Ridley",
+      "pos": "WR",
+      "team": "TEN",
+      "keeper": false
+    },
+    {
+      "overall": 98,
+      "round": 9,
+      "slot": 10,
+      "pid": "8134",
+      "name": "Khalil Shakir",
+      "pos": "WR",
+      "team": "BUF",
+      "keeper": false
+    },
+    {
+      "overall": 99,
+      "round": 9,
+      "slot": 11,
+      "pid": "8408",
+      "name": "Jordan Mason",
+      "pos": "RB",
+      "team": "MIN",
+      "keeper": false
+    },
+    {
+      "overall": 100,
+      "round": 10,
+      "slot": 1,
+      "pid": "4199",
+      "name": "Aaron Jones",
+      "pos": "RB",
+      "team": "MIN",
+      "keeper": false
+    },
+    {
+      "overall": 101,
+      "round": 10,
+      "slot": 2,
+      "pid": "8126",
+      "name": "Wan'Dale Robinson",
+      "pos": "WR",
+      "team": "TEN",
+      "keeper": false
+    },
+    {
+      "overall": 102,
+      "round": 10,
+      "slot": 3,
+      "pid": "4070",
+      "name": "T.J. Watt",
+      "pos": "LB",
+      "team": "PIT",
+      "keeper": false
+    },
+    {
+      "overall": 103,
+      "round": 10,
+      "slot": 4,
+      "pid": "5022",
+      "name": "Dallas Goedert",
+      "pos": "TE",
+      "team": "PHI",
+      "keeper": false
+    },
+    {
+      "overall": 104,
+      "round": 10,
+      "slot": 5,
+      "pid": "8267",
+      "name": "Nakobe Dean",
+      "pos": "LB",
+      "team": "LV",
+      "keeper": false
+    },
+    {
+      "overall": 105,
+      "round": 10,
+      "slot": 6,
+      "pid": "7648",
+      "name": "Nick Bolton",
+      "pos": "LB",
+      "team": "KC",
+      "keeper": false
+    },
+    {
+      "overall": 106,
+      "round": 10,
+      "slot": 7,
+      "pid": "10219",
+      "name": "Chris Rodriguez",
+      "pos": "RB",
+      "team": "JAX",
+      "keeper": false
+    },
+    {
+      "overall": 107,
+      "round": 10,
+      "slot": 8,
+      "pid": "6904",
+      "name": "Jalen Hurts",
+      "pos": "QB",
+      "team": "PHI",
+      "keeper": false
+    },
+    {
+      "overall": 108,
+      "round": 10,
+      "slot": 9,
+      "pid": "12530",
+      "name": "Travis Hunter",
+      "pos": "WR",
+      "team": "JAX",
+      "keeper": false
+    },
+    {
+      "overall": 109,
+      "round": 10,
+      "slot": 10,
+      "pid": "5346",
+      "name": "Zaire Franklin",
+      "pos": "LB",
+      "team": "GB",
+      "keeper": false
+    },
+    {
+      "overall": 110,
+      "round": 10,
+      "slot": 11,
+      "pid": "8329",
+      "name": "Devin Lloyd",
+      "pos": "LB",
+      "team": "CAR",
+      "keeper": false
+    },
+    {
+      "overall": 111,
+      "round": 11,
+      "slot": 1,
+      "pid": "12508",
+      "name": "Jaxson Dart",
+      "pos": "QB",
+      "team": "NYG",
+      "keeper": true
+    },
+    {
+      "overall": 112,
+      "round": 11,
+      "slot": 2,
+      "pid": "13330",
+      "name": "Kenyon Sadiq",
+      "pos": "TE",
+      "team": "NYJ",
+      "keeper": false
+    },
+    {
+      "overall": 113,
+      "round": 11,
+      "slot": 3,
+      "pid": "11564",
+      "name": "Drake Maye",
+      "pos": "QB",
+      "team": "NE",
+      "keeper": true
+    },
+    {
+      "overall": 114,
+      "round": 11,
+      "slot": 4,
+      "pid": "3973",
+      "name": "Myles Garrett",
+      "pos": "DL",
+      "team": "LAR",
+      "keeper": true
+    },
+    {
+      "overall": 115,
+      "round": 11,
+      "slot": 5,
+      "pid": "8183",
+      "name": "Brock Purdy",
+      "pos": "QB",
+      "team": "SF",
+      "keeper": true
+    },
+    {
+      "overall": 116,
+      "round": 11,
+      "slot": 6,
+      "pid": "7002",
+      "name": "Juwan Johnson",
+      "pos": "TE",
+      "team": "NO",
+      "keeper": false
+    },
+    {
+      "overall": 117,
+      "round": 11,
+      "slot": 7,
+      "pid": "10232",
+      "name": "Michael Wilson",
+      "pos": "WR",
+      "team": "ARI",
+      "keeper": false
+    },
+    {
+      "overall": 118,
+      "round": 11,
+      "slot": 8,
+      "pid": "5991",
+      "name": "Maxx Crosby",
+      "pos": "DL",
+      "team": "LV",
+      "keeper": true
+    },
+    {
+      "overall": 119,
+      "round": 11,
+      "slot": 9,
+      "pid": "9756",
+      "name": "Jordan Addison",
+      "pos": "WR",
+      "team": "MIN",
+      "keeper": true
+    },
+    {
+      "overall": 120,
+      "round": 11,
+      "slot": 10,
+      "pid": "12578",
+      "name": "Carson Schwesinger",
+      "pos": "LB",
+      "team": "CLE",
+      "keeper": true
+    },
+    {
+      "overall": 121,
+      "round": 11,
+      "slot": 11,
+      "pid": "12506",
+      "name": "Harold Fannin",
+      "pos": "TE",
+      "team": "CLE",
+      "keeper": true
+    },
+    {
+      "overall": 122,
+      "round": 12,
+      "slot": 1,
+      "pid": "10236",
+      "name": "Dalton Kincaid",
+      "pos": "TE",
+      "team": "BUF",
+      "keeper": false
+    },
+    {
+      "overall": 123,
+      "round": 12,
+      "slot": 2,
+      "pid": "5041",
+      "name": "Fred Warner",
+      "pos": "LB",
+      "team": "SF",
+      "keeper": false
+    },
+    {
+      "overall": 124,
+      "round": 12,
+      "slot": 3,
+      "pid": "9500",
+      "name": "Josh Downs",
+      "pos": "WR",
+      "team": "IND",
+      "keeper": false
+    },
+    {
+      "overall": 125,
+      "round": 12,
+      "slot": 4,
+      "pid": "8289",
+      "name": "Aidan Hutchinson",
+      "pos": "DL",
+      "team": "DET",
+      "keeper": false
+    },
+    {
+      "overall": 126,
+      "round": 12,
+      "slot": 5,
+      "pid": "8167",
+      "name": "Christian Watson",
+      "pos": "WR",
+      "team": "GB",
+      "keeper": true
+    },
+    {
+      "overall": 127,
+      "round": 12,
+      "slot": 6,
+      "pid": "9484",
+      "name": "Tucker Kraft",
+      "pos": "TE",
+      "team": "GB",
+      "keeper": true
+    },
+    {
+      "overall": 128,
+      "round": 12,
+      "slot": 7,
+      "pid": "8148",
+      "name": "Jameson Williams",
+      "pos": "WR",
+      "team": "DET",
+      "keeper": true
+    },
+    {
+      "overall": 129,
+      "round": 12,
+      "slot": 8,
+      "pid": "8121",
+      "name": "Romeo Doubs",
+      "pos": "WR",
+      "team": "NE",
+      "keeper": false
+    },
+    {
+      "overall": 130,
+      "round": 12,
+      "slot": 9,
+      "pid": "11631",
+      "name": "Brian Thomas",
+      "pos": "WR",
+      "team": "JAX",
+      "keeper": true
+    },
+    {
+      "overall": 131,
+      "round": 12,
+      "slot": 10,
+      "pid": "10222",
+      "name": "Jayden Reed",
+      "pos": "WR",
+      "team": "GB",
+      "keeper": true
+    },
+    {
+      "overall": 132,
+      "round": 12,
+      "slot": 11,
+      "pid": "12474",
+      "name": "Woody Marks",
+      "pos": "RB",
+      "team": "HOU",
+      "keeper": false
+    },
+    {
+      "overall": 133,
+      "round": 13,
+      "slot": 1,
+      "pid": "8110",
+      "name": "Jake Ferguson",
+      "pos": "TE",
+      "team": "DAL",
+      "keeper": false
+    },
+    {
+      "overall": 134,
+      "round": 13,
+      "slot": 2,
+      "pid": "13417",
+      "name": "De'Zhaun Stribling",
+      "pos": "WR",
+      "team": "SF",
+      "keeper": false
+    },
+    {
+      "overall": 135,
+      "round": 13,
+      "slot": 3,
+      "pid": "12493",
+      "name": "Oronde Gadsden",
+      "pos": "TE",
+      "team": "LAC",
+      "keeper": false
+    },
+    {
+      "overall": 136,
+      "round": 13,
+      "slot": 3,
+      "origSlot": 4,
+      "pid": "13305",
+      "name": "Mike Washington",
+      "pos": "RB",
+      "team": "LV",
+      "keeper": false
+    },
+    {
+      "overall": 137,
+      "round": 13,
+      "slot": 5,
+      "pid": "5012",
+      "name": "Mark Andrews",
+      "pos": "TE",
+      "team": "BAL",
+      "keeper": false
+    },
+    {
+      "overall": 138,
+      "round": 13,
+      "slot": 6,
+      "pid": "13376",
+      "name": "Caleb Downs",
+      "pos": "DB",
+      "team": "DAL",
+      "keeper": false
+    },
+    {
+      "overall": 139,
+      "round": 13,
+      "slot": 7,
+      "pid": "3214",
+      "name": "Hunter Henry",
+      "pos": "TE",
+      "team": "NE",
+      "keeper": false
+    },
+    {
+      "overall": 140,
+      "round": 13,
+      "slot": 8,
+      "pid": "9480",
+      "name": "Brenton Strange",
+      "pos": "TE",
+      "team": "JAX",
+      "keeper": false
+    },
+    {
+      "overall": 141,
+      "round": 13,
+      "slot": 9,
+      "pid": "4035",
+      "name": "Alvin Kamara",
+      "pos": "RB",
+      "team": "NO",
+      "keeper": false
+    },
+    {
+      "overall": 142,
+      "round": 13,
+      "slot": 10,
+      "pid": "8136",
+      "name": "Rachaad White",
+      "pos": "RB",
+      "team": "WAS",
+      "keeper": false
+    },
+    {
+      "overall": 143,
+      "round": 13,
+      "slot": 11,
+      "pid": "5332",
+      "name": "Foyesade Oluokun",
+      "pos": "LB",
+      "team": "JAX",
+      "keeper": false
+    },
+    {
+      "overall": 144,
+      "round": 14,
+      "slot": 1,
+      "pid": "10892",
+      "name": "Will Anderson",
+      "pos": "DL",
+      "team": "HOU",
+      "keeper": false
+    },
+    {
+      "overall": 145,
+      "round": 14,
+      "slot": 2,
+      "pid": "5849",
+      "name": "Kyler Murray",
+      "pos": "QB",
+      "team": "MIN",
+      "keeper": false
+    },
+    {
+      "overall": 146,
+      "round": 14,
+      "slot": 3,
+      "pid": "7611",
+      "name": "Rhamondre Stevenson",
+      "pos": "RB",
+      "team": "NE",
+      "keeper": true
+    },
+    {
+      "overall": 147,
+      "round": 14,
+      "slot": 3,
+      "origSlot": 4,
+      "pid": "13269",
+      "name": "Fernando Mendoza",
+      "pos": "QB",
+      "team": "LV",
+      "keeper": false
+    },
+    {
+      "overall": 148,
+      "round": 14,
+      "slot": 5,
+      "pid": "6815",
+      "name": "Zack Baun",
+      "pos": "LB",
+      "team": "PHI",
+      "keeper": false
+    },
+    {
+      "overall": 149,
+      "round": 14,
+      "slot": 6,
+      "pid": "4227",
+      "name": "Harrison Butker",
+      "pos": "K",
+      "team": "KC",
+      "keeper": false
+    },
+    {
+      "overall": 150,
+      "round": 14,
+      "slot": 7,
+      "pid": "7672",
+      "name": "Ernest Jones",
+      "pos": "LB",
+      "team": "SEA",
+      "keeper": false
+    },
+    {
+      "overall": 151,
+      "round": 14,
+      "slot": 8,
+      "pid": "5862",
+      "name": "Brian Burns",
+      "pos": "DL",
+      "team": "NYG",
+      "keeper": false
+    },
+    {
+      "overall": 152,
+      "round": 14,
+      "slot": 9,
+      "pid": "13371",
+      "name": "Dillon Thieneman",
+      "pos": "DB",
+      "team": "CHI",
+      "keeper": false
+    },
+    {
+      "overall": 153,
+      "round": 14,
+      "slot": 10,
+      "pid": "11575",
+      "name": "Ray Davis",
+      "pos": "RB",
+      "team": "BUF",
+      "keeper": false
+    },
+    {
+      "overall": 154,
+      "round": 14,
+      "slot": 11,
+      "pid": "4037",
+      "name": "Chris Godwin",
+      "pos": "WR",
+      "team": "TB",
+      "keeper": true
+    },
+    {
+      "overall": 155,
+      "round": 15,
+      "slot": 1,
+      "pid": "2449",
+      "name": "Stefon Diggs",
+      "pos": "WR",
+      "team": "WAS",
+      "keeper": false
+    },
+    {
+      "overall": 156,
+      "round": 15,
+      "slot": 2,
+      "pid": "7841",
+      "name": "Jamien Sherwood",
+      "pos": "LB",
+      "team": "NYJ",
+      "keeper": false
+    },
+    {
+      "overall": 157,
+      "round": 15,
+      "slot": 4,
+      "origSlot": 3,
+      "pid": "11533",
+      "name": "Brandon Aubrey",
+      "pos": "K",
+      "team": "DAL",
+      "keeper": false
+    },
+    {
+      "overall": 158,
+      "round": 15,
+      "slot": 4,
+      "pid": "11624",
+      "name": "Xavier Worthy",
+      "pos": "WR",
+      "team": "KC",
+      "keeper": false
+    },
+    {
+      "overall": 159,
+      "round": 15,
+      "slot": 5,
+      "pid": "11646",
+      "name": "Jalen Coker",
+      "pos": "WR",
+      "team": "CAR",
+      "keeper": false
+    },
+    {
+      "overall": 160,
+      "round": 15,
+      "slot": 6,
+      "pid": "8132",
+      "name": "Tyler Allgeier",
+      "pos": "RB",
+      "team": "ARI",
+      "keeper": false
+    },
+    {
+      "overall": 161,
+      "round": 15,
+      "slot": 7,
+      "pid": "6949",
+      "name": "Jordyn Brooks",
+      "pos": "LB",
+      "team": "MIA",
+      "keeper": true
+    },
+    {
+      "overall": 162,
+      "round": 15,
+      "slot": 8,
+      "pid": "2393",
+      "name": "Danielle Hunter",
+      "pos": "DL",
+      "team": "HOU",
+      "keeper": false
+    },
+    {
+      "overall": 163,
+      "round": 15,
+      "slot": 9,
+      "pid": "13411",
+      "name": "Zavion Thomas",
+      "pos": "WR",
+      "team": "CHI",
+      "keeper": false
+    },
+    {
+      "overall": 164,
+      "round": 15,
+      "slot": 10,
+      "pid": "4892",
+      "name": "Baker Mayfield",
+      "pos": "QB",
+      "team": "TB",
+      "keeper": false
+    },
+    {
+      "overall": 165,
+      "round": 15,
+      "slot": 11,
+      "pid": "9511",
+      "name": "Keaton Mitchell",
+      "pos": "RB",
+      "team": "LAC",
+      "keeper": false
+    },
+    {
+      "overall": 166,
+      "round": 16,
+      "slot": 1,
+      "pid": "5872",
+      "name": "Deebo Samuel",
+      "pos": "WR",
+      "team": "SF",
+      "keeper": false
+    },
+    {
+      "overall": 167,
+      "round": 16,
+      "slot": 2,
+      "pid": "13377",
+      "name": "Arvell Reese",
+      "pos": "LB",
+      "team": "NYG",
+      "keeper": false
+    },
+    {
+      "overall": 168,
+      "round": 16,
+      "slot": 4,
+      "origSlot": 3,
+      "pid": "13281",
+      "name": "Jordyn Tyson",
+      "pos": "WR",
+      "team": "NO",
+      "keeper": false
+    },
+    {
+      "overall": 169,
+      "round": 16,
+      "slot": 4,
+      "pid": "4943",
+      "name": "Sam Darnold",
+      "pos": "QB",
+      "team": "SEA",
+      "keeper": false
+    },
+    {
+      "overall": 170,
+      "round": 16,
+      "slot": 5,
+      "pid": "13337",
+      "name": "Emmett Johnson",
+      "pos": "RB",
+      "team": "KC",
+      "keeper": false
+    },
+    {
+      "overall": 171,
+      "round": 16,
+      "slot": 6,
+      "pid": "5960",
+      "name": "T.J. Edwards",
+      "pos": "LB",
+      "team": "CHI",
+      "keeper": false
+    },
+    {
+      "overall": 172,
+      "round": 16,
+      "slot": 7,
+      "pid": "6804",
+      "name": "Jordan Love",
+      "pos": "QB",
+      "team": "GB",
+      "keeper": false
+    },
+    {
+      "overall": 173,
+      "round": 16,
+      "slot": 8,
+      "pid": "11584",
+      "name": "Bucky Irving",
+      "pos": "RB",
+      "team": "TB",
+      "keeper": true
+    },
+    {
+      "overall": 174,
+      "round": 16,
+      "slot": 9,
+      "pid": "2020",
+      "name": "Cairo Santos",
+      "pos": "K",
+      "team": "CHI",
+      "keeper": false
+    },
+    {
+      "overall": 175,
+      "round": 16,
+      "slot": 10,
+      "pid": "11665",
+      "name": "Jared Verse",
+      "pos": "DL",
+      "team": "CLE",
+      "keeper": false
+    },
+    {
+      "overall": 176,
+      "round": 16,
+      "slot": 11,
+      "pid": "6819",
+      "name": "Michael Pittman",
+      "pos": "WR",
+      "team": "PIT",
+      "keeper": false
+    },
+    {
+      "overall": 177,
+      "round": 17,
+      "slot": 1,
+      "pid": "8676",
+      "name": "Rashid Shaheed",
+      "pos": "WR",
+      "team": "SEA",
+      "keeper": false
+    },
+    {
+      "overall": 178,
+      "round": 17,
+      "slot": 2,
+      "pid": "3451",
+      "name": "Ka'imi Fairbairn",
+      "pos": "K",
+      "team": "HOU",
+      "keeper": false
+    },
+    {
+      "overall": 179,
+      "round": 17,
+      "slot": 4,
+      "origSlot": 3,
+      "pid": "8280",
+      "name": "Nik Bonitto",
+      "pos": "LB",
+      "team": "DEN",
+      "keeper": false
+    },
+    {
+      "overall": 180,
+      "round": 17,
+      "slot": 4,
+      "pid": "13293",
+      "name": "Ja'Kobi Lane",
+      "pos": "WR",
+      "team": "BAL",
+      "keeper": false
+    },
+    {
+      "overall": 181,
+      "round": 17,
+      "slot": 5,
+      "pid": "13296",
+      "name": "Caleb Douglas",
+      "pos": "WR",
+      "team": "MIA",
+      "keeper": false
+    },
+    {
+      "overall": 182,
+      "round": 17,
+      "slot": 6,
+      "pid": "11563",
+      "name": "Bo Nix",
+      "pos": "QB",
+      "team": "DEN",
+      "keeper": true
+    },
+    {
+      "overall": 183,
+      "round": 17,
+      "slot": 7,
+      "pid": "11742",
+      "name": "Cedric Gray",
+      "pos": "LB",
+      "team": "TEN",
+      "keeper": false
+    },
+    {
+      "overall": 184,
+      "round": 17,
+      "slot": 8,
+      "pid": "9508",
+      "name": "Tyjae Spears",
+      "pos": "RB",
+      "team": "TEN",
+      "keeper": false
+    },
+    {
+      "overall": 185,
+      "round": 17,
+      "slot": 9,
+      "pid": "4963",
+      "name": "Minkah Fitzpatrick",
+      "pos": "DB",
+      "team": "NYJ",
+      "keeper": false
+    },
+    {
+      "overall": 186,
+      "round": 17,
+      "slot": 10,
+      "pid": "11786",
+      "name": "Cam Little",
+      "pos": "K",
+      "team": "JAX",
+      "keeper": false
+    },
+    {
+      "overall": 187,
+      "round": 17,
+      "slot": 11,
+      "pid": "12469",
+      "name": "Dylan Sampson",
+      "pos": "RB",
+      "team": "CLE",
+      "keeper": false
+    },
+    {
+      "overall": 188,
+      "round": 18,
+      "slot": 1,
+      "pid": "9753",
+      "name": "Zach Charbonnet",
+      "pos": "RB",
+      "team": "SEA",
+      "keeper": false
+    },
+    {
+      "overall": 189,
+      "round": 18,
+      "slot": 8,
+      "origSlot": 2,
+      "pid": "8180",
+      "name": "Jalen Nailor",
+      "pos": "WR",
+      "team": "LV",
+      "keeper": false
+    },
+    {
+      "overall": 190,
+      "round": 18,
+      "slot": 3,
+      "pid": "10917",
+      "name": "Byron Young",
+      "pos": "LB",
+      "team": "LAR",
+      "keeper": false
+    },
+    {
+      "overall": 191,
+      "round": 18,
+      "slot": 4,
+      "pid": "5001",
+      "name": "Dalton Schultz",
+      "pos": "TE",
+      "team": "HOU",
+      "keeper": false
+    },
+    {
+      "overall": 192,
+      "round": 18,
+      "slot": 5,
+      "pid": "13414",
+      "name": "Kaelon Black",
+      "pos": "RB",
+      "team": "SF",
+      "keeper": false
+    },
+    {
+      "overall": 193,
+      "round": 18,
+      "slot": 6,
+      "pid": "13276",
+      "name": "Omar Cooper",
+      "pos": "WR",
+      "team": "NYJ",
+      "keeper": false
+    },
+    {
+      "overall": 194,
+      "round": 18,
+      "slot": 7,
+      "pid": "8659",
+      "name": "Nate Landman",
+      "pos": "LB",
+      "team": "LAR",
+      "keeper": false
+    },
+    {
+      "overall": 195,
+      "round": 18,
+      "slot": 8,
+      "pid": "6302",
+      "name": "Kaden Elliss",
+      "pos": "LB",
+      "team": "NO",
+      "keeper": false
+    },
+    {
+      "overall": 196,
+      "round": 18,
+      "slot": 9,
+      "pid": "8339",
+      "name": "Kyle Hamilton",
+      "pos": "DB",
+      "team": "BAL",
+      "keeper": false
+    },
+    {
+      "overall": 197,
+      "round": 18,
+      "slot": 10,
+      "pid": "13413",
+      "name": "Cyrus Allen",
+      "pos": "WR",
+      "team": "KC",
+      "keeper": false
+    },
+    {
+      "overall": 198,
+      "round": 18,
+      "slot": 11,
+      "pid": "9504",
+      "name": "Kayshon Boutte",
+      "pos": "WR",
+      "team": "HOU",
+      "keeper": false
+    },
+    {
+      "overall": 199,
+      "round": 19,
+      "slot": 1,
+      "pid": "421",
+      "name": "Matthew Stafford",
+      "pos": "QB",
+      "team": "LAR",
+      "keeper": true
+    },
+    {
+      "overall": 200,
+      "round": 19,
+      "slot": 2,
+      "pid": "5844",
+      "name": "T.J. Hockenson",
+      "pos": "TE",
+      "team": "MIN",
+      "keeper": false
+    },
+    {
+      "overall": 201,
+      "round": 19,
+      "slot": 3,
+      "pid": "4971",
+      "name": "Derwin James",
+      "pos": "DB",
+      "team": "LAC",
+      "keeper": false
+    },
+    {
+      "overall": 202,
+      "round": 19,
+      "slot": 4,
+      "pid": "8266",
+      "name": "Quay Walker",
+      "pos": "LB",
+      "team": "LV",
+      "keeper": false
+    },
+    {
+      "overall": 203,
+      "round": 19,
+      "slot": 5,
+      "pid": "12617",
+      "name": "Demetrius Knight",
+      "pos": "LB",
+      "team": "CIN",
+      "keeper": false
+    },
+    {
+      "overall": 204,
+      "round": 19,
+      "slot": 6,
+      "pid": "11559",
+      "name": "Michael Penix",
+      "pos": "QB",
+      "team": "ATL",
+      "keeper": false
+    },
+    {
+      "overall": 205,
+      "round": 19,
+      "slot": 7,
+      "pid": "2747",
+      "name": "Jason Myers",
+      "pos": "K",
+      "team": "SEA",
+      "keeper": false
+    },
+    {
+      "overall": 206,
+      "round": 19,
+      "slot": 8,
+      "pid": "5995",
+      "name": "Justice Hill",
+      "pos": "RB",
+      "team": "BAL",
+      "keeper": false
+    },
+    {
+      "overall": 207,
+      "round": 19,
+      "slot": 9,
+      "pid": "5843",
+      "name": "Devin Bush",
+      "pos": "LB",
+      "team": "CHI",
+      "keeper": false
+    },
+    {
+      "overall": 208,
+      "round": 19,
+      "slot": 10,
+      "pid": "9225",
+      "name": "Tank Bigsby",
+      "pos": "RB",
+      "team": "PHI",
+      "keeper": false
+    },
+    {
+      "overall": 209,
+      "round": 19,
+      "slot": 11,
+      "pid": "11576",
+      "name": "Braelon Allen",
+      "pos": "RB",
+      "team": "NYJ",
+      "keeper": false
+    },
+    {
+      "overall": 210,
+      "round": 20,
+      "slot": 1,
+      "pid": "5816",
+      "name": "Nick Bosa",
+      "pos": "DL",
+      "team": "SF",
+      "keeper": false
+    },
+    {
+      "overall": 211,
+      "round": 20,
+      "slot": 2,
+      "pid": "6826",
+      "name": "Cole Kmet",
+      "pos": "TE",
+      "team": "CHI",
+      "keeper": false
+    },
+    {
+      "overall": 212,
+      "round": 20,
+      "slot": 3,
+      "pid": "12015",
+      "name": "Harrison Mevis",
+      "pos": "K",
+      "team": "LAR",
+      "keeper": false
+    },
+    {
+      "overall": 213,
+      "round": 20,
+      "slot": 3,
+      "origSlot": 4,
+      "pid": "13345",
+      "name": "Jonah Coleman",
+      "pos": "RB",
+      "team": "DEN",
+      "keeper": false
+    },
+    {
+      "overall": 214,
+      "round": 20,
+      "slot": 5,
+      "pid": "8259",
+      "name": "Cameron Dicker",
+      "pos": "K",
+      "team": "LAC",
+      "keeper": false
+    },
+    {
+      "overall": 215,
+      "round": 20,
+      "slot": 6,
+      "pid": "4195",
+      "name": "Jake Elliott",
+      "pos": "K",
+      "team": "PHI",
+      "keeper": false
+    },
+    {
+      "overall": 216,
+      "round": 20,
+      "slot": 7,
+      "pid": "11581",
+      "name": "MarShawn Lloyd",
+      "pos": "RB",
+      "team": "GB",
+      "keeper": false
+    },
+    {
+      "overall": 217,
+      "round": 20,
+      "slot": 8,
+      "pid": "1945",
+      "name": "Chris Boswell",
+      "pos": "K",
+      "team": "PIT",
+      "keeper": false
+    },
+    {
+      "overall": 218,
+      "round": 20,
+      "slot": 9,
+      "pid": "5726",
+      "name": "Robert Spillane",
+      "pos": "LB",
+      "team": "NE",
+      "keeper": false
+    },
+    {
+      "overall": 219,
+      "round": 20,
+      "slot": 10,
+      "pid": "13288",
+      "name": "Nicholas Singleton",
+      "pos": "RB",
+      "team": "TEN",
+      "keeper": false
+    },
+    {
+      "overall": 220,
+      "round": 20,
+      "slot": 11,
+      "pid": "7839",
+      "name": "Evan McPherson",
+      "pos": "K",
+      "team": "CIN",
+      "keeper": false
+    }
+  ],
+  "keepers": [
+    {
+      "pid": "12508",
+      "slot": 1,
+      "round": 11
+    },
+    {
+      "pid": "421",
+      "slot": 1,
+      "round": 19
+    },
+    {
+      "pid": "11564",
+      "slot": 3,
+      "round": 11
+    },
+    {
+      "pid": "7611",
+      "slot": 3,
+      "round": 14
+    },
+    {
+      "pid": "3973",
+      "slot": 4,
+      "round": 11
+    },
+    {
+      "pid": "8183",
+      "slot": 5,
+      "round": 11
+    },
+    {
+      "pid": "8167",
+      "slot": 5,
+      "round": 12
+    },
+    {
+      "pid": "9484",
+      "slot": 6,
+      "round": 12
+    },
+    {
+      "pid": "11563",
+      "slot": 6,
+      "round": 17
+    },
+    {
+      "pid": "8148",
+      "slot": 7,
+      "round": 12
+    },
+    {
+      "pid": "6949",
+      "slot": 7,
+      "round": 15
+    },
+    {
+      "pid": "5991",
+      "slot": 8,
+      "round": 11
+    },
+    {
+      "pid": "11584",
+      "slot": 8,
+      "round": 16
+    },
+    {
+      "pid": "9756",
+      "slot": 9,
+      "round": 11
+    },
+    {
+      "pid": "11631",
+      "slot": 9,
+      "round": 12
+    },
+    {
+      "pid": "12578",
+      "slot": 10,
+      "round": 11
+    },
+    {
+      "pid": "10222",
+      "slot": 10,
+      "round": 12
+    },
+    {
+      "pid": "12506",
+      "slot": 11,
+      "round": 11
+    },
+    {
+      "pid": "4037",
+      "slot": 11,
+      "round": 14
+    }
+  ],
+  "trades": [
+    {
+      "round": 3,
+      "slot": 8,
+      "toSlot": 2
+    },
+    {
+      "round": 18,
+      "slot": 2,
+      "toSlot": 8
+    },
+    {
+      "round": 16,
+      "slot": 3,
+      "toSlot": 4
+    },
+    {
+      "round": 13,
+      "slot": 4,
+      "toSlot": 3
+    },
+    {
+      "round": 15,
+      "slot": 3,
+      "toSlot": 4
+    },
+    {
+      "round": 17,
+      "slot": 3,
+      "toSlot": 4
+    },
+    {
+      "round": 14,
+      "slot": 4,
+      "toSlot": 3
+    },
+    {
+      "round": 20,
+      "slot": 4,
+      "toSlot": 3
+    }
+  ],
+  "tradeLog": [
+    {
+      "id": "2025-imran-vip-r3",
+      "type": "pick",
+      "note": "2025 in-season trade: Imran sent his R3 to Vip for Justin Jefferson + Vip's R18.",
+      "at": null,
+      "appliedAt": 1787287712435,
+      "source": "draft-ops.json",
+      "status": "applied",
+      "detail": "R3 pick of Imran \u2192 Vip"
+    },
+    {
+      "id": "2025-vip-imran-r18",
+      "type": "pick",
+      "note": "Other side of the same 2025 trade: Vip's R18 to Imran.",
+      "at": null,
+      "appliedAt": 1787287712435,
+      "source": "draft-ops.json",
+      "status": "applied",
+      "detail": "R18 pick of Vip \u2192 Imran"
+    },
+    {
+      "id": "2026-andres-ryaan-r16",
+      "type": "pick",
+      "note": "Andres sent his R16 to Ryaan for Puka Nacua + Ryaan's R13. Ryaan also receives Ja'Marr Chase.",
+      "at": null,
+      "appliedAt": 1788050169742,
+      "source": "draft-ops.json",
+      "status": "applied",
+      "detail": "R16 pick of Andres \u2192 Ryaan"
+    },
+    {
+      "id": "2026-ryaan-andres-r13",
+      "type": "pick",
+      "note": "Other side of the same trade: Ryaan's R13 to Andres.",
+      "at": null,
+      "appliedAt": 1788050169742,
+      "source": "draft-ops.json",
+      "status": "applied",
+      "detail": "R13 pick of Ryaan \u2192 Andres"
+    },
+    {
+      "id": "2026-andres-ryaan-r15",
+      "type": "pick",
+      "note": "Andres \u21c4 Ryaan, second trade: Ryaan receives Andres's R15 + R17, Andres receives Ryaan's R14 + R20. Picks only \u2014 no players involved.",
+      "at": null,
+      "appliedAt": 1788063884810,
+      "source": "draft-ops.json",
+      "status": "applied",
+      "detail": "R15 pick of Andres \u2192 Ryaan"
+    },
+    {
+      "id": "2026-andres-ryaan-r17",
+      "type": "pick",
+      "note": "Same trade: Andres's R17 to Ryaan.",
+      "at": null,
+      "appliedAt": 1788063884810,
+      "source": "draft-ops.json",
+      "status": "applied",
+      "detail": "R17 pick of Andres \u2192 Ryaan"
+    },
+    {
+      "id": "2026-ryaan-andres-r14",
+      "type": "pick",
+      "note": "Same trade: Ryaan's R14 to Andres. Andres now holds two R14 picks \u2014 his own is spent keeping Rhamondre Stevenson, this one is a live pick.",
+      "at": null,
+      "appliedAt": 1788063884810,
+      "source": "draft-ops.json",
+      "status": "applied",
+      "detail": "R14 pick of Ryaan \u2192 Andres"
+    },
+    {
+      "id": "2026-ryaan-andres-r20",
+      "type": "pick",
+      "note": "Same trade: Ryaan's R20 to Andres.",
+      "at": null,
+      "appliedAt": 1788063884810,
+      "source": "draft-ops.json",
+      "status": "applied",
+      "detail": "R20 pick of Ryaan \u2192 Andres"
+    }
+  ]
+}
