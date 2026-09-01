@@ -3,10 +3,10 @@
 // state. Mock mode is the one explicitly-pending piece.
 
 import { useEffect, useMemo, useState } from 'react';
-import { currentOverall, ownerOf, rosterBalance, roundOf } from '@fa/rules';
+import { currentOverall, ownerOf, redoablePids, rosterBalance, roundOf } from '@fa/rules';
 import { fetchPool, transport, type PoolDoc, type Session } from '../api';
 import { useRoom } from '../store';
-import { mockState, mockSubmit, resetMock, stopBots, useMock } from '../mock';
+import { mockEvents, mockState, mockSubmit, stopBots, useMock } from '../mock';
 import { Analyzer } from './Analyzer';
 import { Board } from './Board';
 import { Drawer } from './Drawer';
@@ -104,6 +104,7 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
   const isCommish = session.role === 'commish';
   const mySlot = session.slot ?? (config as { commish_slot?: number }).commish_slot ?? 11;
   const openRequest = draft.requests.find((r) => !r.resolved);
+  const redoPid = redoablePids(isMock ? mockEvents(room.events) : room.events).at(-1) ?? null;
   const balance = rosterBalance(config, draft);
   const round = done ? config.rounds : roundOf(config, cur);
   const pickInRound = done ? config.teams : ((cur - 1) % config.teams) + 1;
@@ -231,6 +232,7 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
               openPanel={setPanel}
               onOpen={setDrawerPid}
               mock={isMock}
+              redoPid={redoPid}
               mockPanel={isMock
                 ? <MockControls players={players} byPid={byPid} config={config} events={room.events} mySlot={mySlot} />
                 : null}

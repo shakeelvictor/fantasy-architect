@@ -37,3 +37,35 @@ describe('roster balance', () => {
     expect(rosterBalance(CFG, st).balanced).toBe(true);
   });
 });
+
+import { redoablePids } from '../src/index.ts';
+
+describe('redoablePids', () => {
+  const pick = (seq: number, pid: string, overall: number, keeper = false): DraftEvent =>
+    ev(seq, 'pick_made', { pid, overall, round: 1, slot: overall, is_keeper: keeper });
+  const undo = (seq: number, overall: number): DraftEvent => ev(seq, 'pick_undone', { overall });
+
+  it('an undone pick becomes redoable; resubmitting it pops the stack', () => {
+    expect(redoablePids([pick(1, 'a', 1), undo(2, 1)])).toEqual(['a']);
+    expect(redoablePids([pick(1, 'a', 1), undo(2, 1), pick(3, 'a', 1)])).toEqual([]);
+  });
+
+  it('stacked undos redo most-recent-first (lowest overall on top)', () => {
+    const events = [pick(1, 'a', 1), pick(2, 'b', 2), undo(3, 2), undo(4, 1)];
+    // resubmit from the END: 'a' (pick #1) first, then 'b'
+    expect(redoablePids(events)).toEqual(['b', 'a']);
+    expect(redoablePids([...events, pick(5, 'a', 1)])).toEqual(['b']);
+  });
+
+  it('the undo cascade strips keeper fills without making them redoable', () => {
+    // real pick at 1, keeper auto-filled at 2; the undo cascade pops both
+    const events = [pick(1, 'a', 1), pick(2, 'k', 2, true), undo(3, 2), undo(4, 1)];
+    expect(redoablePids(events)).toEqual(['a']);
+    // the redo resubmits 'a'; the keeper re-chains as a fresh derived fill
+    expect(redoablePids([...events, pick(5, 'a', 1), pick(6, 'k', 2, true)])).toEqual([]);
+  });
+
+  it('a different pick after an undo takes the slot and kills the redo', () => {
+    expect(redoablePids([pick(1, 'a', 1), undo(2, 1), pick(3, 'b', 1)])).toEqual([]);
+  });
+});

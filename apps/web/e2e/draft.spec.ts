@@ -62,6 +62,14 @@ test('a full slice of draft night, in two browsers', async ({ browser }) => {
   await expect(team.getByTestId('cell-2')).not.toContainText(askedName);
   await expect(commish.getByTestId('onclock')).toContainText('Vip');
 
+  // ---- redo is a compensating pick_made: the same player comes right back
+  await commish.getByTestId('redo').click();
+  await expect(commish.getByTestId('cell-2')).toContainText(askedName);
+  await expect(team.getByTestId('cell-2')).toContainText(askedName);
+  await commish.getByTestId('undo').click();
+  await expect(commish.getByTestId('cell-2')).not.toContainText(askedName);
+  await expect(team.getByTestId('cell-2')).not.toContainText(askedName);
+
   // ---- kill the network mid-pick: the pick fails LOUDLY, nothing corrupts
   await commishCtx.setOffline(true);
   // (the idle SSE socket only notices on its next heartbeat — the loud

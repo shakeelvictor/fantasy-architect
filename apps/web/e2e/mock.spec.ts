@@ -69,5 +69,11 @@ test('mock draft: bots pick, pause on your turn, real board untouched', async ({
   await expect(page.getByTestId('cell-11').locator('.bc-name')).toHaveCount(0);
   await expect(page.getByTestId('cell-10').locator('.bc-name')).toBeVisible();
 
+  // ---- and mock redo puts your pick back, through the same local log
+  await page.getByTestId('tab-draft').click();
+  await page.getByTestId('redo').click();
+  await page.getByTestId('tab-board').click();
+  await expect(page.getByTestId('cell-11')).toContainText(myName);
+
   await ctx.close();
 });

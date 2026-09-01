@@ -192,3 +192,34 @@ export function rosterBalance(config: SeasonConfig, state: DraftState): RosterBa
     .filter((x) => x.owns !== config.rounds);
   return { balanced: offenders.length === 0, target: config.rounds, offenders };
 }
+
+// ----------------------------------------------------------------- redo
+// The log is append-only, so an undone pick's events are all still there —
+// redo is just resubmitting pick_made for the player the undo removed. This
+// walks the log and returns the pids whose picks were undone and never
+// re-filled, in stack order: resubmit from the END (most recent undo first;
+// its keeper fills re-chain server-side, so one pid restores the cascade).
+// Any OTHER pick made after an undo takes that board position and clears
+// the stack — those positions can't be given back.
+
+export function redoablePids(events: readonly DraftEvent[]): string[] {
+  const picks: Pick[] = [];
+  const stack: string[] = [];
+  for (const e of events) {
+    if (e.type === 'pick_made') {
+      const pk = e.payload as unknown as Pick;
+      picks.push(pk);
+      if (!pk.is_keeper) {
+        if (stack.length && stack[stack.length - 1] === pk.pid) stack.pop();
+        else stack.length = 0;
+      }
+    } else if (e.type === 'pick_undone') {
+      const overall = (e.payload as { overall: number }).overall;
+      const i = picks.findIndex((p) => p.overall === overall);
+      if (i < 0) continue;
+      const [pk] = picks.splice(i, 1);
+      if (!pk!.is_keeper) stack.push(pk!.pid);
+    }
+  }
+  return stack;
+}

@@ -23,9 +23,10 @@ interface Props {
   onOpen?: (pid: string) => void;
   mock?: boolean;
   mockPanel?: React.ReactNode;
+  redoPid?: string | null;
 }
 
-export function SidePanel({ players, byPid, config, draft, session, mySlot, teamName, done, onClock, act, events, openPanel, onOpen, mock, mockPanel }: Props): React.JSX.Element {
+export function SidePanel({ players, byPid, config, draft, session, mySlot, teamName, done, onClock, act, events, openPanel, onOpen, mock, mockPanel, redoPid }: Props): React.JSX.Element {
   const isCommish = session.role === 'commish';
   const recs = done ? [] : recommendations(players, byPid, config, draft, mySlot, 8);
   const top = recs[0];
@@ -48,7 +49,11 @@ export function SidePanel({ players, byPid, config, draft, session, mySlot, team
             <button className="btn" data-testid="undo" disabled={!draft.started || draft.picks.length === 0 || done} onClick={() => act('pick_undone')}>
               Undo Pick
             </button>
-            <button className="btn" disabled title="Redo arrives with the next phase">Redo Pick</button>
+            <button className="btn" data-testid="redo" disabled={!redoPid || !draft.started || done}
+              title={redoPid ? 'Put back the pick the last undo removed' : 'Nothing undone to put back'}
+              onClick={() => redoPid && act('pick_made', { pid: redoPid })}>
+              Redo Pick
+            </button>
             {isCommish && (
               <button className="btn" data-testid="open-keepers" onClick={() => openPanel('keepers')}>
                 Keepers{draft.keepers.length ? ` (${draft.keepers.length})` : ''}
