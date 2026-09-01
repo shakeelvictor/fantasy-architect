@@ -16,7 +16,7 @@
 //
 // pnpm --filter @fa/bake bake   (env: BAKE_SEASON, BAKE_PRIOR, BAKE_TEAMS)
 
-import { writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { scoreWeek } from '@fa/scoring';
@@ -77,6 +77,8 @@ const weekUrl = (w: number): string =>
   `https://api.sleeper.app/projections/nfl/${SEASON}/${w}?season_type=regular&${posParams}`;
 const priorUrl = (w: number): string =>
   `https://api.sleeper.app/stats/nfl/${PRIOR}/${w}?season_type=regular&${posParams}`;
+const actualUrl = (w: number): string =>
+  `https://api.sleeper.app/stats/nfl/${SEASON}/${w}?season_type=regular&${posParams}`;
 
 console.log(`baking season ${SEASON} (prior ${PRIOR})…`);
 const [meta, seasonProj] = await Promise.all([
@@ -94,6 +96,8 @@ const defGames: Record<string, number> = {};
 // Per-player prior-season totals under custom scoring (drawer's "last season
 // actual" line) — same rows the SOS pass already walks, so no extra fetches.
 const prior: Record<string, number> = {};
+const priorGames: Record<string, number> = {};
+let priorWeeks = 0;
 for (let w = 1; w <= WEEKS; w++) {
   let rows: Row[];
   try {
@@ -101,10 +105,12 @@ for (let w = 1; w <= WEEKS; w++) {
   } catch {
     continue;
   }
+  if (rows.length) priorWeeks++;
   const seenOpp: Record<string, boolean> = {};
   for (const row of rows) {
     const pts0 = scoreWeek(row.stats ?? {}, true); // finished games — exact tiers
     prior[row.player_id] = (prior[row.player_id] ?? 0) + pts0;
+    if (Number(row.stats?.gp) > 0) priorGames[row.player_id] = (priorGames[row.player_id] ?? 0) + 1;
     const opp = row.opponent;
     const pos = normalizePos(row.player?.position);
     if (!opp || !pos) continue;
@@ -129,6 +135,30 @@ const priorRank: Record<string, number> = {};
     byPos[pos]!.forEach((e, i) => (priorRank[e.pid] = i + 1));
   }
 }
+// ---- actuals for the season being drafted. Empty until kickoff, then one
+// more week each time the daily bake runs — which is what lets an archived
+// draft's grades be checked against what actually happened. Scored the same
+// way the prior pass scores: WEEK BY WEEK with exact tiers, never off a
+// season total (the per-game yardage bonuses would be wrong).
+const curActual: Record<string, number> = {};
+const curGames: Record<string, number> = {};
+let curWeeks = 0;
+for (let w = 1; w <= WEEKS; w++) {
+  let rows: Row[];
+  try {
+    rows = await fetchJson<Row[]>(actualUrl(w));
+  } catch {
+    continue;
+  }
+  if (!rows.length) continue; // week not played yet
+  curWeeks++;
+  for (const row of rows) {
+    curActual[row.player_id] = (curActual[row.player_id] ?? 0) + scoreWeek(row.stats ?? {}, true);
+    if (Number(row.stats?.gp) > 0) curGames[row.player_id] = (curGames[row.player_id] ?? 0) + 1;
+  }
+}
+console.log(`actuals: ${PRIOR} through week ${priorWeeks}, ${SEASON} through week ${curWeeks}`);
+
 const sosRanks: Record<string, Record<string, number>> = {};
 {
   const teams = Object.keys(allowed);
@@ -334,8 +364,43 @@ for (const g of GROUPS) {
   });
 }
 
-const out = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..', 'apps', 'web', 'public', 'players.json');
+const pub = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..', 'apps', 'web', 'public');
+const out = join(pub, 'players.json');
 writeFileSync(out, JSON.stringify({ bakedAt: new Date().toISOString(), season: SEASON, prior: PRIOR, replacement, sosRanks, players }));
+
+// ---- actuals files: what each player really scored, per season. One small
+// file per season, read by the Analyzer's retrospective to check an archived
+// draft's grades against the season that followed. Kept out of players.json
+// because they are per-SEASON history, not part of the current board.
+mkdirSync(join(pub, 'actuals'), { recursive: true });
+function writeActuals(season: string, pts: Record<string, number>, games: Record<string, number>, weeks: number): void {
+  const out: Record<string, [number, number]> = {};
+  for (const [pid, v] of Object.entries(pts)) {
+    if (!(v > 0) && !games[pid]) continue;
+    out[pid] = [Math.round(v * 10) / 10, games[pid] ?? 0];
+  }
+  writeFileSync(join(pub, 'actuals', `${season}.json`), JSON.stringify({
+    season, throughWeek: weeks, bakedAt: new Date().toISOString(),
+    scoring: 'IMP league rules', players: out,
+  }));
+  console.log(`actuals/${season}.json — ${Object.keys(out).length} players, through week ${weeks}`);
+}
+writeActuals(PRIOR, prior, priorGames, priorWeeks);
+writeActuals(SEASON, curActual, curGames, curWeeks);
+
+// The prior-season actuals feed the drawer's "last season" line AND the
+// retrospective. They are the same week-by-week sum, so they must agree —
+// a mismatch means one of the two paths drifted.
+{
+  const sample = players.find((p) => p.lastSeason != null);
+  if (sample) {
+    const fromActuals = Math.round((prior[sample.pid] ?? 0) * 10) / 10;
+    if (Math.abs(fromActuals - sample.lastSeason!) > 0.05) {
+      throw new Error(`actuals/${PRIOR} disagrees with lastSeason for ${sample.name}: ${fromActuals} vs ${sample.lastSeason}`);
+    }
+    console.log(`actuals cross-check ok (${sample.name}: ${fromActuals})`);
+  }
+}
 console.log(`${players.length} players baked`);
 console.log('top 5:', players.slice(0, 5).map((p) => `${p.name} ${p.pos} v${p.vorp}`).join(' | '));
 console.log('sample columns:', JSON.stringify(players.find((p) => p.name === 'Derrick Henry') ?? players[10]));

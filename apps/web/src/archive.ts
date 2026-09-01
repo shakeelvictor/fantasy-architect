@@ -6,6 +6,7 @@
 
 import { rosterBalance, type DraftState, type SeasonConfig } from '@fa/rules';
 import type { PoolPlayer } from './api';
+import { computeGrades } from './grades';
 
 export interface ArchivePick {
   overall: number; round: number; slot: number; origSlot?: number;
@@ -13,7 +14,12 @@ export interface ArchivePick {
 }
 export interface ArchiveTeam {
   slot: number; name: string; projectedPoints: number;
-  roster: (ArchivePick & { proj: number | null; adp: number | null })[];
+  roster: (ArchivePick & { proj: number | null; adp: number | null; vorp?: number | null })[];
+  // the assessment as it stood on draft night, pinned into the document so a
+  // later retrospective judges what was actually said rather than what a
+  // changed formula would say today
+  draftGrade?: string;
+  draftZ?: number;
 }
 export interface ArchiveDoc {
   schema: number; kind: string; season: number; league: string;
@@ -49,6 +55,9 @@ export function buildArchive(
         round: pk.round, overall: pk.overall, slot, keeper: pk.is_keeper,
         proj: p ? Math.round(p.proj * 10) / 10 : null,
         adp: p?.adp ?? null,
+        // the grade's own input, so the document can be re-graded years later
+        // without the bake that produced it
+        vorp: p?.vorp ?? null,
       };
     });
     return {
@@ -57,6 +66,15 @@ export function buildArchive(
     };
   });
   const bal = rosterBalance(config, draft);
+  const grades = computeGrades(teams.map((t) => ({
+    slot: t.slot,
+    name: t.name,
+    roster: t.roster.map((r) => ({ proj: r.proj ?? 0, vorp: r.vorp ?? 0 })),
+  })));
+  for (const t of teams) {
+    const g = grades.find((x) => x.slot === t.slot);
+    if (g) { t.draftGrade = g.grade; t.draftZ = Math.round(g.z * 1000) / 1000; }
+  }
   return {
     schema: 1, kind: 'imp-draft-archive',
     season, league: 'MFL',

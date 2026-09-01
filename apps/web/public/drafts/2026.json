@@ -45,7 +45,8 @@
           "overall": 1,
           "keeper": false,
           "proj": 416.3,
-          "adp": 1.2
+          "adp": 1.2,
+          "vorp": 206.8
         },
         {
           "pid": "8137",
@@ -56,7 +57,8 @@
           "overall": 12,
           "keeper": false,
           "proj": 224.4,
-          "adp": 23.7
+          "adp": 23.7,
+          "vorp": 64.4
         },
         {
           "pid": "8112",
@@ -67,7 +69,8 @@
           "overall": 23,
           "keeper": false,
           "proj": 239.8,
-          "adp": 18
+          "adp": 18,
+          "vorp": 79.8
         },
         {
           "pid": "11632",
@@ -78,7 +81,8 @@
           "overall": 34,
           "keeper": false,
           "proj": 178.9,
-          "adp": 26.5
+          "adp": 26.5,
+          "vorp": 18.9
         },
         {
           "pid": "12529",
@@ -89,7 +93,8 @@
           "overall": 45,
           "keeper": false,
           "proj": 209.5,
-          "adp": 53.4
+          "adp": 53.4,
+          "vorp": 0
         },
         {
           "pid": "7021",
@@ -100,7 +105,8 @@
           "overall": 56,
           "keeper": false,
           "proj": 218.8,
-          "adp": 97.1
+          "adp": 97.1,
+          "vorp": 9.3
         },
         {
           "pid": "5850",
@@ -111,7 +117,8 @@
           "overall": 67,
           "keeper": false,
           "proj": 244.8,
-          "adp": 34.9
+          "adp": 34.9,
+          "vorp": 35.3
         },
         {
           "pid": "1466",
@@ -122,7 +129,8 @@
           "overall": 78,
           "keeper": false,
           "proj": 160.8,
-          "adp": 100.3
+          "adp": 100.3,
+          "vorp": 28.2
         },
         {
           "pid": "6806",
@@ -133,7 +141,8 @@
           "overall": 89,
           "keeper": false,
           "proj": 151.3,
-          "adp": 106.9
+          "adp": 106.9,
+          "vorp": -58.2
         },
         {
           "pid": "4199",
@@ -144,7 +153,8 @@
           "overall": 100,
           "keeper": false,
           "proj": 149.2,
-          "adp": 134.4
+          "adp": 134.4,
+          "vorp": -60.3
         },
         {
           "pid": "12508",
@@ -155,7 +165,8 @@
           "overall": 111,
           "keeper": true,
           "proj": 381.6,
-          "adp": 89.1
+          "adp": 89.1,
+          "vorp": 13.8
         },
         {
           "pid": "10236",
@@ -166,7 +177,8 @@
           "overall": 122,
           "keeper": false,
           "proj": 125.5,
-          "adp": 84.2
+          "adp": 84.2,
+          "vorp": -7.1
         },
         {
           "pid": "8110",
@@ -177,7 +189,8 @@
           "overall": 133,
           "keeper": false,
           "proj": 130.8,
-          "adp": 107.2
+          "adp": 107.2,
+          "vorp": -1.8
         },
         {
           "pid": "10892",
@@ -188,7 +201,8 @@
           "overall": 144,
           "keeper": false,
           "proj": 95.6,
-          "adp": 94.1
+          "adp": 94.1,
+          "vorp": -12.6
         },
         {
           "pid": "2449",
@@ -199,7 +213,8 @@
           "overall": 155,
           "keeper": false,
           "proj": 153.9,
-          "adp": 124.1
+          "adp": 124.1,
+          "vorp": -6.1
         },
         {
           "pid": "5872",
@@ -210,7 +225,8 @@
           "overall": 166,
           "keeper": false,
           "proj": 152.9,
-          "adp": 161.6
+          "adp": 161.6,
+          "vorp": -7.1
         },
         {
           "pid": "8676",
@@ -221,7 +237,8 @@
           "overall": 177,
           "keeper": false,
           "proj": 141.8,
-          "adp": 194.1
+          "adp": 194.1,
+          "vorp": -18.2
         },
         {
           "pid": "9753",
@@ -232,7 +249,8 @@
           "overall": 188,
           "keeper": false,
           "proj": 57.2,
-          "adp": 164
+          "adp": 164,
+          "vorp": -152.3
         },
         {
           "pid": "421",
@@ -243,7 +261,8 @@
           "overall": 199,
           "keeper": true,
           "proj": 357.8,
-          "adp": 96.8
+          "adp": 96.8,
+          "vorp": -10
         },
         {
           "pid": "5816",
@@ -254,10 +273,13 @@
           "overall": 210,
           "keeper": false,
           "proj": 79.6,
-          "adp": 137.4
+          "adp": 137.4,
+          "vorp": -28.6
         }
       ],
-      "projectedPoints": 3870
+      "projectedPoints": 3870,
+      "draftGrade": "C",
+      "draftZ": 0.156
     },
     {
       "slot": 2,
@@ -272,7 +294,8 @@
           "overall": 2,
           "keeper": false,
           "proj": 405.3,
-          "adp": 2.9
+          "adp": 2.9,
+          "vorp": 195.8
         },
         {
           "pid": "4866",
@@ -283,7 +306,8 @@
           "overall": 13,
           "keeper": false,
           "proj": 278.2,
-          "adp": 12.8
+          "adp": 12.8,
+          "vorp": 68.7
         },
         {
           "pid": "11604",
@@ -294,7 +318,8 @@
           "overall": 24,
           "keeper": false,
           "proj": 220.5,
-          "adp": 21
+          "adp": 21,
+          "vorp": 87.9
         },
         {
           "pid": "8144",
@@ -305,7 +330,8 @@
           "overall": 30,
           "keeper": false,
           "proj": 223.3,
-          "adp": 30.5
+          "adp": 30.5,
+          "vorp": 63.3
         },
         {
           "pid": "7525",
@@ -316,7 +342,8 @@
           "overall": 35,
           "keeper": false,
           "proj": 210.9,
-          "adp": 38.5
+          "adp": 38.5,
+          "vorp": 50.9
         },
         {
           "pid": "5927",
@@ -327,7 +354,8 @@
           "overall": 46,
           "keeper": false,
           "proj": 197,
-          "adp": 60.4
+          "adp": 60.4,
+          "vorp": 37
         },
         {
           "pid": "11566",
@@ -338,7 +366,8 @@
           "overall": 57,
           "keeper": false,
           "proj": 393.4,
-          "adp": 61.1
+          "adp": 61.1,
+          "vorp": 25.6
         },
         {
           "pid": "8146",
@@ -349,7 +378,8 @@
           "overall": 68,
           "keeper": false,
           "proj": 183.1,
-          "adp": 45
+          "adp": 45,
+          "vorp": 23.1
         },
         {
           "pid": "5967",
@@ -360,7 +390,8 @@
           "overall": 79,
           "keeper": false,
           "proj": 184.6,
-          "adp": 89
+          "adp": 89,
+          "vorp": -24.7
         },
         {
           "pid": "4960",
@@ -371,7 +402,8 @@
           "overall": 90,
           "keeper": false,
           "proj": 127,
-          "adp": 83.9
+          "adp": 83.9,
+          "vorp": 18.8
         },
         {
           "pid": "8126",
@@ -382,7 +414,8 @@
           "overall": 101,
           "keeper": false,
           "proj": 136.4,
-          "adp": 130.8
+          "adp": 130.8,
+          "vorp": -23.7
         },
         {
           "pid": "13330",
@@ -393,7 +426,8 @@
           "overall": 112,
           "keeper": false,
           "proj": 51.6,
-          "adp": 188.7
+          "adp": 188.7,
+          "vorp": -81
         },
         {
           "pid": "5041",
@@ -404,7 +438,8 @@
           "overall": 123,
           "keeper": false,
           "proj": 116.7,
-          "adp": 103.6
+          "adp": 103.6,
+          "vorp": 8.5
         },
         {
           "pid": "13417",
@@ -415,7 +450,8 @@
           "overall": 134,
           "keeper": false,
           "proj": 102.6,
-          "adp": 149.7
+          "adp": 149.7,
+          "vorp": -57.4
         },
         {
           "pid": "5849",
@@ -426,7 +462,8 @@
           "overall": 145,
           "keeper": false,
           "proj": 353.4,
-          "adp": 160.3
+          "adp": 160.3,
+          "vorp": -14.4
         },
         {
           "pid": "7841",
@@ -437,7 +474,8 @@
           "overall": 156,
           "keeper": false,
           "proj": 111.2,
-          "adp": 152.4
+          "adp": 152.4,
+          "vorp": 3.1
         },
         {
           "pid": "13377",
@@ -448,7 +486,8 @@
           "overall": 167,
           "keeper": false,
           "proj": 92.3,
-          "adp": 192.7
+          "adp": 192.7,
+          "vorp": -15.9
         },
         {
           "pid": "3451",
@@ -459,7 +498,8 @@
           "overall": 178,
           "keeper": false,
           "proj": 127.6,
-          "adp": 150.4
+          "adp": 150.4,
+          "vorp": 9.4
         },
         {
           "pid": "5844",
@@ -470,7 +510,8 @@
           "overall": 200,
           "keeper": false,
           "proj": 112,
-          "adp": 203.4
+          "adp": 203.4,
+          "vorp": -20.6
         },
         {
           "pid": "6826",
@@ -481,10 +522,13 @@
           "overall": 211,
           "keeper": false,
           "proj": 60.5,
-          "adp": null
+          "adp": null,
+          "vorp": -72.1
         }
       ],
-      "projectedPoints": 3688
+      "projectedPoints": 3688,
+      "draftGrade": "A",
+      "draftZ": 1.432
     },
     {
       "slot": 3,
@@ -499,7 +543,8 @@
           "overall": 3,
           "keeper": false,
           "proj": 284.3,
-          "adp": 3.7
+          "adp": 3.7,
+          "vorp": 124.3
         },
         {
           "pid": "9224",
@@ -510,7 +555,8 @@
           "overall": 14,
           "keeper": false,
           "proj": 290.2,
-          "adp": 19.6
+          "adp": 19.6,
+          "vorp": 80.7
         },
         {
           "pid": "8130",
@@ -521,7 +567,8 @@
           "overall": 25,
           "keeper": false,
           "proj": 209.6,
-          "adp": 22.7
+          "adp": 22.7,
+          "vorp": 77
         },
         {
           "pid": "6801",
@@ -532,7 +579,8 @@
           "overall": 36,
           "keeper": false,
           "proj": 225.8,
-          "adp": 35.3
+          "adp": 35.3,
+          "vorp": 65.8
         },
         {
           "pid": "12490",
@@ -543,7 +591,8 @@
           "overall": 47,
           "keeper": false,
           "proj": 196.3,
-          "adp": 62.4
+          "adp": 62.4,
+          "vorp": -13.2
         },
         {
           "pid": "12526",
@@ -554,7 +603,8 @@
           "overall": 58,
           "keeper": false,
           "proj": 205,
-          "adp": 33.5
+          "adp": 33.5,
+          "vorp": 45
         },
         {
           "pid": "12534",
@@ -565,7 +615,8 @@
           "overall": 69,
           "keeper": false,
           "proj": 150.2,
-          "adp": 110.2
+          "adp": 110.2,
+          "vorp": -59.3
         },
         {
           "pid": "7523",
@@ -576,7 +627,8 @@
           "overall": 80,
           "keeper": false,
           "proj": 356.7,
-          "adp": 98.7
+          "adp": 98.7,
+          "vorp": -11.1
         },
         {
           "pid": "13294",
@@ -587,7 +639,8 @@
           "overall": 91,
           "keeper": false,
           "proj": 98.8,
-          "adp": 92.8
+          "adp": 92.8,
+          "vorp": -61.2
         },
         {
           "pid": "4070",
@@ -598,7 +651,8 @@
           "overall": 102,
           "keeper": false,
           "proj": 104,
-          "adp": 88.2
+          "adp": 88.2,
+          "vorp": -4.2
         },
         {
           "pid": "11564",
@@ -609,7 +663,8 @@
           "overall": 113,
           "keeper": true,
           "proj": 386.8,
-          "adp": 41.6
+          "adp": 41.6,
+          "vorp": 19
         },
         {
           "pid": "9500",
@@ -620,7 +675,8 @@
           "overall": 124,
           "keeper": false,
           "proj": 174.4,
-          "adp": 132.3
+          "adp": 132.3,
+          "vorp": 14.4
         },
         {
           "pid": "12493",
@@ -631,7 +687,8 @@
           "overall": 135,
           "keeper": false,
           "proj": 66.8,
-          "adp": 156.1
+          "adp": 156.1,
+          "vorp": -65.8
         },
         {
           "pid": "13305",
@@ -642,7 +699,8 @@
           "overall": 136,
           "keeper": false,
           "proj": 51.5,
-          "adp": 179.2
+          "adp": 179.2,
+          "vorp": -158
         },
         {
           "pid": "7611",
@@ -653,7 +711,8 @@
           "overall": 146,
           "keeper": true,
           "proj": 200.6,
-          "adp": 85.6
+          "adp": 85.6,
+          "vorp": -8.9
         },
         {
           "pid": "13269",
@@ -664,7 +723,8 @@
           "overall": 147,
           "keeper": false,
           "proj": 240.9,
-          "adp": 202.7
+          "adp": 202.7,
+          "vorp": -126.9
         },
         {
           "pid": "10917",
@@ -675,7 +735,8 @@
           "overall": 190,
           "keeper": false,
           "proj": 91.8,
-          "adp": 148.1
+          "adp": 148.1,
+          "vorp": -16.4
         },
         {
           "pid": "4971",
@@ -686,7 +747,8 @@
           "overall": 201,
           "keeper": false,
           "proj": 112.3,
-          "adp": 145.1
+          "adp": 145.1,
+          "vorp": 4.1
         },
         {
           "pid": "12015",
@@ -697,7 +759,8 @@
           "overall": 212,
           "keeper": false,
           "proj": 126.9,
-          "adp": 170.9
+          "adp": 170.9,
+          "vorp": 8.5
         },
         {
           "pid": "13345",
@@ -708,10 +771,13 @@
           "overall": 213,
           "keeper": false,
           "proj": 60.6,
-          "adp": 199.6
+          "adp": 199.6,
+          "vorp": -148.9
         }
       ],
-      "projectedPoints": 3634
+      "projectedPoints": 3634,
+      "draftGrade": "C",
+      "draftZ": -0.011
     },
     {
       "slot": 4,
@@ -726,7 +792,8 @@
           "overall": 4,
           "keeper": false,
           "proj": 304.3,
-          "adp": 4.4
+          "adp": 4.4,
+          "vorp": 144.3
         },
         {
           "pid": "12507",
@@ -737,7 +804,8 @@
           "overall": 15,
           "keeper": false,
           "proj": 262.3,
-          "adp": 17.5
+          "adp": 17.5,
+          "vorp": 53.3
         },
         {
           "pid": "7569",
@@ -748,7 +816,8 @@
           "overall": 26,
           "keeper": false,
           "proj": 256.3,
-          "adp": 25.1
+          "adp": 25.1,
+          "vorp": 96.3
         },
         {
           "pid": "7543",
@@ -759,7 +828,8 @@
           "overall": 37,
           "keeper": false,
           "proj": 228.1,
-          "adp": 47.8
+          "adp": 47.8,
+          "vorp": 18.6
         },
         {
           "pid": "11635",
@@ -770,7 +840,8 @@
           "overall": 48,
           "keeper": false,
           "proj": 185.1,
-          "adp": 43.8
+          "adp": 43.8,
+          "vorp": 25.1
         },
         {
           "pid": "12519",
@@ -781,7 +852,8 @@
           "overall": 59,
           "keeper": false,
           "proj": 191.5,
-          "adp": 57
+          "adp": 57,
+          "vorp": 31.5
         },
         {
           "pid": "3294",
@@ -792,7 +864,8 @@
           "overall": 70,
           "keeper": false,
           "proj": 407.6,
-          "adp": 77.6
+          "adp": 77.6,
+          "vorp": 39.8
         },
         {
           "pid": "5045",
@@ -803,7 +876,8 @@
           "overall": 81,
           "keeper": false,
           "proj": 150.9,
-          "adp": 86.4
+          "adp": 86.4,
+          "vorp": -9.1
         },
         {
           "pid": "11586",
@@ -814,7 +888,8 @@
           "overall": 92,
           "keeper": false,
           "proj": 169,
-          "adp": 112.7
+          "adp": 112.7,
+          "vorp": -40.5
         },
         {
           "pid": "5022",
@@ -825,7 +900,8 @@
           "overall": 103,
           "keeper": false,
           "proj": 132.6,
-          "adp": 125.7
+          "adp": 125.7,
+          "vorp": 0
         },
         {
           "pid": "3973",
@@ -836,7 +912,8 @@
           "overall": 114,
           "keeper": true,
           "proj": 110.9,
-          "adp": 71.2
+          "adp": 71.2,
+          "vorp": 2.7
         },
         {
           "pid": "8289",
@@ -847,7 +924,8 @@
           "overall": 125,
           "keeper": false,
           "proj": 111,
-          "adp": 75.5
+          "adp": 75.5,
+          "vorp": 2.8
         },
         {
           "pid": "11533",
@@ -858,7 +936,8 @@
           "overall": 157,
           "keeper": false,
           "proj": 126.5,
-          "adp": 134.6
+          "adp": 134.6,
+          "vorp": 8.3
         },
         {
           "pid": "11624",
@@ -869,7 +948,8 @@
           "overall": 158,
           "keeper": false,
           "proj": 153.6,
-          "adp": 159.8
+          "adp": 159.8,
+          "vorp": -6.4
         },
         {
           "pid": "13281",
@@ -880,7 +960,8 @@
           "overall": 168,
           "keeper": false,
           "proj": 117.3,
-          "adp": 105.3
+          "adp": 105.3,
+          "vorp": -42.7
         },
         {
           "pid": "4943",
@@ -891,7 +972,8 @@
           "overall": 169,
           "keeper": false,
           "proj": 356.1,
-          "adp": 190.1
+          "adp": 190.1,
+          "vorp": -11.7
         },
         {
           "pid": "8280",
@@ -902,7 +984,8 @@
           "overall": 179,
           "keeper": false,
           "proj": 93.2,
-          "adp": 140.3
+          "adp": 140.3,
+          "vorp": -15
         },
         {
           "pid": "13293",
@@ -913,7 +996,8 @@
           "overall": 180,
           "keeper": false,
           "proj": 45.5,
-          "adp": 193.1
+          "adp": 193.1,
+          "vorp": -114.5
         },
         {
           "pid": "5001",
@@ -924,7 +1008,8 @@
           "overall": 191,
           "keeper": false,
           "proj": 129.9,
-          "adp": 211.4
+          "adp": 211.4,
+          "vorp": -2.7
         },
         {
           "pid": "8266",
@@ -935,10 +1020,13 @@
           "overall": 202,
           "keeper": false,
           "proj": 112.3,
-          "adp": 187.8
+          "adp": 187.8,
+          "vorp": 4.1
         }
       ],
-      "projectedPoints": 3644
+      "projectedPoints": 3644,
+      "draftGrade": "C",
+      "draftZ": -0.124
     },
     {
       "slot": 5,
@@ -953,7 +1041,8 @@
           "overall": 5,
           "keeper": false,
           "proj": 365.6,
-          "adp": 5.6
+          "adp": 5.6,
+          "vorp": 155.8
         },
         {
           "pid": "3198",
@@ -964,7 +1053,8 @@
           "overall": 16,
           "keeper": false,
           "proj": 313.8,
-          "adp": 20.6
+          "adp": 20.6,
+          "vorp": 104.3
         },
         {
           "pid": "12517",
@@ -975,7 +1065,8 @@
           "overall": 27,
           "keeper": false,
           "proj": 196.9,
-          "adp": 35.5
+          "adp": 35.5,
+          "vorp": 64.3
         },
         {
           "pid": "5892",
@@ -986,7 +1077,8 @@
           "overall": 38,
           "keeper": false,
           "proj": 263.1,
-          "adp": 52.2
+          "adp": 52.2,
+          "vorp": 53.6
         },
         {
           "pid": "10229",
@@ -997,7 +1089,8 @@
           "overall": 49,
           "keeper": false,
           "proj": 217.1,
-          "adp": 31.7
+          "adp": 31.7,
+          "vorp": 57.1
         },
         {
           "pid": "2216",
@@ -1008,7 +1101,8 @@
           "overall": 60,
           "keeper": false,
           "proj": 191.6,
-          "adp": 65.1
+          "adp": 65.1,
+          "vorp": 31.6
         },
         {
           "pid": "4046",
@@ -1019,7 +1113,8 @@
           "overall": 71,
           "keeper": false,
           "proj": 387.2,
-          "adp": 102.5
+          "adp": 102.5,
+          "vorp": 19.4
         },
         {
           "pid": "12489",
@@ -1030,7 +1125,8 @@
           "overall": 82,
           "keeper": false,
           "proj": 170.4,
-          "adp": 76.9
+          "adp": 76.9,
+          "vorp": -39.1
         },
         {
           "pid": "5947",
@@ -1041,7 +1137,8 @@
           "overall": 93,
           "keeper": false,
           "proj": 143.2,
-          "adp": 131.7
+          "adp": 131.7,
+          "vorp": -16.8
         },
         {
           "pid": "8267",
@@ -1052,7 +1149,8 @@
           "overall": 104,
           "keeper": false,
           "proj": 137.7,
-          "adp": 143.3
+          "adp": 143.3,
+          "vorp": 29.5
         },
         {
           "pid": "8183",
@@ -1063,7 +1161,8 @@
           "overall": 115,
           "keeper": true,
           "proj": 410.6,
-          "adp": 116.8
+          "adp": 116.8,
+          "vorp": 42.8
         },
         {
           "pid": "8167",
@@ -1074,7 +1173,8 @@
           "overall": 126,
           "keeper": true,
           "proj": 202.6,
-          "adp": 71.2
+          "adp": 71.2,
+          "vorp": 42.6
         },
         {
           "pid": "5012",
@@ -1085,7 +1185,8 @@
           "overall": 137,
           "keeper": false,
           "proj": 145.7,
-          "adp": 129.8
+          "adp": 129.8,
+          "vorp": 13.1
         },
         {
           "pid": "6815",
@@ -1096,7 +1197,8 @@
           "overall": 148,
           "keeper": false,
           "proj": 125.1,
-          "adp": 122.1
+          "adp": 122.1,
+          "vorp": 16.9
         },
         {
           "pid": "11646",
@@ -1107,7 +1209,8 @@
           "overall": 159,
           "keeper": false,
           "proj": 165.5,
-          "adp": 200.5
+          "adp": 200.5,
+          "vorp": 5.5
         },
         {
           "pid": "13337",
@@ -1118,7 +1221,8 @@
           "overall": 170,
           "keeper": false,
           "proj": 58,
-          "adp": 269.5
+          "adp": 269.5,
+          "vorp": -151.5
         },
         {
           "pid": "13296",
@@ -1129,7 +1233,8 @@
           "overall": 181,
           "keeper": false,
           "proj": 76.1,
-          "adp": 289.7
+          "adp": 289.7,
+          "vorp": -83.9
         },
         {
           "pid": "13414",
@@ -1140,7 +1245,8 @@
           "overall": 192,
           "keeper": false,
           "proj": 38.3,
-          "adp": 233.1
+          "adp": 233.1,
+          "vorp": -171.2
         },
         {
           "pid": "12617",
@@ -1151,7 +1257,8 @@
           "overall": 203,
           "keeper": false,
           "proj": 113,
-          "adp": 299.6
+          "adp": 299.6,
+          "vorp": 4.8
         },
         {
           "pid": "8259",
@@ -1162,10 +1269,13 @@
           "overall": 214,
           "keeper": false,
           "proj": 130.3,
-          "adp": 142.9
+          "adp": 142.9,
+          "vorp": 11.8
         }
       ],
-      "projectedPoints": 3852
+      "projectedPoints": 3852,
+      "draftGrade": "A",
+      "draftZ": 2.006
     },
     {
       "slot": 6,
@@ -1180,7 +1290,8 @@
           "overall": 6,
           "keeper": false,
           "proj": 312.8,
-          "adp": 6
+          "adp": 6,
+          "vorp": 152.8
         },
         {
           "pid": "13287",
@@ -1191,7 +1302,8 @@
           "overall": 17,
           "keeper": false,
           "proj": 259.1,
-          "adp": 26.5
+          "adp": 26.5,
+          "vorp": 49.6
         },
         {
           "pid": "8151",
@@ -1202,7 +1314,8 @@
           "overall": 28,
           "keeper": false,
           "proj": 272,
-          "adp": 15.1
+          "adp": 15.1,
+          "vorp": 62.5
         },
         {
           "pid": "6770",
@@ -1213,7 +1326,8 @@
           "overall": 39,
           "keeper": false,
           "proj": 425.9,
-          "adp": 46.2
+          "adp": 46.2,
+          "vorp": 58.1
         },
         {
           "pid": "7526",
@@ -1224,7 +1338,8 @@
           "overall": 50,
           "keeper": false,
           "proj": 211.1,
-          "adp": 48.1
+          "adp": 48.1,
+          "vorp": 51.1
         },
         {
           "pid": "5846",
@@ -1235,7 +1350,8 @@
           "overall": 61,
           "keeper": false,
           "proj": 169.6,
-          "adp": 78.5
+          "adp": 78.5,
+          "vorp": 9.6
         },
         {
           "pid": "13279",
@@ -1246,7 +1362,8 @@
           "overall": 72,
           "keeper": false,
           "proj": 156.9,
-          "adp": 67.9
+          "adp": 67.9,
+          "vorp": -3.2
         },
         {
           "pid": "13375",
@@ -1257,7 +1374,8 @@
           "overall": 83,
           "keeper": false,
           "proj": 123.9,
-          "adp": 118.5
+          "adp": 118.5,
+          "vorp": 15.7
         },
         {
           "pid": "12533",
@@ -1268,7 +1386,8 @@
           "overall": 94,
           "keeper": false,
           "proj": 161.4,
-          "adp": 123.6
+          "adp": 123.6,
+          "vorp": -48.1
         },
         {
           "pid": "7648",
@@ -1279,7 +1398,8 @@
           "overall": 105,
           "keeper": false,
           "proj": 130.5,
-          "adp": 154.3
+          "adp": 154.3,
+          "vorp": 22.3
         },
         {
           "pid": "7002",
@@ -1290,7 +1410,8 @@
           "overall": 116,
           "keeper": false,
           "proj": 133.1,
-          "adp": 252
+          "adp": 252,
+          "vorp": 0.5
         },
         {
           "pid": "9484",
@@ -1301,7 +1422,8 @@
           "overall": 127,
           "keeper": true,
           "proj": 174.4,
-          "adp": 62.6
+          "adp": 62.6,
+          "vorp": 41.8
         },
         {
           "pid": "13376",
@@ -1312,7 +1434,8 @@
           "overall": 138,
           "keeper": false,
           "proj": 96.8,
-          "adp": 141.7
+          "adp": 141.7,
+          "vorp": -11.4
         },
         {
           "pid": "4227",
@@ -1323,7 +1446,8 @@
           "overall": 149,
           "keeper": false,
           "proj": 118.2,
-          "adp": 168.2
+          "adp": 168.2,
+          "vorp": 0
         },
         {
           "pid": "8132",
@@ -1334,7 +1458,8 @@
           "overall": 160,
           "keeper": false,
           "proj": 104.2,
-          "adp": 167.1
+          "adp": 167.1,
+          "vorp": -105.3
         },
         {
           "pid": "5960",
@@ -1345,7 +1470,8 @@
           "overall": 171,
           "keeper": false,
           "proj": 79.4,
-          "adp": 366
+          "adp": 366,
+          "vorp": -28.8
         },
         {
           "pid": "11563",
@@ -1356,7 +1482,8 @@
           "overall": 182,
           "keeper": true,
           "proj": 367,
-          "adp": 104.9
+          "adp": 104.9,
+          "vorp": -0.8
         },
         {
           "pid": "13276",
@@ -1367,7 +1494,8 @@
           "overall": 193,
           "keeper": false,
           "proj": 67.6,
-          "adp": 264.5
+          "adp": 264.5,
+          "vorp": -92.4
         },
         {
           "pid": "11559",
@@ -1378,7 +1506,8 @@
           "overall": 204,
           "keeper": false,
           "proj": 155.2,
-          "adp": 435.2
+          "adp": 435.2,
+          "vorp": -212.6
         },
         {
           "pid": "4195",
@@ -1389,10 +1518,13 @@
           "overall": 215,
           "keeper": false,
           "proj": 110,
-          "adp": 361.5
+          "adp": 361.5,
+          "vorp": -8.2
         }
       ],
-      "projectedPoints": 3629
+      "projectedPoints": 3629,
+      "draftGrade": "C",
+      "draftZ": 0.227
     },
     {
       "slot": 7,
@@ -1407,7 +1539,8 @@
           "overall": 7,
           "keeper": false,
           "proj": 286.4,
-          "adp": 7.9
+          "adp": 7.9,
+          "vorp": 126.4
         },
         {
           "pid": "8150",
@@ -1418,7 +1551,8 @@
           "overall": 18,
           "keeper": false,
           "proj": 274.4,
-          "adp": 29.9
+          "adp": 29.9,
+          "vorp": 64.9
         },
         {
           "pid": "7588",
@@ -1429,7 +1563,8 @@
           "overall": 29,
           "keeper": false,
           "proj": 263.4,
-          "adp": 37
+          "adp": 37,
+          "vorp": 53.9
         },
         {
           "pid": "12518",
@@ -1440,7 +1575,8 @@
           "overall": 40,
           "keeper": false,
           "proj": 179.1,
-          "adp": 49.9
+          "adp": 49.9,
+          "vorp": 46.5
         },
         {
           "pid": "13286",
@@ -1451,7 +1587,8 @@
           "overall": 51,
           "keeper": false,
           "proj": 178.9,
-          "adp": 69.7
+          "adp": 69.7,
+          "vorp": -30.6
         },
         {
           "pid": "2133",
@@ -1462,7 +1599,8 @@
           "overall": 62,
           "keeper": false,
           "proj": 177.7,
-          "adp": 51.6
+          "adp": 51.6,
+          "vorp": 17.7
         },
         {
           "pid": "9487",
@@ -1473,7 +1611,8 @@
           "overall": 73,
           "keeper": false,
           "proj": 178.3,
-          "adp": 82.9
+          "adp": 82.9,
+          "vorp": 18.3
         },
         {
           "pid": "3163",
@@ -1484,7 +1623,8 @@
           "overall": 84,
           "keeper": false,
           "proj": 390.8,
-          "adp": 128.5
+          "adp": 128.5,
+          "vorp": 23
         },
         {
           "pid": "11583",
@@ -1495,7 +1635,8 @@
           "overall": 95,
           "keeper": false,
           "proj": 148.9,
-          "adp": 111
+          "adp": 111,
+          "vorp": -60.6
         },
         {
           "pid": "10219",
@@ -1506,7 +1647,8 @@
           "overall": 106,
           "keeper": false,
           "proj": 154.9,
-          "adp": 195.7
+          "adp": 195.7,
+          "vorp": -54.6
         },
         {
           "pid": "10232",
@@ -1517,7 +1659,8 @@
           "overall": 117,
           "keeper": false,
           "proj": 160,
-          "adp": 101.5
+          "adp": 101.5,
+          "vorp": 0
         },
         {
           "pid": "8148",
@@ -1528,7 +1671,8 @@
           "overall": 128,
           "keeper": true,
           "proj": 205.8,
-          "adp": 58.1
+          "adp": 58.1,
+          "vorp": 45.8
         },
         {
           "pid": "3214",
@@ -1539,7 +1683,8 @@
           "overall": 139,
           "keeper": false,
           "proj": 125.5,
-          "adp": 158.7
+          "adp": 158.7,
+          "vorp": -7.1
         },
         {
           "pid": "7672",
@@ -1550,7 +1695,8 @@
           "overall": 150,
           "keeper": false,
           "proj": 107.9,
-          "adp": 191
+          "adp": 191,
+          "vorp": -0.3
         },
         {
           "pid": "6949",
@@ -1561,7 +1707,8 @@
           "overall": 161,
           "keeper": true,
           "proj": 86,
-          "adp": 139.5
+          "adp": 139.5,
+          "vorp": -22.2
         },
         {
           "pid": "6804",
@@ -1572,7 +1719,8 @@
           "overall": 172,
           "keeper": false,
           "proj": 367.8,
-          "adp": 155.6
+          "adp": 155.6,
+          "vorp": 0
         },
         {
           "pid": "11742",
@@ -1583,7 +1731,8 @@
           "overall": 183,
           "keeper": false,
           "proj": 108.8,
-          "adp": 222.2
+          "adp": 222.2,
+          "vorp": 0.6
         },
         {
           "pid": "8659",
@@ -1594,7 +1743,8 @@
           "overall": 194,
           "keeper": false,
           "proj": 120.8,
-          "adp": 231
+          "adp": 231,
+          "vorp": 12.6
         },
         {
           "pid": "2747",
@@ -1605,7 +1755,8 @@
           "overall": 205,
           "keeper": false,
           "proj": 126.5,
-          "adp": 146.9
+          "adp": 146.9,
+          "vorp": 8.3
         },
         {
           "pid": "11581",
@@ -1616,10 +1767,13 @@
           "overall": 216,
           "keeper": false,
           "proj": 82.2,
-          "adp": 178.1
+          "adp": 178.1,
+          "vorp": -127.3
         }
       ],
-      "projectedPoints": 3724
+      "projectedPoints": 3724,
+      "draftGrade": "C",
+      "draftZ": -0.206
     },
     {
       "slot": 8,
@@ -1634,7 +1788,8 @@
           "overall": 8,
           "keeper": false,
           "proj": 390.1,
-          "adp": 8.3
+          "adp": 8.3,
+          "vorp": 180.6
         },
         {
           "pid": "6794",
@@ -1645,7 +1800,8 @@
           "overall": 19,
           "keeper": false,
           "proj": 242.7,
-          "adp": 11.6
+          "adp": 11.6,
+          "vorp": 82.7
         },
         {
           "pid": "4983",
@@ -1656,7 +1812,8 @@
           "overall": 41,
           "keeper": false,
           "proj": 164.2,
-          "adp": 59.9
+          "adp": 59.9,
+          "vorp": 4.2
         },
         {
           "pid": "12514",
@@ -1667,7 +1824,8 @@
           "overall": 52,
           "keeper": false,
           "proj": 167.3,
-          "adp": 39.6
+          "adp": 39.6,
+          "vorp": 7.3
         },
         {
           "pid": "8131",
@@ -1678,7 +1836,8 @@
           "overall": 63,
           "keeper": false,
           "proj": 130.3,
-          "adp": 113.4
+          "adp": 113.4,
+          "vorp": -2.3
         },
         {
           "pid": "6797",
@@ -1689,7 +1848,8 @@
           "overall": 74,
           "keeper": false,
           "proj": 363.8,
-          "adp": 73.2
+          "adp": 73.2,
+          "vorp": -4
         },
         {
           "pid": "9754",
@@ -1700,7 +1860,8 @@
           "overall": 85,
           "keeper": false,
           "proj": 158.6,
-          "adp": 133
+          "adp": 133,
+          "vorp": -1.4
         },
         {
           "pid": "7567",
@@ -1711,7 +1872,8 @@
           "overall": 96,
           "keeper": false,
           "proj": 153.2,
-          "adp": 127.4
+          "adp": 127.4,
+          "vorp": -56.3
         },
         {
           "pid": "6904",
@@ -1722,7 +1884,8 @@
           "overall": 107,
           "keeper": false,
           "proj": 391.8,
-          "adp": 55.4
+          "adp": 55.4,
+          "vorp": 24
         },
         {
           "pid": "5991",
@@ -1733,7 +1896,8 @@
           "overall": 118,
           "keeper": true,
           "proj": 103.9,
-          "adp": 80.5
+          "adp": 80.5,
+          "vorp": -4.3
         },
         {
           "pid": "8121",
@@ -1744,7 +1908,8 @@
           "overall": 129,
           "keeper": false,
           "proj": 144.5,
-          "adp": 161.4
+          "adp": 161.4,
+          "vorp": -15.5
         },
         {
           "pid": "9480",
@@ -1755,7 +1920,8 @@
           "overall": 140,
           "keeper": false,
           "proj": 111.7,
-          "adp": 170.1
+          "adp": 170.1,
+          "vorp": -20.9
         },
         {
           "pid": "5862",
@@ -1766,7 +1932,8 @@
           "overall": 151,
           "keeper": false,
           "proj": 110.8,
-          "adp": 136.8
+          "adp": 136.8,
+          "vorp": 2.6
         },
         {
           "pid": "2393",
@@ -1777,7 +1944,8 @@
           "overall": 162,
           "keeper": false,
           "proj": 97.3,
-          "adp": 179.9
+          "adp": 179.9,
+          "vorp": -10.9
         },
         {
           "pid": "11584",
@@ -1788,7 +1956,8 @@
           "overall": 173,
           "keeper": true,
           "proj": 215.5,
-          "adp": 40.5
+          "adp": 40.5,
+          "vorp": 6
         },
         {
           "pid": "9508",
@@ -1799,7 +1968,8 @@
           "overall": 184,
           "keeper": false,
           "proj": 118,
-          "adp": 210.1
+          "adp": 210.1,
+          "vorp": -91.5
         },
         {
           "pid": "8180",
@@ -1810,7 +1980,8 @@
           "overall": 189,
           "keeper": false,
           "proj": 119.4,
-          "adp": 254.1
+          "adp": 254.1,
+          "vorp": -40.6
         },
         {
           "pid": "6302",
@@ -1821,7 +1992,8 @@
           "overall": 195,
           "keeper": false,
           "proj": 100.6,
-          "adp": 260.5
+          "adp": 260.5,
+          "vorp": -7.6
         },
         {
           "pid": "5995",
@@ -1832,7 +2004,8 @@
           "overall": 206,
           "keeper": false,
           "proj": 75.3,
-          "adp": 367.8
+          "adp": 367.8,
+          "vorp": -134.2
         },
         {
           "pid": "1945",
@@ -1843,10 +2016,13 @@
           "overall": 217,
           "keeper": false,
           "proj": 113.5,
-          "adp": 197.3
+          "adp": 197.3,
+          "vorp": -4.7
         }
       ],
-      "projectedPoints": 3473
+      "projectedPoints": 3473,
+      "draftGrade": "F",
+      "draftZ": -1.247
     },
     {
       "slot": 9,
@@ -1861,7 +2037,8 @@
           "overall": 9,
           "keeper": false,
           "proj": 319.1,
-          "adp": 13.5
+          "adp": 13.5,
+          "vorp": 109.6
         },
         {
           "pid": "12527",
@@ -1872,7 +2049,8 @@
           "overall": 20,
           "keeper": false,
           "proj": 256,
-          "adp": 14
+          "adp": 14,
+          "vorp": 46.5
         },
         {
           "pid": "4984",
@@ -1883,7 +2061,8 @@
           "overall": 31,
           "keeper": false,
           "proj": 422.3,
-          "adp": 16
+          "adp": 16,
+          "vorp": 54.5
         },
         {
           "pid": "6790",
@@ -1894,7 +2073,8 @@
           "overall": 42,
           "keeper": false,
           "proj": 223.8,
-          "adp": 50.1
+          "adp": 50.1,
+          "vorp": 14.3
         },
         {
           "pid": "7553",
@@ -1905,7 +2085,8 @@
           "overall": 53,
           "keeper": false,
           "proj": 156.7,
-          "adp": 66.2
+          "adp": 66.2,
+          "vorp": 24.1
         },
         {
           "pid": "11628",
@@ -1916,7 +2097,8 @@
           "overall": 64,
           "keeper": false,
           "proj": 154.5,
-          "adp": 79.8
+          "adp": 79.8,
+          "vorp": -5.5
         },
         {
           "pid": "8142",
@@ -1927,7 +2109,8 @@
           "overall": 75,
           "keeper": false,
           "proj": 181,
-          "adp": 114.4
+          "adp": 114.4,
+          "vorp": 21
         },
         {
           "pid": "13298",
@@ -1938,7 +2121,8 @@
           "overall": 86,
           "keeper": false,
           "proj": 140.9,
-          "adp": 121.1
+          "adp": 121.1,
+          "vorp": -19.1
         },
         {
           "pid": "4981",
@@ -1949,7 +2133,8 @@
           "overall": 97,
           "keeper": false,
           "proj": 96.4,
-          "adp": 431.6
+          "adp": 431.6,
+          "vorp": -63.7
         },
         {
           "pid": "12530",
@@ -1960,7 +2145,8 @@
           "overall": 108,
           "keeper": false,
           "proj": 50.9,
-          "adp": 91
+          "adp": 91,
+          "vorp": -109.1
         },
         {
           "pid": "9756",
@@ -1971,7 +2157,8 @@
           "overall": 119,
           "keeper": true,
           "proj": 163.2,
-          "adp": 115.3
+          "adp": 115.3,
+          "vorp": 3.2
         },
         {
           "pid": "11631",
@@ -1982,7 +2169,8 @@
           "overall": 130,
           "keeper": true,
           "proj": 154.8,
-          "adp": 80.3
+          "adp": 80.3,
+          "vorp": -5.2
         },
         {
           "pid": "4035",
@@ -1993,7 +2181,8 @@
           "overall": 141,
           "keeper": false,
           "proj": 90.7,
-          "adp": 209.7
+          "adp": 209.7,
+          "vorp": -118.8
         },
         {
           "pid": "13371",
@@ -2004,7 +2193,8 @@
           "overall": 152,
           "keeper": false,
           "proj": 79.3,
-          "adp": 196
+          "adp": 196,
+          "vorp": -28.9
         },
         {
           "pid": "13411",
@@ -2015,7 +2205,8 @@
           "overall": 163,
           "keeper": false,
           "proj": 28.9,
-          "adp": 515.8
+          "adp": 515.8,
+          "vorp": -131.1
         },
         {
           "pid": "2020",
@@ -2026,7 +2217,8 @@
           "overall": 174,
           "keeper": false,
           "proj": 118.1,
-          "adp": 409
+          "adp": 409,
+          "vorp": -0.1
         },
         {
           "pid": "4963",
@@ -2037,7 +2229,8 @@
           "overall": 185,
           "keeper": false,
           "proj": 85.8,
-          "adp": 376.8
+          "adp": 376.8,
+          "vorp": -22.4
         },
         {
           "pid": "8339",
@@ -2048,7 +2241,8 @@
           "overall": 196,
           "keeper": false,
           "proj": 116.7,
-          "adp": 107.7
+          "adp": 107.7,
+          "vorp": 8.5
         },
         {
           "pid": "5843",
@@ -2059,7 +2253,8 @@
           "overall": 207,
           "keeper": false,
           "proj": 115.3,
-          "adp": 251
+          "adp": 251,
+          "vorp": 7.1
         },
         {
           "pid": "5726",
@@ -2070,10 +2265,13 @@
           "overall": 218,
           "keeper": false,
           "proj": 108.5,
-          "adp": 305.8
+          "adp": 305.8,
+          "vorp": 0.3
         }
       ],
-      "projectedPoints": 3063
+      "projectedPoints": 3063,
+      "draftGrade": "F",
+      "draftZ": -1.419
     },
     {
       "slot": 10,
@@ -2088,7 +2286,8 @@
           "overall": 10,
           "keeper": false,
           "proj": 250.4,
-          "adp": 10.9
+          "adp": 10.9,
+          "vorp": 90.4
         },
         {
           "pid": "8155",
@@ -2099,7 +2298,8 @@
           "overall": 21,
           "keeper": false,
           "proj": 268.9,
-          "adp": 32.4
+          "adp": 32.4,
+          "vorp": 59.4
         },
         {
           "pid": "4881",
@@ -2110,7 +2310,8 @@
           "overall": 32,
           "keeper": false,
           "proj": 415.5,
-          "adp": 28.6
+          "adp": 28.6,
+          "vorp": 47.7
         },
         {
           "pid": "12481",
@@ -2121,7 +2322,8 @@
           "overall": 43,
           "keeper": false,
           "proj": 235.6,
-          "adp": 42.6
+          "adp": 42.6,
+          "vorp": 26.1
         },
         {
           "pid": "10859",
@@ -2132,7 +2334,8 @@
           "overall": 54,
           "keeper": false,
           "proj": 166.8,
-          "adp": 56.2
+          "adp": 56.2,
+          "vorp": 34.2
         },
         {
           "pid": "11620",
@@ -2143,7 +2346,8 @@
           "overall": 65,
           "keeper": false,
           "proj": 163.3,
-          "adp": 68.9
+          "adp": 68.9,
+          "vorp": 3.3
         },
         {
           "pid": "12501",
@@ -2154,7 +2358,8 @@
           "overall": 76,
           "keeper": false,
           "proj": 145.1,
-          "adp": 151.4
+          "adp": 151.4,
+          "vorp": -14.9
         },
         {
           "pid": "7594",
@@ -2165,7 +2370,8 @@
           "overall": 87,
           "keeper": false,
           "proj": 185.8,
-          "adp": 99
+          "adp": 99,
+          "vorp": -23.7
         },
         {
           "pid": "8134",
@@ -2176,7 +2382,8 @@
           "overall": 98,
           "keeper": false,
           "proj": 156.8,
-          "adp": 166.6
+          "adp": 166.6,
+          "vorp": -3.2
         },
         {
           "pid": "5346",
@@ -2187,7 +2394,8 @@
           "overall": 109,
           "keeper": false,
           "proj": 103.5,
-          "adp": 227.3
+          "adp": 227.3,
+          "vorp": -4.7
         },
         {
           "pid": "12578",
@@ -2198,7 +2406,8 @@
           "overall": 120,
           "keeper": true,
           "proj": 131.8,
-          "adp": 93.9
+          "adp": 93.9,
+          "vorp": 23.6
         },
         {
           "pid": "10222",
@@ -2209,7 +2418,8 @@
           "overall": 131,
           "keeper": true,
           "proj": 198.9,
-          "adp": 116.7
+          "adp": 116.7,
+          "vorp": 38.9
         },
         {
           "pid": "8136",
@@ -2220,7 +2430,8 @@
           "overall": 142,
           "keeper": false,
           "proj": 163,
-          "adp": 163.2
+          "adp": 163.2,
+          "vorp": -46.5
         },
         {
           "pid": "11575",
@@ -2231,7 +2442,8 @@
           "overall": 153,
           "keeper": false,
           "proj": 72.3,
-          "adp": 372.5
+          "adp": 372.5,
+          "vorp": -137.2
         },
         {
           "pid": "4892",
@@ -2242,7 +2454,8 @@
           "overall": 164,
           "keeper": false,
           "proj": 347.4,
-          "adp": 157.5
+          "adp": 157.5,
+          "vorp": -20.4
         },
         {
           "pid": "11665",
@@ -2253,7 +2466,8 @@
           "overall": 175,
           "keeper": false,
           "proj": 92.4,
-          "adp": 138.9
+          "adp": 138.9,
+          "vorp": -15.8
         },
         {
           "pid": "11786",
@@ -2264,7 +2478,8 @@
           "overall": 186,
           "keeper": false,
           "proj": 120.3,
-          "adp": 153
+          "adp": 153,
+          "vorp": 2.1
         },
         {
           "pid": "13413",
@@ -2275,7 +2490,8 @@
           "overall": 197,
           "keeper": false,
           "proj": 24.9,
-          "adp": 235
+          "adp": 235,
+          "vorp": -135.1
         },
         {
           "pid": "9225",
@@ -2286,7 +2502,8 @@
           "overall": 208,
           "keeper": false,
           "proj": 70,
-          "adp": 267
+          "adp": 267,
+          "vorp": -139.5
         },
         {
           "pid": "13288",
@@ -2297,10 +2514,13 @@
           "overall": 219,
           "keeper": false,
           "proj": 40.7,
-          "adp": 271.6
+          "adp": 271.6,
+          "vorp": -168.7
         }
       ],
-      "projectedPoints": 3353
+      "projectedPoints": 3353,
+      "draftGrade": "F",
+      "draftZ": -1.075
     },
     {
       "slot": 11,
@@ -2315,7 +2535,8 @@
           "overall": 11,
           "keeper": false,
           "proj": 336,
-          "adp": 8.2
+          "adp": 8.2,
+          "vorp": 126.5
         },
         {
           "pid": "5859",
@@ -2326,7 +2547,8 @@
           "overall": 22,
           "keeper": false,
           "proj": 236.2,
-          "adp": 24.1
+          "adp": 24.1,
+          "vorp": 76.2
         },
         {
           "pid": "9997",
@@ -2337,7 +2559,8 @@
           "overall": 33,
           "keeper": false,
           "proj": 217.3,
-          "adp": 44.4
+          "adp": 44.4,
+          "vorp": 57.3
         },
         {
           "pid": "11560",
@@ -2348,7 +2571,8 @@
           "overall": 44,
           "keeper": false,
           "proj": 404.5,
-          "adp": 64.9
+          "adp": 64.9,
+          "vorp": 36.7
         },
         {
           "pid": "12512",
@@ -2359,7 +2583,8 @@
           "overall": 55,
           "keeper": false,
           "proj": 241.2,
-          "adp": 53.4
+          "adp": 53.4,
+          "vorp": 31.7
         },
         {
           "pid": "4217",
@@ -2370,7 +2595,8 @@
           "overall": 66,
           "keeper": false,
           "proj": 164.6,
-          "adp": 95.3
+          "adp": 95.3,
+          "vorp": 32
         },
         {
           "pid": "8228",
@@ -2381,7 +2607,8 @@
           "overall": 77,
           "keeper": false,
           "proj": 231.3,
-          "adp": 74.5
+          "adp": 74.5,
+          "vorp": 21.8
         },
         {
           "pid": "10880",
@@ -2392,7 +2619,8 @@
           "overall": 88,
           "keeper": false,
           "proj": 138.8,
-          "adp": 87.5
+          "adp": 87.5,
+          "vorp": 30.6
         },
         {
           "pid": "8408",
@@ -2403,7 +2631,8 @@
           "overall": 99,
           "keeper": false,
           "proj": 175.6,
-          "adp": 120.1
+          "adp": 120.1,
+          "vorp": -33.9
         },
         {
           "pid": "8329",
@@ -2414,7 +2643,8 @@
           "overall": 110,
           "keeper": false,
           "proj": 126.4,
-          "adp": 230.1
+          "adp": 230.1,
+          "vorp": 18.2
         },
         {
           "pid": "12506",
@@ -2425,7 +2655,8 @@
           "overall": 121,
           "keeper": true,
           "proj": 145.6,
-          "adp": 70.2
+          "adp": 70.2,
+          "vorp": 13
         },
         {
           "pid": "12474",
@@ -2436,7 +2667,8 @@
           "overall": 132,
           "keeper": false,
           "proj": 126.8,
-          "adp": 169.6
+          "adp": 169.6,
+          "vorp": -82.7
         },
         {
           "pid": "5332",
@@ -2447,7 +2679,8 @@
           "overall": 143,
           "keeper": false,
           "proj": 126,
-          "adp": 143.8
+          "adp": 143.8,
+          "vorp": 17.8
         },
         {
           "pid": "4037",
@@ -2458,7 +2691,8 @@
           "overall": 154,
           "keeper": true,
           "proj": 149.4,
-          "adp": 109.6
+          "adp": 109.6,
+          "vorp": -10.6
         },
         {
           "pid": "9511",
@@ -2469,7 +2703,8 @@
           "overall": 165,
           "keeper": false,
           "proj": 125.6,
-          "adp": 259.5
+          "adp": 259.5,
+          "vorp": -84.5
         },
         {
           "pid": "6819",
@@ -2480,7 +2715,8 @@
           "overall": 176,
           "keeper": false,
           "proj": 145.1,
-          "adp": 125.7
+          "adp": 125.7,
+          "vorp": -14.9
         },
         {
           "pid": "12469",
@@ -2491,7 +2727,8 @@
           "overall": 187,
           "keeper": false,
           "proj": 108.6,
-          "adp": 275.9
+          "adp": 275.9,
+          "vorp": -100.9
         },
         {
           "pid": "9504",
@@ -2502,7 +2739,8 @@
           "overall": 198,
           "keeper": false,
           "proj": 122.7,
-          "adp": 295.8
+          "adp": 295.8,
+          "vorp": -37.3
         },
         {
           "pid": "11576",
@@ -2513,7 +2751,8 @@
           "overall": 209,
           "keeper": false,
           "proj": 63.6,
-          "adp": 310.5
+          "adp": 310.5,
+          "vorp": -145.9
         },
         {
           "pid": "7839",
@@ -2524,10 +2763,13 @@
           "overall": 220,
           "keeper": false,
           "proj": 124.1,
-          "adp": 204.7
+          "adp": 204.7,
+          "vorp": 5.9
         }
       ],
-      "projectedPoints": 3509
+      "projectedPoints": 3509,
+      "draftGrade": "B",
+      "draftZ": 0.261
     }
   ],
   "picks": [
@@ -4888,7 +5130,7 @@
       "appliedAt": 1787287712435,
       "source": "draft-ops.json",
       "status": "applied",
-      "detail": "R3 pick of Imran \u2192 Vip"
+      "detail": "R3 pick of Imran → Vip"
     },
     {
       "id": "2025-vip-imran-r18",
@@ -4898,7 +5140,7 @@
       "appliedAt": 1787287712435,
       "source": "draft-ops.json",
       "status": "applied",
-      "detail": "R18 pick of Vip \u2192 Imran"
+      "detail": "R18 pick of Vip → Imran"
     },
     {
       "id": "2026-andres-ryaan-r16",
@@ -4908,7 +5150,7 @@
       "appliedAt": 1788050169742,
       "source": "draft-ops.json",
       "status": "applied",
-      "detail": "R16 pick of Andres \u2192 Ryaan"
+      "detail": "R16 pick of Andres → Ryaan"
     },
     {
       "id": "2026-ryaan-andres-r13",
@@ -4918,17 +5160,17 @@
       "appliedAt": 1788050169742,
       "source": "draft-ops.json",
       "status": "applied",
-      "detail": "R13 pick of Ryaan \u2192 Andres"
+      "detail": "R13 pick of Ryaan → Andres"
     },
     {
       "id": "2026-andres-ryaan-r15",
       "type": "pick",
-      "note": "Andres \u21c4 Ryaan, second trade: Ryaan receives Andres's R15 + R17, Andres receives Ryaan's R14 + R20. Picks only \u2014 no players involved.",
+      "note": "Andres ⇄ Ryaan, second trade: Ryaan receives Andres's R15 + R17, Andres receives Ryaan's R14 + R20. Picks only — no players involved.",
       "at": null,
       "appliedAt": 1788063884810,
       "source": "draft-ops.json",
       "status": "applied",
-      "detail": "R15 pick of Andres \u2192 Ryaan"
+      "detail": "R15 pick of Andres → Ryaan"
     },
     {
       "id": "2026-andres-ryaan-r17",
@@ -4938,17 +5180,17 @@
       "appliedAt": 1788063884810,
       "source": "draft-ops.json",
       "status": "applied",
-      "detail": "R17 pick of Andres \u2192 Ryaan"
+      "detail": "R17 pick of Andres → Ryaan"
     },
     {
       "id": "2026-ryaan-andres-r14",
       "type": "pick",
-      "note": "Same trade: Ryaan's R14 to Andres. Andres now holds two R14 picks \u2014 his own is spent keeping Rhamondre Stevenson, this one is a live pick.",
+      "note": "Same trade: Ryaan's R14 to Andres. Andres now holds two R14 picks — his own is spent keeping Rhamondre Stevenson, this one is a live pick.",
       "at": null,
       "appliedAt": 1788063884810,
       "source": "draft-ops.json",
       "status": "applied",
-      "detail": "R14 pick of Ryaan \u2192 Andres"
+      "detail": "R14 pick of Ryaan → Andres"
     },
     {
       "id": "2026-ryaan-andres-r20",
@@ -4958,7 +5200,7 @@
       "appliedAt": 1788063884810,
       "source": "draft-ops.json",
       "status": "applied",
-      "detail": "R20 pick of Ryaan \u2192 Andres"
+      "detail": "R20 pick of Ryaan → Andres"
     }
   ]
 }

@@ -37,7 +37,12 @@ everyone (corrections are compensating events).
   players.json` with proj/bye/SOS/PO/interest/stat-lines/VORP/tiers.
   Defaults BAKE_SEASON=2026, BAKE_PRIOR=2025 — flip to 2027/2026 when
   Sleeper publishes 2027 projections (~July 2027). Output matches v1
-  production to the decimal (Gibbs 416.3 T1 +207).
+  production to the decimal (Gibbs 416.3 T1 +207). Also writes
+  `public/actuals/<season>.json` for BOTH the prior and the current season —
+  per-player real points scored week by week under IMP rules (never off a
+  season total; the yardage bonuses are per-game). ~28KB a season, and it is
+  what lets the Analyzer mark an archived draft's grades against reality. A
+  bake-time assert cross-checks it against the drawer's `lastSeason`.
 - `tools/dev-api` — local Supabase stand-in: real migration in PGlite, real
   RLS per request, real JWT crypto, SSE for realtime, `/reset` for e2e.
   Dev PINs: commish 1111, teams 2201–2211.
@@ -126,7 +131,31 @@ All seven remaining v1 surfaces are ported and deployed, each with e2e:
    site 404s until the league renews there (check the league id then too).
 7. **Archives** (`archive.ts`, `ArchiveTab.tsx`) — v1's document schema
    unchanged; v1's completed 2026 draft is committed as
-   `apps/web/public/drafts/2026.json` seed history.
+   `apps/web/public/drafts/2026.json` seed history. The document now also
+   pins each pick's `vorp` and each team's draft-night `draftGrade`/`draftZ`,
+   so it can be re-graded years later without the bake that produced it (the
+   2026 seed was backfilled once from the 2026 pool).
+
+## The Analyzer, past drafts, and the retrospective
+
+`grades.ts` is the one grading implementation: VORP **per pick** (v1's rule —
+grading on a total marks a team down mid-draft for simply having picked
+fewer times), z-scored across the teams that have picked. v2 had drifted to
+total VORP and to a `grade` class the CSS never styled; both fixed.
+
+The Analyzer tab picks its source: the live draft, or any season in
+`drafts/index.json`. An archived draft is shown with the letters pinned into
+its document — the assessment as it stood that night, not what today's
+formula would say.
+
+`hindsight.ts` then marks those grades against `actuals/<season>.json`. Two
+rules keep it fair mid-season: both grades are league-relative z-scores (so a
+half-played season is noisier, never lopsided), and player hits/misses
+compare PER-GAME rates, because a season projection would call everyone a
+bust through week 4. Each team gets draft grade → actual grade, a
+called-it/underrated/overrated verdict from rank movement, and its best hit
+and worst miss. **The 2026 season had not kicked off as of Sep 2026**, so the
+panel shows its empty state and fills in from week 1 as the daily bake runs.
 
 Known gaps, deliberate: Sleepers & Busts has no trending "buzz" column yet
 (the drawer's 🔥 badge is the only trending consumer); `player_moved` is
