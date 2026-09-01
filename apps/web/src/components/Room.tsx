@@ -110,7 +110,11 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
     return (
       <div className="loading-screen"><div className="loading-card">
         <div className="spinner"></div><h2>Fantasy Architect</h2>
-        <p>Connecting to the draft…</p>
+        {/* v1 said "pulling from Sleeper… up to a minute" here, which was true
+            of v1 and is not of v2 — the pool is baked and the log is a few
+            rows. Same card, honest words. */}
+        <p>Loading the player pool and replaying the draft log — every device
+          rebuilds the same board from the same events.</p>
       </div></div>
     );
   }

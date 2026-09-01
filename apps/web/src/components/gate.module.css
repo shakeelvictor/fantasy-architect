@@ -1,15 +1,45 @@
-.wrap { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+/* The PIN screen, ported from v1's server-rendered gate
+ * (netlify/edge-functions/gate.js in ../fantasy-draft-assistant) rather than
+ * from styles.css — v1's gate was its own standalone page and carried its own
+ * look, so the values here are that page's literal ones.
+ *
+ * That includes staying dark in every theme. v1's gate hard-set
+ * `color-scheme: dark` and never read the app's theme, because it renders
+ * before the app does; keeping that avoids a light-themed flash on the one
+ * screen shown before anything is loaded. The teal→blue brand gradient is
+ * likewise the gate's own — the app's own mark is a flat --accent blue. */
+
+.wrap {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: #0b0e16; color: #e8ecf5; padding: 20px;
+}
 .card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 34px 38px; max-width: 380px; text-align: center;
+  background: #121725; border: 1px solid #232941; border-radius: 16px;
+  padding: 28px 24px; width: 320px; max-width: 100%; text-align: center;
 }
-.card h1 { font-size: 22px; margin: 14px 0 6px; letter-spacing: -0.01em; }
-.card p { color: var(--muted); font-size: 13.5px; margin: 0 0 18px; }
 .mark {
-  width: 46px; height: 46px; margin: 0 auto; display: grid; place-items: center;
-  background: var(--accent-dim); color: var(--accent); border-radius: 12px;
-  font-weight: 800; letter-spacing: 0.03em;
+  display: inline-block; background: linear-gradient(135deg, #5ce1c4, #5aa9f7); color: #06202b;
+  font-family: var(--font-display); font-weight: 800; font-style: italic;
+  font-size: 13px; letter-spacing: 0.02em; padding: 6px 9px; border-radius: 9px; margin-bottom: 12px;
 }
-.row { display: flex; gap: 8px; justify-content: center; }
-.row input { width: 130px; text-align: center; letter-spacing: 0.3em; }
-.error { color: var(--danger); font-size: 13px; margin-top: 12px; }
+/* matches the app's active nav tab: Archivo 800, uppercase, italic */
+.card h1 {
+  font-family: var(--font-display); font-weight: 800; font-style: italic;
+  text-transform: uppercase; letter-spacing: 0.03em;
+  font-size: 19px; margin: 0 0 6px; color: #e8ecf5;
+}
+.card p { color: #8b94a8; font-size: 13px; margin: 0 0 16px; }
+.card input {
+  width: 100%; box-sizing: border-box; background: #0b0e16; border: 1px solid #232941;
+  color: #e8ecf5; border-radius: 10px; padding: 12px; font-size: 24px; text-align: center;
+  letter-spacing: 12px; text-indent: 12px; outline: none; font-family: ui-monospace, monospace;
+}
+.card input:focus { border-color: #5ce1c4; }
+/* always in the layout, so an error appearing never shifts the button down */
+.error { color: #ff5c5c; font-size: 12.5px; min-height: 18px; margin: 10px 0; }
+.card button {
+  width: 100%; border: 0; border-radius: 10px; padding: 12px; font-size: 14px; font-weight: 700;
+  background: linear-gradient(135deg, #5ce1c4, #5aa9f7); color: #06202b; cursor: pointer;
+  font-family: var(--font-body);
+}
+.card button:disabled { opacity: 0.55; cursor: default; }
