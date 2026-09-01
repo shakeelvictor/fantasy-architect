@@ -72,7 +72,7 @@ export function rosterNeeds(players: Map<string, PoolPlayer>, state: DraftState,
   return { count, open, flexOpen: flexLeft };
 }
 
-function needMultiplier(p: PoolPlayer, needs: Needs, round: number, rounds: number): number {
+export function needMultiplier(p: PoolPlayer, needs: Needs, round: number, rounds: number): number {
   const g = p.group;
   const { count, open, flexOpen } = needs;
   if (g === 'K') {
@@ -117,6 +117,40 @@ export function recommendations(
   });
   scored.sort((a, b) => b.score - a.score);
   return scored.slice(0, topN);
+}
+
+// v1's botPick: bots draft by ADP with need-awareness and a little
+// randomness — a softmax-ish weighted choice over the top candidates.
+// Returns the pid to pick, or null when the pool is out of candidates.
+export function botPick(
+  players: PoolPlayer[], byPid: Map<string, PoolPlayer>,
+  config: SeasonConfig, state: DraftState, cur: number,
+): string | null {
+  const owner = ownerOf(config, state, cur);
+  const round = roundOf(config, cur);
+  const needs = rosterNeeds(byPid, state, owner);
+  const cands = availablePlayers(players, state)
+    .filter((p) => p.adp != null || (p.overallRank ?? Infinity) <= 300)
+    .slice(0, 250)
+    .map((p) => {
+      const adp = p.adp ?? (p.overallRank ?? 300) * 1.15;
+      const mult = needMultiplier(p, needs, round, config.rounds);
+      // bots respect ADP primarily: lower adp → higher base score
+      const base = 1000 / (adp + 8);
+      return { p, score: base * (0.5 + mult) };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 7);
+  if (!cands.length) return null;
+  const weights = cands.map((_, i) => Math.exp(-i * 0.55));
+  const sum = weights.reduce((a, b) => a + b, 0);
+  let r = Math.random() * sum;
+  let chosen = cands[0]!;
+  for (let i = 0; i < cands.length; i++) {
+    r -= weights[i]!;
+    if (r <= 0) { chosen = cands[i]!; break; }
+  }
+  return chosen.p.pid;
 }
 
 // 💎 — v1's overall-ADP rule (trending boost arrives with the news feed)

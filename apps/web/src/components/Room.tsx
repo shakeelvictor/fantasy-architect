@@ -6,10 +6,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { currentOverall, ownerOf, rosterBalance, roundOf } from '@fa/rules';
 import { fetchPool, transport, type PoolDoc, type Session } from '../api';
 import { useRoom } from '../store';
+import { mockState, mockSubmit, resetMock, stopBots, useMock } from '../mock';
 import { Analyzer } from './Analyzer';
 import { Board } from './Board';
 import { Drawer } from './Drawer';
 import { KeepersPanel } from './KeepersPanel';
+import { MockControls } from './MockControls';
 import { Pool } from './Pool';
 import { SidePanel } from './SidePanel';
 import { TeamsTab } from './TeamsTab';
@@ -31,6 +33,8 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
   const [tab, setTab] = useState<Tab>('draft');
   const [panel, setPanel] = useState<Panel>(null);
   const [drawerPid, setDrawerPid] = useState<string | null>(null);
+  const [modeSel, setModeSel] = useState<'manual' | 'mock'>('manual');
+  const mock = useMock();
   const [theme, setTheme] = useState(() => localStorage.getItem('fa-theme') ?? '');
   const players = pool?.players ?? [];
 
@@ -42,7 +46,36 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
     else delete document.documentElement.dataset.theme;
   }, [theme]);
 
+  const isMock = modeSel === 'mock';
+  const mySlotSafe = session.slot ?? (room.config as { commish_slot?: number } | null)?.commish_slot ?? 11;
+
+  // mock mode is body-wide (v1's is-mock topbar stripe), and entering it
+  // starts the local draft so picking works with the bots paused
+  useEffect(() => {
+    document.body.classList.toggle('is-mock', isMock);
+    if (isMock && room.config) mockSubmit(room.config, room.events, mySlotSafe, 'draft_started');
+    if (!isMock) stopBots();
+    return () => document.body.classList.remove('is-mock');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMock, room.config]);
+
+  // In mock mode every draft mutation goes to the LOCAL log through the same
+  // reducer — the server never hears about it. Everything else (keepers,
+  // trades) stays real, exactly like v1's shared keeper list.
   const act = (type: string, payload: Record<string, unknown> = {}): void => {
+    if (isMock) {
+      if (type === 'pick_made' || type === 'pick_requested') {
+        mockSubmit(room.config!, room.events, mySlotSafe, 'pick_made', payload);
+        return;
+      }
+      if (type === 'pick_undone' || type === 'draft_started') {
+        mockSubmit(room.config!, room.events, mySlotSafe, type);
+        return;
+      }
+      if (type === 'draft_completed' || type === 'pick_request_resolved') return; // meaningless in a mock
+      // keepers and trades stay REAL even while mocking (v1's shared list) —
+      // they fall through to the server and flow back into the mock's seed
+    }
     void transport.submit(session, type, payload).catch((e: Error) => {
       setToast(e.message);
       setTimeout(() => setToast(null), 5000);
@@ -60,7 +93,8 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
     );
   }
 
-  const { config, draft } = room;
+  const { config } = room;
+  const draft = isMock ? mockState(room.events) : room.draft;
   const cur = currentOverall(draft);
   const total = config.teams * config.rounds;
   const boardFull = cur > total;
@@ -113,8 +147,10 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
           )}
         </div>
         <nav className="mode-switch" id="mode-switch">
-          <button className="active">Manual</button>
-          <button disabled title="Mock drafts arrive with the next phase">Mock Draft</button>
+          <button className={!isMock ? 'active' : ''} data-testid="mode-manual" onClick={() => setModeSel('manual')}>Manual</button>
+          <button className={isMock ? 'active' : ''} data-testid="mode-mock"
+            title="Practice run — bots pick for the other teams; the real draft is untouched"
+            onClick={() => setModeSel('mock')}>Mock Draft</button>
         </nav>
         <span data-testid="conn" className="watch-status" style={{ color: room.connected ? 'var(--accent-text, #00ceb8)' : 'var(--warn, #f0b429)' }}>
           {room.connected ? '● live' : '○ reconnecting'}
@@ -173,9 +209,9 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
               draft={draft}
               config={config}
               teamName={teamName}
-              mode={isCommish ? 'commish' : 'team'}
+              mode={isCommish || isMock ? 'commish' : 'team'}
               mySlot={mySlot}
-              disabled={!draft.started || done}
+              disabled={!draft.started || done || (isMock && mock.running && onClockSlot !== mySlot)}
               onDraft={(pid) => act('pick_made', { pid })}
               onAsk={(pid) => act('pick_requested', { pid, slot: session.slot })}
               onOpen={setDrawerPid}
@@ -194,6 +230,10 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
               events={room.events}
               openPanel={setPanel}
               onOpen={setDrawerPid}
+              mock={isMock}
+              mockPanel={isMock
+                ? <MockControls players={players} byPid={byPid} config={config} events={room.events} mySlot={mySlot} />
+                : null}
             />
           </div>
         </section>
@@ -221,10 +261,10 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
       </main>
 
       {panel === 'keepers' && (
-        <KeepersPanel config={config} draft={draft} byPid={byPid} players={players} teamName={teamName} act={act} onClose={() => setPanel(null)} />
+        <KeepersPanel config={config} draft={room.draft} byPid={byPid} players={players} teamName={teamName} act={act} onClose={() => setPanel(null)} />
       )}
       {panel === 'trades' && (
-        <TradesPanel config={config} draft={draft} teamName={teamName} act={act} onClose={() => setPanel(null)} />
+        <TradesPanel config={config} draft={room.draft} teamName={teamName} act={act} onClose={() => setPanel(null)} />
       )}
       {drawerPid && pool && (
         <Drawer
@@ -237,10 +277,10 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
           config={config}
           draft={draft}
           teamName={teamName}
-          mode={isCommish ? 'commish' : 'team'}
+          mode={isCommish || isMock ? 'commish' : 'team'}
           mySlot={mySlot}
           done={done}
-          disabled={!draft.started || done}
+          disabled={!draft.started || done || (isMock && mock.running && onClockSlot !== mySlot)}
           onDraft={(pid) => act('pick_made', { pid })}
           onAsk={(pid) => act('pick_requested', { pid, slot: session.slot })}
           onOpen={setDrawerPid}

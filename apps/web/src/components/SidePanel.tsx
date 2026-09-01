@@ -21,9 +21,11 @@ interface Props {
   events: DraftEvent[];
   openPanel: (p: 'keepers' | 'trades') => void;
   onOpen?: (pid: string) => void;
+  mock?: boolean;
+  mockPanel?: React.ReactNode;
 }
 
-export function SidePanel({ players, byPid, config, draft, session, mySlot, teamName, done, onClock, act, events, openPanel, onOpen }: Props): React.JSX.Element {
+export function SidePanel({ players, byPid, config, draft, session, mySlot, teamName, done, onClock, act, events, openPanel, onOpen, mock, mockPanel }: Props): React.JSX.Element {
   const isCommish = session.role === 'commish';
   const recs = done ? [] : recommendations(players, byPid, config, draft, mySlot, 8);
   const top = recs[0];
@@ -39,20 +41,25 @@ export function SidePanel({ players, byPid, config, draft, session, mySlot, team
 
   return (
     <aside className="side-panel">
-      {isCommish && (
+      {mockPanel}
+      {(isCommish || mock) && (
         <div className="card" id="util-card">
           <div className="util-row">
             <button className="btn" data-testid="undo" disabled={!draft.started || draft.picks.length === 0 || done} onClick={() => act('pick_undone')}>
               Undo Pick
             </button>
             <button className="btn" disabled title="Redo arrives with the next phase">Redo Pick</button>
-            <button className="btn" data-testid="open-keepers" onClick={() => openPanel('keepers')}>
-              Keepers{draft.keepers.length ? ` (${draft.keepers.length})` : ''}
-            </button>
-            <button className="btn" data-testid="open-trades" onClick={() => openPanel('trades')}>
-              Trades{draft.trades.length ? ` (${draft.trades.length})` : ''}
-            </button>
-            {done && !draft.completed && (
+            {isCommish && (
+              <button className="btn" data-testid="open-keepers" onClick={() => openPanel('keepers')}>
+                Keepers{draft.keepers.length ? ` (${draft.keepers.length})` : ''}
+              </button>
+            )}
+            {isCommish && (
+              <button className="btn" data-testid="open-trades" onClick={() => openPanel('trades')}>
+                Trades{draft.trades.length ? ` (${draft.trades.length})` : ''}
+              </button>
+            )}
+            {done && !draft.completed && !mock && isCommish && (
               <button className="btn primary" data-testid="complete-draft" onClick={() => act('draft_completed')}>
                 🏁 Complete draft
               </button>
