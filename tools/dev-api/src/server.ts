@@ -10,6 +10,7 @@
 //   GET  /events?season=&since= {events}                  (as anon)
 //   GET  /stream?season=&since= SSE, one event per line   (as anon)
 //   POST /rpc/submit_event      Bearer token, {season, key, type, payload}
+//   POST /rpc/set_season_config Bearer token, {season, config}   (commish)
 
 import { PGlite } from '@electric-sql/pglite';
 import { createServer, type ServerResponse } from 'node:http';
@@ -30,6 +31,8 @@ const PINS: { role: 'commish' | 'team'; slot: number | null; pin: string }[] = [
   { role: 'commish', slot: null, pin: '1111' },
   ...ORDER.map((_, i) => ({ role: 'team' as const, slot: i + 1, pin: String(2200 + i + 1) })),
 ];
+
+const SEED_CONFIG = { teams: ORDER.length, rounds: 20, type: 'linear', order: ORDER };
 
 const db = new PGlite();
 // PGlite is a single connection — serialize everything that touches it.
@@ -61,11 +64,11 @@ async function asIdentity<T>(id: Identity, fn: () => Promise<T>): Promise<T> {
 async function boot(): Promise<void> {
   await db.exec(readFileSync(join(ROOT, 'supabase', 'dev', 'shim.sql'), 'utf8'));
   await db.exec(readFileSync(join(ROOT, 'supabase', 'migrations', '0001_foundation.sql'), 'utf8'));
+  await db.exec(readFileSync(join(ROOT, 'supabase', 'migrations', '0003_season_config.sql'), 'utf8'));
+  await db.exec(readFileSync(join(ROOT, 'supabase', 'migrations', '0004_config_error_message.sql'), 'utf8'));
+  await db.exec(readFileSync(join(ROOT, 'supabase', 'migrations', '0005_freeze_on_coordinates.sql'), 'utf8'));
   await db.exec(readFileSync(join(ROOT, 'supabase', 'dev', 'grants.sql'), 'utf8'));
-  await db.query(`insert into seasons (year, config) values ($1, $2)`, [
-    SEASON,
-    JSON.stringify({ teams: ORDER.length, rounds: 20, type: 'linear', order: ORDER }),
-  ]);
+  await db.query(`insert into seasons (year, config) values ($1, $2)`, [SEASON, JSON.stringify(SEED_CONFIG)]);
   for (const [i, owner] of ORDER.entries()) {
     await db.query(`insert into teams (season, slot, owner) values ($1, $2, $3)`, [SEASON, i + 1, owner]);
   }
@@ -147,10 +150,19 @@ const server = createServer((req, res) => {
     }
 
     if (req.method === 'POST' && url.pathname === '/reset') {
-      // e2e isolation only: wipe the season's log (superuser, bypasses RLS —
-      // exactly what production must never allow, which is why this endpoint
-      // exists only in the dev server)
-      await exclusive(() => db.query(`delete from draft_events where season = $1`, [season]));
+      // e2e isolation only: wipe the season's log AND put its config back to
+      // the seed (superuser, bypasses RLS — exactly what production must never
+      // allow, which is why this endpoint exists only in the dev server).
+      // The config restore matters because the settings screen can change it,
+      // and one Playwright run shares this server across every spec.
+      await exclusive(async () => {
+        await db.query(`delete from draft_events where season = $1`, [season]);
+        await db.query(`update seasons set config = $2 where year = $1`, [season, JSON.stringify(SEED_CONFIG)]);
+        await db.query(`delete from teams where season = $1`, [season]);
+        for (const [i, owner] of ORDER.entries()) {
+          await db.query(`insert into teams (season, slot, owner) values ($1, $2, $3)`, [season, i + 1, owner]);
+        }
+      });
       return json(res, 200, { reset: true });
     }
 
@@ -215,6 +227,30 @@ const server = createServer((req, res) => {
           ),
         );
         await exclusive(() => broadcast(body.season));
+        return json(res, 200, result);
+      } catch (e) {
+        return json(res, 400, { error: (e as Error).message.replace(/^.*?:\s*/, '') });
+      }
+    }
+
+    if (req.method === 'POST' && url.pathname === '/rpc/set_season_config') {
+      const token = (req.headers.authorization ?? '').replace(/^Bearer\s+/i, '');
+      const claims = await verifyJwt(token, JWT_SECRET);
+      if (!claims) return json(res, 401, { error: 'invalid or expired token' });
+      const body = JSON.parse(await readBody(req)) as { season: number; config: unknown };
+      try {
+        const result = await exclusive(() =>
+          asIdentity(
+            { role: 'authenticated', app_role: String(claims.app_role), app_slot: (claims.app_slot as number | null) ?? null },
+            async () => {
+              const r = await db.query<{ set_season_config: unknown }>(
+                `select set_season_config($1, $2)`,
+                [body.season, JSON.stringify(body.config)],
+              );
+              return r.rows[0]!.set_season_config;
+            },
+          ),
+        );
         return json(res, 200, result);
       } catch (e) {
         return json(res, 400, { error: (e as Error).message.replace(/^.*?:\s*/, '') });

@@ -44,6 +44,13 @@ export async function connect(): Promise<void> {
   );
 }
 
+/** Pull the season row again after the commissioner re-shapes it. The log is
+ *  untouched — config is not an event — so only the config half is replaced. */
+export async function refreshConfig(): Promise<void> {
+  const boot = await transport.bootstrap();
+  emit({ config: boot.config });
+}
+
 export function disconnect(): void {
   stop?.();
   stop = null;

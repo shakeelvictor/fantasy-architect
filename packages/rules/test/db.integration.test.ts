@@ -278,3 +278,76 @@ describe('one reducer, two runtimes', () => {
     expect(ts.completed).toEqual(sql.completed);
   });
 });
+
+// ---------------------------------------------------------- season setup
+//
+// Config is the one piece of draft state that is NOT an event, because every
+// pick's coordinates were computed under the config in force when it landed.
+// Re-shaping a board that already has picks would reinterpret history rather
+// than record a change, so the database freezes it — and that has to hold for
+// the commissioner too, since it is a rule and not a permission.
+
+describe('season settings are the commissioner\'s, and only before the draft', () => {
+  const NEXT = { teams: 4, rounds: 5, type: 'snake', order: ['W', 'X', 'Y', 'Z'] };
+
+  it('the commissioner can re-shape a season that has not started', async () => {
+    const y = await season();
+    expect(await h.setConfig(COMMISH, y, NEXT)).toEqual({});
+    expect(await h.configOf(y)).toMatchObject({ teams: 4, rounds: 5, type: 'snake' });
+  });
+
+  it('the teams table follows the order, keeping slots in step', async () => {
+    const y = await season();
+    await h.setConfig(COMMISH, y, NEXT);
+    expect(await h.ownersOf(y)).toEqual(['W', 'X', 'Y', 'Z']);
+    // shrinking drops the slots that no longer exist
+    await h.setConfig(COMMISH, y, { ...NEXT, teams: 2, order: ['W', 'X'] });
+    expect(await h.ownersOf(y)).toEqual(['W', 'X']);
+  });
+
+  it('a team PIN cannot re-shape the league, and is told why', async () => {
+    const y = await season();
+    const r = await h.setConfig(TEAM2, y, NEXT);
+    // RLS alone would filter the row and report "does not exist", which reads
+    // as a missing season rather than a refusal — and it reaches the UI
+    expect(r.error).toMatch(/only the commissioner/);
+    expect(await h.configOf(y)).toMatchObject({ teams: 3 });
+  });
+
+  it('a spectator cannot either', async () => {
+    const y = await season();
+    expect((await h.setConfig('anon', y, NEXT)).error).toBeTruthy();
+  });
+
+  it('starting the draft alone does NOT freeze it — that click is recoverable', async () => {
+    const y = await season();
+    await h.submit(COMMISH, y, `${y}-start`, 'draft_started');
+    expect(await h.setConfig(COMMISH, y, NEXT)).toEqual({});
+  });
+
+  it('a keeper freezes it — that event names a slot and a round', async () => {
+    const y = await season();
+    await h.submit(COMMISH, y, `${y}-k`, 'keeper_declared', { pid: 'p1', slot: 2, round: 3 });
+    const r = await h.setConfig(COMMISH, y, NEXT);
+    expect(r.error).toMatch(/frozen/);
+    expect(await h.configOf(y)).toMatchObject({ teams: 3, rounds: 4 });
+  });
+
+  it('a pick freezes it too, for the commissioner as much as anyone', async () => {
+    const y = await season();
+    await h.submit(COMMISH, y, `${y}-start2`, 'draft_started');
+    await h.submit(COMMISH, y, `${y}-p`, 'pick_made', { pid: 'p7' });
+    const r = await h.setConfig(COMMISH, y, NEXT);
+    expect(r.error).toMatch(/frozen/);
+    expect(await h.configOf(y)).toMatchObject({ teams: 3, rounds: 4 });
+  });
+
+  it('a malformed shape is refused', async () => {
+    const y = await season();
+    expect((await h.setConfig(COMMISH, y, { ...NEXT, type: 'sideways' })).error).toMatch(/linear or snake/);
+    expect((await h.setConfig(COMMISH, y, { ...NEXT, teams: 99 })).error).toMatch(/between 2 and 16/);
+    expect((await h.setConfig(COMMISH, y, { ...NEXT, order: ['W', 'X'] })).error).toMatch(/name all 4/);
+    expect((await h.setConfig(COMMISH, y, { ...NEXT, order: ['W', ' ', 'Y', 'Z'] })).error).toMatch(/slot 2/);
+    expect(await h.configOf(y)).toMatchObject({ teams: 3 }); // nothing partially applied
+  });
+});

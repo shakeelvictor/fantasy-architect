@@ -34,6 +34,8 @@ export interface Transport {
   login(pin: string): Promise<Session>;
   /** MFL proxy (no CORS on MFL, so calls go through our server side). */
   mfl(session: Session, body: Record<string, unknown>): Promise<Record<string, unknown>>;
+  /** Re-shape a season. Commissioner only, and refused once it has a log. */
+  setConfig(session: Session, config: SeasonConfig): Promise<unknown>;
   bootstrap(): Promise<{ config: SeasonConfig; events: DraftEvent[] }>;
   submit(session: Session, type: string, payload?: Record<string, unknown>): Promise<SubmitResult>;
   /** Live events with reconnect; implementations must refill gaps from since(). */
@@ -56,6 +58,15 @@ function localTransport(): Transport {
   const API = '/api';
   return {
     kind: 'local',
+    async setConfig(session, config) {
+      return jsonOrThrow(
+        await fetch(`${API}/rpc/set_season_config`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', authorization: `Bearer ${session.token}` },
+          body: JSON.stringify({ season: SEASON, config }),
+        }),
+      );
+    },
     async mfl(session, body) {
       return jsonOrThrow(
         await fetch(`${API}/mfl`, {
@@ -119,6 +130,20 @@ function supabaseTransport(url: string, anonKey: string): Transport {
   const client = createClient(url, anonKey);
   return {
     kind: 'supabase',
+    async setConfig(session, config) {
+      const res = await fetch(`${url}/rest/v1/rpc/set_season_config`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          apikey: anonKey,
+          authorization: `Bearer ${session.token}`,
+        },
+        body: JSON.stringify({ p_season: SEASON, p_config: config }),
+      });
+      const body = (await res.json()) as { message?: string };
+      if (!res.ok) throw new Error(body.message ?? `HTTP ${res.status}`);
+      return body;
+    },
     async mfl(session, body) {
       return jsonOrThrow(
         await fetch(`${url}/functions/v1/mfl`, {

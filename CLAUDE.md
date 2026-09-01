@@ -29,7 +29,13 @@ everyone (corrections are compensating events).
   fold case-for-case; a test asserts identical state) + board math +
   `rosterBalance`. DB integration tests run the REAL migration in PGlite
   with RLS enforced via SET ROLE (`test/harness.ts` + `supabase/dev/*.sql`).
-- `supabase/` — migrations (0001 foundation, 0002 realtime publication),
+- `supabase/` — migrations (0001 foundation, 0002 realtime publication,
+  0003–0005 season settings: the commissioner can re-shape a season from the
+  UI, guarded by a BEFORE UPDATE trigger + commish-only RLS. Config is NOT an
+  event — every pick's coordinates were computed under the config in force
+  when it landed — so it FREEZES once the season has any event that names a
+  slot or round (picks, keepers, trades, requests). `draft_started` alone does
+  not freeze it, so an accidental start stays recoverable),
   `auth-pin` edge function (PIN → 24h HS256 JWT with app_role/app_slot
   claims), deploy runbook in its README.
 - `tools/bake` — v1's buildPlayerTable ported: 38 Sleeper fetches (season +
@@ -60,7 +66,11 @@ everyone (corrections are compensating events).
 ## Deployed infrastructure (all live, all verified)
 
 - Supabase: project `fantasy-architect`, ref `prkdvoyxtdwwzeqqrzcq`,
-  us-east-2, PG17. Season 2027 seeded (11 teams, league order, zero events).
+  us-east-2, PG17. Season 2027 seeded (11 teams, league order). NOTE: its log
+  holds one stray `draft_started` (seq 15, 1 Sep 2026) from a hosted test, so
+  the live site shows the draft as begun. Harmless — it binds nothing, settings
+  stay editable, and the first real pick would follow it — but clear it with
+  the service role before draft night if you want a clean start.
   Legacy JWT secret is set as function secret FA_JWT_SECRET — dashboard-only
   to obtain; validate any copied value by HMAC-ing the legacy anon key
   before trusting it (see supabase/README).

@@ -29,6 +29,9 @@ export async function createDb(): Promise<Harness> {
   const db = new PGlite();
   await db.exec(readFileSync(join(SUPABASE, 'dev', 'shim.sql'), 'utf8'));
   await db.exec(readFileSync(join(SUPABASE, 'migrations', '0001_foundation.sql'), 'utf8'));
+  await db.exec(readFileSync(join(SUPABASE, 'migrations', '0003_season_config.sql'), 'utf8'));
+  await db.exec(readFileSync(join(SUPABASE, 'migrations', '0004_config_error_message.sql'), 'utf8'));
+  await db.exec(readFileSync(join(SUPABASE, 'migrations', '0005_freeze_on_coordinates.sql'), 'utf8'));
   await db.exec(readFileSync(join(SUPABASE, 'dev', 'grants.sql'), 'utf8'));
   return new Harness(db);
 }
@@ -102,6 +105,31 @@ export class Harness {
     } finally {
       await this.restore();
     }
+  }
+
+  /** Drive the season-config RPC as a given identity. */
+  async setConfig(claims: Claims | 'anon', season: number, config: object): Promise<{ error?: string }> {
+    await this.become(claims);
+    try {
+      await this.db.query(`select set_season_config($1, $2)`, [season, JSON.stringify(config)]);
+      return {};
+    } catch (e) {
+      return { error: (e as Error).message };
+    } finally {
+      await this.restore();
+    }
+  }
+
+  async configOf(season: number): Promise<Record<string, unknown>> {
+    const r = await this.db.query<{ config: Record<string, unknown> }>(
+      `select config from seasons where year = $1`, [season]);
+    return r.rows[0]!.config;
+  }
+
+  async ownersOf(season: number): Promise<string[]> {
+    const r = await this.db.query<{ owner: string }>(
+      `select owner from teams where season = $1 order by slot`, [season]);
+    return r.rows.map((x) => x.owner);
   }
 
   async foldState(season: number): Promise<Record<string, unknown>> {

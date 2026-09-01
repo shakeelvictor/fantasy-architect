@@ -18,6 +18,7 @@ import { KeepersPanel } from './KeepersPanel';
 import { MflPanel } from './MflPanel';
 import { MockControls } from './MockControls';
 import { Pool } from './Pool';
+import { SettingsPanel } from './SettingsPanel';
 import { SidePanel } from './SidePanel';
 import { TeamsTab } from './TeamsTab';
 import { Ticker } from './Ticker';
@@ -25,7 +26,7 @@ import { TradesPanel } from './TradesPanel';
 import { Values } from './Values';
 
 type Tab = 'draft' | 'board' | 'teams' | 'analyzer' | 'values' | 'archive';
-type Panel = 'keepers' | 'trades' | 'mfl' | null;
+type Panel = 'keepers' | 'trades' | 'mfl' | 'settings' | null;
 
 const TAB_LABELS: [Tab, string][] = [
   ['draft', 'Draft Room'], ['board', 'Board'], ['teams', 'Teams'],
@@ -127,6 +128,11 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
   // v1's rule: the confirm guard sits on the three HUMAN buttons only —
   // Ask/Take-it are their own confirmation, bots and redo never see it
   const requestDraft = (pid: string): void => setConfirmPid(pid);
+  // mirrors 0005's trigger: only events that NAME a slot or round bind the
+  // board's shape, so a season that has merely been started can still be set up
+  const configFrozen = room.events.some(
+    (e) => e.type !== 'draft_started' && e.type !== 'draft_completed',
+  );
   const balance = rosterBalance(config, draft);
   const round = done ? config.rounds : roundOf(config, cur);
   const pickInRound = done ? config.teams : ((cur - 1) % config.teams) + 1;
@@ -182,6 +188,12 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
           onClick={() => { const next = theme === 'light' ? '' : 'light'; setTheme(next); localStorage.setItem('fa-theme', next); }}>
           ☀
         </button>
+        {isCommish && (
+          <button className="icon-btn" id="settings-btn" data-testid="open-settings" title="Draft settings"
+            onClick={() => setPanel('settings')}>
+            ⚙
+          </button>
+        )}
         <button className="icon-btn" title={`${isCommish ? 'Commissioner' : `${teamName(mySlot)} (you)`} — sign out`} onClick={onLogout}>
           ⏻
         </button>
@@ -286,6 +298,10 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
       )}
       {panel === 'trades' && (
         <TradesPanel config={config} draft={room.draft} teamName={teamName} act={act} onClose={() => setPanel(null)} />
+      )}
+      {panel === 'settings' && (
+        <SettingsPanel config={config} locked={configFrozen} mySlot={mySlot}
+          session={session} onClose={() => setPanel(null)} />
       )}
       {panel === 'mfl' && (
         <MflPanel config={config} draft={room.draft} byPid={byPid} teamName={teamName} session={session} onClose={() => setPanel(null)} />
