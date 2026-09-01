@@ -150,6 +150,34 @@ All seven remaining v1 surfaces are ported and deployed, each with e2e:
    so it can be re-graded years later without the bake that produced it (the
    2026 seed was backfilled once from the 2026 pool).
 
+## The public draft record — `/{year}`
+
+`fantasy-architect.netlify.app/2026` — no PIN. Not a hole: the archive under
+`public/drafts/` is already a world-readable static file and the anon key in
+the bundle already reads every season, so the PIN gates WRITES and always did.
+What the URL adds is something a manager can be handed instead of credentials.
+
+It exists mainly for the keeper question — keepers cost the ROUND a player was
+drafted in, so every off-season someone has to work that out. The search on
+the page answers it in one keystroke ("Brock Bowers → pick 3.02, #24 overall,
+R3"). Below that: the board, the rosters, and the Analyzer's pinned grades,
+rendered by the SAME components the signed-in app uses (`ArchiveDocView`,
+`GradeGrid`, `Retrospective`), so the public view cannot drift from the
+private one.
+
+Reads `public/drafts/<year>.json` only — no Supabase, no player pool, ~108KB.
+A year with no archive says so and lists what is archived. `App.tsx` matches
+the path BEFORE any session check (`publicYear()`), Netlify's `_redirects`
+already had `/* /index.html 200`, and the PWA's navigateFallback is
+index.html, so the route works installed and offline-cached too. Publishing a
+year is therefore just the existing ritual: Past Drafts → Archive current
+draft → commit the JSON. The Past Drafts tab shows the shareable link next to
+each archived season.
+
+NOTE: 2026 is NOT in Supabase (only 2027 is, and only the stray
+`draft_started`) — it was v1's draft, inherited as that committed file, which
+makes it more deterministic than a log, not less.
+
 ## The Analyzer, past drafts, and the retrospective
 
 `grades.ts` is the one grading implementation: VORP **per pick** (v1's rule —

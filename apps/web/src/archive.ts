@@ -6,7 +6,7 @@
 
 import { rosterBalance, type DraftState, type SeasonConfig } from '@fa/rules';
 import type { PoolPlayer } from './api';
-import { computeGrades } from './grades';
+import { computeGrades, type TeamGrade } from './grades';
 
 export interface ArchivePick {
   overall: number; round: number; slot: number; origSlot?: number;
@@ -88,4 +88,17 @@ export function buildArchive(
     keepers: draft.keepers,
     trades: draft.trades,
   };
+}
+
+/** Grade an archived draft, preferring the letter pinned into the document —
+ *  what was actually said that night, not what today's formula would say. */
+export function gradesFromArchive(doc: ArchiveDoc): TeamGrade[] {
+  const computed = computeGrades(doc.teams.map((t) => ({
+    slot: t.slot, name: t.name,
+    roster: t.roster.map((r) => ({ proj: r.proj ?? 0, vorp: r.vorp ?? 0 })),
+  })));
+  return computed.map((g) => ({
+    ...g,
+    grade: doc.teams.find((t) => t.slot === g.slot)?.draftGrade ?? g.grade,
+  }));
 }

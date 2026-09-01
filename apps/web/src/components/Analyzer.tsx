@@ -10,7 +10,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { DraftState, SeasonConfig } from '@fa/rules';
 import { SEASON, type PoolPlayer } from '../api';
-import type { ArchiveDoc } from '../archive';
+import { gradesFromArchive, type ArchiveDoc } from '../archive';
 import { computeGrades, type TeamGrade } from '../grades';
 import { buildRetro, fetchActuals, type Actuals, type PlayerVerdict, type Retro } from '../hindsight';
 import { pendingKeepersForSlot, rosterForSlot } from '../v1logic';
@@ -68,18 +68,8 @@ export function Analyzer({ config, draft, byPid, teamName }: {
     })),
   ), [config.teams, byPid, draft, teamName]);
 
-  const archiveGrades: TeamGrade[] | null = useMemo(() => {
-    if (!doc) return null;
-    const computed = computeGrades(doc.teams.map((t) => ({
-      slot: t.slot, name: t.name,
-      roster: t.roster.map((r) => ({ proj: r.proj ?? 0, vorp: r.vorp ?? 0 })),
-    })));
-    // prefer the pinned letter — what was actually said that night
-    return computed.map((g) => ({
-      ...g,
-      grade: doc.teams.find((t) => t.slot === g.slot)?.draftGrade ?? g.grade,
-    }));
-  }, [doc]);
+  const archiveGrades: TeamGrade[] | null = useMemo(
+    () => (doc ? gradesFromArchive(doc) : null), [doc]);
 
   const retro = useMemo(
     () => (doc && actuals ? buildRetro(doc, actuals) : null),
@@ -125,7 +115,7 @@ export function Analyzer({ config, draft, byPid, teamName }: {
   );
 }
 
-function GradeGrid({ teams }: { teams: TeamGrade[] }): React.JSX.Element {
+export function GradeGrid({ teams }: { teams: TeamGrade[] }): React.JSX.Element {
   return (
     <div className="grade-grid">
       {teams.map((t) => (
@@ -151,7 +141,7 @@ const VERDICT_CLASS: Record<string, string> = {
   'called it': 'g-A', underrated: 'g-B', overrated: 'g-D',
 };
 
-function Retrospective({ season, retro, actuals }: {
+export function Retrospective({ season, retro, actuals }: {
   season: number; retro: Retro | null; actuals: Actuals | null | undefined;
 }): React.JSX.Element {
   if (actuals === undefined) {

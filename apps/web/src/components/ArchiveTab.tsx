@@ -88,6 +88,15 @@ export function ArchiveTab({ config, draft, byPid, teamName }: Props): React.JSX
               </button>
             ))}
           </div>
+          {/* the whole point of the public page is that it can be handed out,
+              so the link to hand out lives next to the draft it shows */}
+          <p className="p-meta" data-testid="public-link" style={{ margin: '10px 0 4px' }}>
+            Shareable, no PIN needed:{' '}
+            <a href={`/${list[sel]!.season}`} target="_blank" rel="noopener noreferrer">
+              {typeof window === 'undefined' ? '' : window.location.origin}/{list[sel]!.season}
+            </a>{' '}
+            — the board, rosters and grades, plus a search for which round a player went in.
+          </p>
           <div id="archive-doc">
             {doc ? <ArchiveDocView doc={doc} /> : <p className="p-meta">Loading…</p>}
           </div>
@@ -99,7 +108,7 @@ export function ArchiveTab({ config, draft, byPid, teamName }: Props): React.JSX
 
 const OFF = new Set(['QB', 'RB', 'WR', 'TE', 'K']);
 
-function ArchiveDocView({ doc }: { doc: ArchiveDoc }): React.JSX.Element {
+export function ArchiveDocView({ doc }: { doc: ArchiveDoc }): React.JSX.Element {
   const teams = doc.config ? doc.config.teams : doc.teams.length;
   const rounds = doc.config ? doc.config.rounds : Math.ceil(doc.picks.length / teams);
   const byOverall = new Map(doc.picks.map((p) => [p.overall, p]));

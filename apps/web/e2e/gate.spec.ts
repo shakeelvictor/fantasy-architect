@@ -20,7 +20,10 @@ test('the PIN gate rejects a wrong PIN and admits a right one', async ({ browser
   await page.getByTestId('pin-input').fill('0000');
   await page.getByTestId('pin-submit').click();
   await expect(err).toContainText(/PIN/i);
-  expect((await err.boundingBox())?.y).toBe(boxBefore?.y);
+  // the point is that the button does not JUMP when an error appears. An
+  // exact float comparison fails on sub-pixel line-height rounding (414.5 vs
+  // 415) without anything having moved, so allow a pixel.
+  expect(Math.abs((await err.boundingBox())!.y - boxBefore!.y)).toBeLessThan(2);
   await expect(page.getByTestId('pin-input')).toBeVisible(); // still locked out
 
   await page.getByTestId('pin-input').fill('1111');
