@@ -170,7 +170,13 @@ directly, with no proration and no hedging. Part-way through, the panel shows
 "N of 17 weeks" and no grades. Each team then gets draft grade → actual grade
 (same per-pick, league-relative basis, so the letters mean the same thing), a
 called-it/underrated/overrated verdict from rank movement, and its best hit
-and worst miss against what the board projected. **The 2026 season had not
+and worst miss against what the board projected. SCOPE: it follows the players
+a team DRAFTED for the whole season, wherever they went — points scored after
+a drop or trade still count to the team that picked them, because the claim
+under test is the board's valuation of those players. So a drafted squad's
+rank is NOT the league standings; a GM can win off waivers on a draft that
+grades badly here, and separating the two is the point. The panel says so
+directly, because "actual grade F" otherwise reads as a bad season. **The 2026 season had not
 kicked off as of Sep 2026**, so the panel shows the not-yet state.
 
 Known gaps, deliberate: Sleepers & Busts has no trending "buzz" column yet

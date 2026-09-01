@@ -79,7 +79,11 @@ test('the retrospective marks the grades against real results', async ({ browser
   const dante = page.getByTestId('retro-5');
   await expect(dante).toContainText('Dante');
   await expect(dante).toContainText('overrated');
-  await expect(dante).toContainText('Scored: 0');
+  await expect(dante).toContainText('Draft squad scored: 0');
+  // the panel must say WHOSE points these are — read as league standings,
+  // "actual grade F" would libel a GM who rescued the season on waivers
+  await expect(page.getByTestId('retro-scope')).toContainText('players each team drafted');
+  await expect(page.getByTestId('retro-scope')).toContainText('grades the draft, not the season');
   await expect(dante.locator('.grade-letter').first()).toHaveText('A'); // as graded
   await expect(dante.locator('.grade-letter').nth(1)).toHaveText('F');  // as it went
 

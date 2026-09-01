@@ -166,7 +166,7 @@ function Retrospective({ season, retro, actuals }: {
     const played = actuals?.throughWeek ?? 0;
     return (
       <div className="card" style={{ marginTop: 16 }}>
-        <h3>Were the grades right?</h3>
+        <h3>Did the draft hold up?</h3>
         <p className="p-meta" data-testid="retro-pending">
           {played === 0
             ? `The ${season} season has not kicked off yet.`
@@ -181,14 +181,23 @@ function Retrospective({ season, retro, actuals }: {
   return (
     <div style={{ marginTop: 18 }}>
       <div className="values-head">
-        <h3 style={{ margin: 0 }}>Were the grades right?</h3>
+        <h3 style={{ margin: 0 }}>Did the draft hold up?</h3>
         <span className="p-meta">
           Final · weeks 1–{retro.seasonWeeks} scored under this league's rules
         </span>
       </div>
       <p className="p-meta" style={{ margin: '6px 0 12px' }}>
-        <b>{retro.withinOne}</b> of {retro.teams.length} teams finished within one place of where
-        the board ranked them; the average miss was <b>{retro.meanRankError}</b> places.
+        <b>{retro.withinOne}</b> of {retro.teams.length} drafted squads landed within one place of
+        where the board ranked them; the average miss was <b>{retro.meanRankError}</b> places.
+      </p>
+      {/* The distinction that makes these numbers readable. Without it "actual
+          grade F" looks like a bad season, when it may be a bad draft that
+          waivers rescued — two different claims. */}
+      <p className="p-meta" data-testid="retro-scope" style={{ margin: '0 0 12px' }}>
+        This follows the <b>players each team drafted</b>, wherever they ended up — every point
+        they scored counts to the team that picked them, even after a drop or a trade. It grades
+        the draft, not the season: a team can win the league off waivers on a draft that graded
+        badly here, and that gap is the point rather than an error.
       </p>
       <div className="grade-grid" data-testid="retro-grid">
         {retro.teams.map((t) => (
@@ -198,7 +207,8 @@ function Retrospective({ season, retro, actuals }: {
               <span>
                 <span className={`grade-letter g-${t.draftGrade}`} title="Draft-night grade">{t.draftGrade}</span>
                 <span className="p-meta" style={{ margin: '0 6px' }}>→</span>
-                <span className={`grade-letter g-${t.actualGrade}`} title="Grade on what actually happened">{t.actualGrade}</span>
+                <span className={`grade-letter g-${t.actualGrade}`}
+                  title="Grade on what the drafted players went on to score">{t.actualGrade}</span>
               </span>
             </div>
             <div className="grade-stats">
@@ -207,10 +217,11 @@ function Retrospective({ season, retro, actuals }: {
                 {t.verdict}
               </span>
               {t.rankDelta !== 0 && (
-                <span className="p-meta"> · finished #{t.actualRank}, board said #{t.projRank}</span>
+                <span className="p-meta"> · drafted squad #{t.actualRank}, board said #{t.projRank}</span>
               )}
               <br />
-              Scored: <b>{t.actualPts.toFixed(0)}</b> <span className="p-meta">(board said {t.projPts})</span><br />
+              Draft squad scored: <b>{t.actualPts.toFixed(0)}</b>{' '}
+              <span className="p-meta">(board said {t.projPts})</span><br />
               <Verdict label="Best hit" p={t.bestHit} />
               <Verdict label="Worst miss" p={t.worstMiss} />
             </div>

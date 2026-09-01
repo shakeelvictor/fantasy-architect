@@ -15,6 +15,18 @@
 //
 // A team's actual grade is graded on the same per-pick, league-relative basis
 // as draft night, so the two letters mean the same thing side by side.
+//
+// SCOPE, and the thing most likely to be misread: this follows the players a
+// team DRAFTED, for the whole season, wherever they went. Points a drafted
+// player scores after being dropped or traded still count to the team that
+// picked him. That is deliberate — the claim under test is the board's
+// valuation of those players, and it was right or wrong about them
+// regardless of who later rostered them. The consequence is that a drafted
+// squad's rank here is NOT the league standings: a GM who churned the waiver
+// wire can win the league on a draft that grades badly, and separating those
+// two is the reason this exists. Measuring the roster a team actually
+// finished with would need MFL transaction history, and would be grading
+// in-season management rather than the draft.
 
 import { computeGrades, letterGrade, zScores } from './grades';
 import type { ArchiveDoc } from './archive';
