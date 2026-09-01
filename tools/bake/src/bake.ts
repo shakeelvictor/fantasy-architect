@@ -74,6 +74,7 @@ interface Baked {
   adp: number | null;
   posRank?: number;
   vorp?: number;
+  tier?: number;
 }
 
 const players: Baked[] = [];
@@ -112,6 +113,32 @@ for (const g of [...OFF_POS, 'IDP']) {
 }
 for (const p of players) p.vorp = Math.round((p.proj - replacement[p.group]!) * 10) / 10;
 players.sort((a, b) => b.vorp! - a.vorp!);
+
+// v1's value-based tiers: a new tier starts at a real gap in custom points —
+// >=2.5 pts AND >2x the local average spacing, max tier size 8, tiered down
+// to a bit past replacement; the deep tail stays untiered ("The rest").
+for (const g of [...OFF_POS, 'IDP']) {
+  const pool = players.filter((p) => p.group === g).sort((a, b) => b.proj - a.proj);
+  if (!pool.length) continue;
+  const repl = replacement[g]!;
+  let n = pool.findIndex((p) => p.proj < repl * 0.85);
+  if (n === -1) n = pool.length;
+  n = Math.max(n, Math.min(12, pool.length));
+  let tier = 1;
+  let sizeInTier = 1;
+  const gaps: number[] = [];
+  pool.forEach((p, i) => {
+    if (i >= n) return;
+    if (i === 0) { p.tier = 1; return; }
+    const gap = pool[i - 1]!.proj - p.proj;
+    const recent = gaps.slice(-5);
+    const localAvg = recent.length ? recent.reduce((a, b) => a + b, 0) / recent.length : gap;
+    if ((gap >= 2.5 && gap > 2 * localAvg) || sizeInTier >= 8) { tier++; sizeInTier = 0; }
+    gaps.push(gap);
+    sizeInTier++;
+    p.tier = tier;
+  });
+}
 
 const out = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..', 'apps', 'web', 'public', 'players.json');
 writeFileSync(out, JSON.stringify({ bakedAt: new Date().toISOString(), season: SEASON, replacement, players }));

@@ -5,6 +5,12 @@ import type { PoolPlayer } from '../api';
 import { moveQueued, toggleQueued, useQueue } from '../queue';
 import styles from './pool.module.css';
 
+const TABS = ['ALL', 'QB', 'RB', 'WR', 'TE', 'K', 'IDP'] as const;
+type Tab = (typeof TABS)[number];
+
+export const headshot = (pid: string): string =>
+  `https://sleepercdn.com/content/nfl/players/thumb/${pid}.jpg`;
+
 interface Props {
   players: PoolPlayer[];
   draft: DraftState;
@@ -17,6 +23,7 @@ interface Props {
 
 export function Pool({ players, draft, teamName, mode, disabled, onDraft, onAsk }: Props): React.JSX.Element {
   const [term, setTerm] = useState('');
+  const [tab, setTab] = useState<Tab>('ALL');
   const [view, setView] = useState<'all' | 'queue'>('all');
   const queue = useQueue();
 
@@ -28,23 +35,45 @@ export function Pool({ players, draft, teamName, mode, disabled, onDraft, onAsk 
   );
   const byPid = useMemo(() => new Map(players.map((p) => [p.pid, p])), [players]);
 
-  // drafted/kept players drop off the queue VIEW but stay stored (undo restores)
+  // drafted / draftable per tab — draftable = above replacement (vorp > 0),
+  // numerator counts PICKS only, and the predicate is the tab's own:
+  // IDP matches the group, everything else the exact position (v1's rules)
+  const counts = useMemo(() => {
+    const out = {} as Record<Tab, { taken: number; total: number }>;
+    for (const t of TABS) out[t] = { taken: 0, total: 0 };
+    for (const p of players) {
+      if (!((p.vorp ?? 0) > 0)) continue;
+      const key = (p.group === 'IDP' ? 'IDP' : p.pos) as Tab;
+      const taken = gone.has(p.pid) ? 1 : 0;
+      if (out[key]) {
+        out[key].total++;
+        out[key].taken += taken;
+      }
+      out.ALL.total++;
+      out.ALL.taken += taken;
+    }
+    return out;
+  }, [players, gone]);
+
   const visibleQueue = useMemo(
     () => queue.filter((pid) => byPid.has(pid) && !gone.has(pid) && !kept.has(pid)),
     [queue, byPid, gone, kept],
   );
 
   const rows = useMemo(() => {
-    const base = view === 'queue' ? visibleQueue.map((pid) => byPid.get(pid)!) : players;
+    let base = view === 'queue' ? visibleQueue.map((pid) => byPid.get(pid)!) : players;
+    if (view !== 'queue' && tab !== 'ALL') {
+      base = base.filter((p) => (tab === 'IDP' ? p.group === 'IDP' : p.pos === tab));
+    }
     const t = term.toLowerCase();
     return t ? base.filter((p) => p.name.toLowerCase().includes(t)) : base;
-  }, [players, term, view, visibleQueue, byPid]);
+  }, [players, term, tab, view, visibleQueue, byPid]);
 
   const parent = useRef<HTMLDivElement>(null);
   const virtual = useVirtualizer({
     count: rows.length,
     getScrollElement: () => parent.current,
-    estimateSize: () => 44,
+    estimateSize: () => 48,
     overscan: 12,
   });
 
@@ -58,21 +87,31 @@ export function Pool({ players, draft, teamName, mode, disabled, onDraft, onAsk 
           value={term}
           onChange={(e) => setTerm(e.target.value)}
         />
-        <div className={styles.views}>
-          <button
-            data-testid="view-all"
-            className={view === 'all' ? styles.viewActive : ''}
-            onClick={() => setView('all')}
-          >
-            All
-          </button>
+        <div className={styles.tabs}>
+          {TABS.map((t) => (
+            <button
+              key={t}
+              data-testid={`pos-${t}`}
+              className={view === 'all' && tab === t ? styles.tabActive : ''}
+              onClick={() => {
+                setTab(t);
+                setView('all');
+              }}
+            >
+              {t === 'ALL' ? 'All' : t}
+              <span className={`${styles.count} mono`}>
+                {counts[t].taken}/{counts[t].total}
+              </span>
+            </button>
+          ))}
           <button
             data-testid="view-queue"
-            className={view === 'queue' ? styles.viewActive : ''}
+            className={view === 'queue' ? styles.tabActive : ''}
             onClick={() => setView('queue')}
           >
             ★ Queue{visibleQueue.length ? ` (${visibleQueue.length})` : ''}
           </button>
+          <button data-testid="view-all" hidden onClick={() => setView('all')} />
         </div>
       </div>
       <div ref={parent} className={styles.scroller}>
@@ -94,16 +133,16 @@ export function Pool({ players, draft, teamName, mode, disabled, onDraft, onAsk 
                 key={p.pid}
                 data-testid={`row-${p.pid}`}
                 className={`${styles.row} ${unavailable ? styles.gone : ''}`}
-                style={{ position: 'absolute', top: 0, left: 0, right: 0, transform: `translateY(${row.start}px)`, height: 44 }}
+                style={{ position: 'absolute', top: 0, left: 0, right: 0, transform: `translateY(${row.start}px)`, height: 48 }}
               >
                 {view === 'queue' ? (
                   <span className={styles.mv}>
-                    <span className={`${styles.rank} num`}>{row.index + 1}</span>
+                    <span className={`${styles.rank} mono`}>{row.index + 1}</span>
                     <button data-testid={`qup-${p.pid}`} title="Move up the queue" onClick={() => moveQueued(p.pid, -1, visibleQueue)}>▲</button>
                     <button data-testid={`qdn-${p.pid}`} title="Move down the queue" onClick={() => moveQueued(p.pid, 1, visibleQueue)}>▼</button>
                   </span>
                 ) : (
-                  <span className={`${styles.rank} num`}>{row.index + 1}</span>
+                  <span className={`${styles.rank} mono`}>{row.index + 1}</span>
                 )}
                 {!unavailable ? (
                   <button
@@ -117,24 +156,27 @@ export function Pool({ players, draft, teamName, mode, disabled, onDraft, onAsk 
                 ) : (
                   <span className={styles.starGap} />
                 )}
-                <span className={`${styles.pos} ${styles[`g_${p.group}`] ?? ''}`}>{p.pos}</span>
+                <img className={styles.shot} loading="lazy" src={headshot(p.pid)} alt="" onError={(e) => ((e.target as HTMLImageElement).style.visibility = 'hidden')} />
+                <span className={`${styles.pill} ${styles[`g_${p.group}`] ?? ''}`}>{p.pos}</span>
                 <span className={styles.name}>
-                  {p.name}
+                  <span className={styles.pname}>{p.name}</span>
                   <small>
-                    {p.team ?? 'FA'} · ADP {p.adp ?? '—'}
+                    {p.team ?? 'FA'} · {p.pos}
+                    {p.posRank ?? ''} · ADP {p.adp ?? '—'}
                   </small>
                 </span>
-                <span className={`${styles.proj} num`}>{p.proj.toFixed(0)}</span>
+                {p.tier ? <span className={`${styles.tierChip} mono ${styles[`t_${(p.tier - 1) % 6}`]}`}>T{p.tier}</span> : <span className={styles.tierGap} />}
+                <span className={`${styles.proj} mono`}>{p.proj.toFixed(0)}</span>
                 {takenBy !== undefined ? (
                   <span className={styles.owner}>→ {teamName(takenBy)}</span>
                 ) : isKept ? (
                   <span className={styles.owner}>🔒 keeper</span>
                 ) : mode === 'commish' ? (
-                  <button data-testid={`draft-${p.pid}`} disabled={disabled} onClick={() => onDraft(p.pid)}>
+                  <button data-testid={`draft-${p.pid}`} className={styles.draftBtn} disabled={disabled} onClick={() => onDraft(p.pid)}>
                     Draft
                   </button>
                 ) : (
-                  <button data-testid={`ask-${p.pid}`} disabled={disabled || asked.has(p.pid)} onClick={() => onAsk(p.pid)}>
+                  <button data-testid={`ask-${p.pid}`} className={styles.draftBtn} disabled={disabled || asked.has(p.pid)} onClick={() => onAsk(p.pid)}>
                     {asked.has(p.pid) ? 'Asked' : 'Ask'}
                   </button>
                 )}

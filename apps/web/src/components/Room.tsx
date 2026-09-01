@@ -47,7 +47,16 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
   return (
     <div className={styles.app}>
       <header className={styles.bar}>
-        <span className={styles.brand}>FA</span>
+        <div className={styles.brandWrap}>
+          <span className={styles.brand}>FA</span>
+          <span className={styles.brandText}>
+            <b>Fantasy Architect</b>
+            <small className="mono">
+              {config.teams} teams · {config.rounds} rounds · {config.type === 'linear' ? 'straight' : 'snake'}
+              {session.slot ? ` · you pick #${session.slot}` : ''}
+            </small>
+          </span>
+        </div>
         <nav className={styles.tabs}>
           <button data-testid="tab-draft" className={tab === 'draft' ? styles.tabActive : ''} onClick={() => setTab('draft')}>
             Draft Room
@@ -61,7 +70,11 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
             'Draft complete'
           ) : draft.started ? (
             <>
-              On the clock: <b>{teamName(onClockSlot!)}</b>
+              On the clock:{' '}
+              <b className={onClockSlot === session.slot ? styles.you : ''}>
+                {teamName(onClockSlot!)}
+                {onClockSlot === session.slot ? ' (You)' : ''}
+              </b>
               <span className={`${styles.pickno} num`}>
                 {' '}
                 · pick {roundOf(config, cur)}.{String(((cur - 1) % config.teams) + 1).padStart(2, '0')} · #{cur}

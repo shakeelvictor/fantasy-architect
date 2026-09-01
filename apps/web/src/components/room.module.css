@@ -35,3 +35,9 @@
 .tabActive { border-color: var(--accent); color: var(--accent); }
 .balanceChip { color: var(--warn); font-size: 12px; }
 .mainSingle { flex: 1; min-height: 0; padding: 14px; overflow: auto; }
+.brandWrap { display: flex; align-items: center; gap: 9px; }
+.brandText { display: flex; flex-direction: column; line-height: 1.15; }
+.brandText b { font-size: 13.5px; letter-spacing: -0.01em; }
+.brandText small { color: var(--muted); font-size: 9.5px; }
+.you { color: var(--accent); }
+.pickno { font-family: var(--font-mono); }

@@ -12,6 +12,9 @@ export interface PoolPlayer {
   team: string | null;
   proj: number;
   adp: number | null;
+  posRank?: number;
+  vorp?: number;
+  tier?: number;
 }
 
 export async function fetchPlayers(): Promise<PoolPlayer[]> {

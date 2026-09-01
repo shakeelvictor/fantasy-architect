@@ -58,3 +58,15 @@ input {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* v1's position palette — the identity of the board */
+:root {
+  --qb: #f8296d;
+  --rb: light-dark(#009e8e, #00ceb8);
+  --wr: light-dark(#2f6fd0, #58a7ff);
+  --te: light-dark(#c07a1d, #ffae58);
+  --k: light-dark(#8a3fd0, #b45eff);
+  --idp: light-dark(#1d9c58, #34d17d);
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+.mono { font-family: var(--font-mono); }
