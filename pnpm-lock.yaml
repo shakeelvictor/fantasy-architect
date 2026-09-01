@@ -13,6 +13,9 @@ importers:
       '@fa/rules':
         specifier: workspace:*
         version: link:../../packages/rules
+      '@fa/scoring':
+        specifier: workspace:*
+        version: link:../../packages/scoring
       '@supabase/supabase-js':
         specifier: ^2.112.4
         version: 2.112.4

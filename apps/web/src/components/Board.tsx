@@ -12,9 +12,10 @@ interface Props {
   byPid: Map<string, PoolPlayer>;
   teamName: (slot: number) => string;
   cur: number | null;
+  onOpen?: (pid: string) => void;
 }
 
-export function Board({ config, draft, byPid, teamName, cur }: Props): React.JSX.Element {
+export function Board({ config, draft, byPid, teamName, cur, onOpen }: Props): React.JSX.Element {
   const byOverall = new Map(draft.picks.map((p) => [p.overall, p]));
   const keeperAt = new Map(draft.keepers.map((k) => [overallFor(config, k.slot, k.round), k]));
   const latest = draft.picks.reduce((m, p) => Math.max(m, p.overall), 0);
@@ -29,14 +30,14 @@ export function Board({ config, draft, byPid, teamName, cur }: Props): React.JSX
           <div key={s} className="board-head">{teamName(s)}</div>
         ))}
         {rounds.map((r) => (
-          <RoundRow key={r} {...{ r, config, draft, byOverall, keeperAt, byPid, teamName, cur, slots, latest }} />
+          <RoundRow key={r} {...{ r, config, draft, byOverall, keeperAt, byPid, teamName, cur, slots, latest, onOpen }} />
         ))}
       </div>
     </div>
   );
 }
 
-function RoundRow({ r, config, draft, byOverall, keeperAt, byPid, teamName, cur, slots, latest }: {
+function RoundRow({ r, config, draft, byOverall, keeperAt, byPid, teamName, cur, slots, latest, onOpen }: {
   r: number;
   config: SeasonConfig;
   draft: DraftState;
@@ -47,6 +48,7 @@ function RoundRow({ r, config, draft, byOverall, keeperAt, byPid, teamName, cur,
   cur: number | null;
   slots: number[];
   latest: number;
+  onOpen?: ((pid: string) => void) | undefined;
 }): React.JSX.Element {
   return (
     <>
@@ -70,7 +72,8 @@ function RoundRow({ r, config, draft, byOverall, keeperAt, byPid, teamName, cur,
         ].join(' ');
         return (
           <div key={s} data-testid={`cell-${overall}`} data-pid={pid ?? undefined} className={cls}
-            title={traded ? `Pick #${overall} — traded from ${teamName(s)} to ${teamName(owner)}` : undefined}>
+            title={traded ? `Pick #${overall} — traded from ${teamName(s)} to ${teamName(owner)}` : undefined}
+            onClick={pid ? () => onOpen?.(pid) : undefined}>
             {pl ? (
               <>
                 <div className="bc-name">

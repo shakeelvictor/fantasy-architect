@@ -13,6 +13,7 @@ interface Props {
   byPid: Map<string, PoolPlayer>;
   teamName: (slot: number) => string;
   mySlot: number | null;
+  onOpen?: (pid: string) => void;
 }
 
 const STAT_LABELS: [string, string][] = [
@@ -30,7 +31,7 @@ function statLine(p: PoolPlayer): string {
   return parts.length ? ` · ${parts.join(' · ')}` : '';
 }
 
-export function TeamsTab({ config, draft, byPid, teamName, mySlot }: Props): React.JSX.Element {
+export function TeamsTab({ config, draft, byPid, teamName, mySlot, onOpen }: Props): React.JSX.Element {
   const [view, setView] = useState(mySlot ?? 1);
   const picked = rosterForSlot(byPid, draft, view);
   const pending = pendingKeepersForSlot(byPid, draft, view);
@@ -82,7 +83,8 @@ export function TeamsTab({ config, draft, byPid, teamName, mySlot }: Props): Rea
         </h3>
         <div id="team-roster" data-testid="team-roster">
           {slots.map((s, i) => (
-            <div key={i} className="roster-slot" data-pid={s.p?.pid}>
+            <div key={i} className="roster-slot" data-pid={s.p?.pid}
+              onClick={s.p ? () => onOpen?.(s.p!.pid) : undefined}>
               <span className="slot-label">{s.label}</span>
               {s.p ? (
                 <>

@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "fa2-api",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd /Users/shakeelvictor/projects/fantasy-architect/tools/dev-api && pnpm start"
+      ],
+      "port": 8787
+    },
+    {
+      "name": "fa2-web",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd /Users/shakeelvictor/projects/fantasy-architect/apps/web && pnpm dev"
+      ],
+      "port": 5173
+    }
+  ]
+}

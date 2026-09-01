@@ -9,7 +9,9 @@ import { headshot } from '../v1logic';
 
 const POS = ['ALL', 'QB', 'RB', 'WR', 'TE', 'K', 'IDP'] as const;
 
-export function Values({ players, draft }: { players: PoolPlayer[]; draft: DraftState }): React.JSX.Element {
+export function Values({ players, draft, onOpen }: {
+  players: PoolPlayer[]; draft: DraftState; onOpen?: (pid: string) => void;
+}): React.JSX.Element {
   const [view, setView] = useState<'sleepers' | 'busts'>('sleepers');
   const [pos, setPos] = useState<(typeof POS)[number]>('ALL');
   const gone = useMemo(() => new Set(draft.picks.map((p) => p.pid)), [draft.picks]);
@@ -60,7 +62,7 @@ export function Values({ players, draft }: { players: PoolPlayer[]; draft: Draft
         </div>
         <div id="values-list">
           {rows.map(({ p, gap, market }) => (
-            <div key={p.pid} className="rec-item" data-pid={p.pid}>
+            <div key={p.pid} className="rec-item" data-pid={p.pid} onClick={() => onOpen?.(p.pid)}>
               <img className="mini-shot" loading="lazy" src={headshot(p.pid)} alt=""
                 onError={(e) => ((e.target as HTMLImageElement).style.visibility = 'hidden')} />
               <span className={`pos-pill pos-${p.pos}`}>{p.pos}</span>

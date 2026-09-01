@@ -1,13 +1,14 @@
 // v1's shell, verbatim: topbar (brand / clock pill / mode switch / theme),
 // the six main tabs, and each tab's v1 layout — over v2's event-sourced
-// state. Mock mode and the drawer are the two explicitly-pending pieces.
+// state. Mock mode is the one explicitly-pending piece.
 
 import { useEffect, useMemo, useState } from 'react';
 import { currentOverall, ownerOf, rosterBalance, roundOf } from '@fa/rules';
-import { fetchPlayers, transport, type PoolPlayer, type Session } from '../api';
+import { fetchPool, transport, type PoolDoc, type Session } from '../api';
 import { useRoom } from '../store';
 import { Analyzer } from './Analyzer';
 import { Board } from './Board';
+import { Drawer } from './Drawer';
 import { KeepersPanel } from './KeepersPanel';
 import { Pool } from './Pool';
 import { SidePanel } from './SidePanel';
@@ -25,14 +26,16 @@ const TAB_LABELS: [Tab, string][] = [
 
 export function Room({ session, onLogout }: { session: Session; onLogout: () => void }): React.JSX.Element {
   const room = useRoom();
-  const [players, setPlayers] = useState<PoolPlayer[]>([]);
+  const [pool, setPool] = useState<PoolDoc | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [tab, setTab] = useState<Tab>('draft');
   const [panel, setPanel] = useState<Panel>(null);
+  const [drawerPid, setDrawerPid] = useState<string | null>(null);
   const [theme, setTheme] = useState(() => localStorage.getItem('fa-theme') ?? '');
+  const players = pool?.players ?? [];
 
   useEffect(() => {
-    void fetchPlayers().then(setPlayers);
+    void fetchPool().then(setPool);
   }, []);
   useEffect(() => {
     if (theme) document.documentElement.dataset.theme = theme;
@@ -175,6 +178,7 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
               disabled={!draft.started || done}
               onDraft={(pid) => act('pick_made', { pid })}
               onAsk={(pid) => act('pick_requested', { pid, slot: session.slot })}
+              onOpen={setDrawerPid}
             />
             <SidePanel
               players={players}
@@ -189,20 +193,21 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
               act={act}
               events={room.events}
               openPanel={setPanel}
+              onOpen={setDrawerPid}
             />
           </div>
         </section>
         <section className={`tab-panel ${tab === 'board' ? 'active' : ''}`} id="tab-board">
-          <Board config={config} draft={draft} byPid={byPid} teamName={teamName} cur={done ? null : cur} />
+          <Board config={config} draft={draft} byPid={byPid} teamName={teamName} cur={done ? null : cur} onOpen={setDrawerPid} />
         </section>
         <section className={`tab-panel ${tab === 'teams' ? 'active' : ''}`} id="tab-teams">
-          <TeamsTab config={config} draft={draft} byPid={byPid} teamName={teamName} mySlot={session.slot} />
+          <TeamsTab config={config} draft={draft} byPid={byPid} teamName={teamName} mySlot={session.slot} onOpen={setDrawerPid} />
         </section>
         <section className={`tab-panel ${tab === 'analyzer' ? 'active' : ''}`} id="tab-analyzer">
           <Analyzer config={config} draft={draft} byPid={byPid} teamName={teamName} />
         </section>
         <section className={`tab-panel ${tab === 'values' ? 'active' : ''}`} id="tab-values">
-          <Values players={players} draft={draft} />
+          <Values players={players} draft={draft} onOpen={setDrawerPid} />
         </section>
         <section className={`tab-panel ${tab === 'archive' ? 'active' : ''}`} id="tab-archive">
           <div className="card" style={{ maxWidth: 560 }}>
@@ -220,6 +225,27 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
       )}
       {panel === 'trades' && (
         <TradesPanel config={config} draft={draft} teamName={teamName} act={act} onClose={() => setPanel(null)} />
+      )}
+      {drawerPid && pool && (
+        <Drawer
+          pid={drawerPid}
+          players={players}
+          byPid={byPid}
+          sosRanks={pool.sosRanks ?? {}}
+          season={pool.season}
+          prior={pool.prior ?? String(Number(pool.season) - 1)}
+          config={config}
+          draft={draft}
+          teamName={teamName}
+          mode={isCommish ? 'commish' : 'team'}
+          mySlot={mySlot}
+          done={done}
+          disabled={!draft.started || done}
+          onDraft={(pid) => act('pick_made', { pid })}
+          onAsk={(pid) => act('pick_requested', { pid, slot: session.slot })}
+          onOpen={setDrawerPid}
+          onClose={() => setDrawerPid(null)}
+        />
       )}
     </div>
   );

@@ -52,11 +52,18 @@ function replacementRank(g: string): number {
 }
 
 type Stats = Record<string, number>;
+interface PlayerMeta {
+  first_name?: string; last_name?: string; position?: string; team?: string;
+  search_rank?: number; injury_status?: string; injury_body_part?: string;
+  injury_notes?: string; news_updated?: number; years_exp?: number;
+  depth_chart_order?: number; depth_chart_position?: string;
+  age?: number; height?: string; weight?: string; college?: string; number?: number;
+}
 interface Row {
   player_id: string;
   team?: string | null;
   opponent?: string | null;
-  player?: { first_name?: string; last_name?: string; position?: string; team?: string; injury_status?: string };
+  player?: PlayerMeta;
   stats?: Stats;
 }
 
@@ -73,7 +80,7 @@ const priorUrl = (w: number): string =>
 
 console.log(`baking season ${SEASON} (prior ${PRIOR})…`);
 const [meta, seasonProj] = await Promise.all([
-  fetchJson<Record<string, { first_name?: string; last_name?: string; position?: string; team?: string; search_rank?: number; injury_status?: string }>>(
+  fetchJson<Record<string, PlayerMeta>>(
     'https://api.sleeper.app/v1/players/nfl',
   ),
   fetchJson<Row[]>(
@@ -84,6 +91,9 @@ const [meta, seasonProj] = await Promise.all([
 // ---- SOS: custom points allowed by each defense per position group (prior season)
 const allowed: Record<string, Record<string, number>> = {};
 const defGames: Record<string, number> = {};
+// Per-player prior-season totals under custom scoring (drawer's "last season
+// actual" line) — same rows the SOS pass already walks, so no extra fetches.
+const prior: Record<string, number> = {};
 for (let w = 1; w <= WEEKS; w++) {
   let rows: Row[];
   try {
@@ -93,16 +103,31 @@ for (let w = 1; w <= WEEKS; w++) {
   }
   const seenOpp: Record<string, boolean> = {};
   for (const row of rows) {
+    const pts0 = scoreWeek(row.stats ?? {}, true); // finished games — exact tiers
+    prior[row.player_id] = (prior[row.player_id] ?? 0) + pts0;
     const opp = row.opponent;
     const pos = normalizePos(row.player?.position);
     if (!opp || !pos) continue;
     const g = groupOf(pos);
-    const pts = scoreWeek(row.stats ?? {}, true); // finished games — exact tiers
     allowed[opp] = allowed[opp] ?? {};
-    allowed[opp][g] = (allowed[opp][g] ?? 0) + pts;
+    allowed[opp][g] = (allowed[opp][g] ?? 0) + pts0;
     seenOpp[opp] = true;
   }
   for (const t of Object.keys(seenOpp)) defGames[t] = (defGames[t] ?? 0) + 1;
+}
+// last-season position ranks, within the same normalized positions the pool uses
+const priorRank: Record<string, number> = {};
+{
+  const byPos: Record<string, { pid: string; pts: number }[]> = {};
+  for (const [pid, pts] of Object.entries(prior)) {
+    const pos = normalizePos(meta[pid]?.position);
+    if (!pos || !(pts > 0)) continue;
+    (byPos[pos] = byPos[pos] ?? []).push({ pid, pts });
+  }
+  for (const pos of Object.keys(byPos)) {
+    byPos[pos]!.sort((a, b) => b.pts - a.pts);
+    byPos[pos]!.forEach((e, i) => (priorRank[e.pid] = i + 1));
+  }
 }
 const sosRanks: Record<string, Record<string, number>> = {};
 {
@@ -200,7 +225,17 @@ interface Baked {
   bye: number | null; adp: number | null; proj: number;
   sos: number | null; po: number | null; interest: number | null;
   injury: string | null; stats: Stats | null;
-  posRank?: number; vorp?: number; tier?: number;
+  posRank?: number; vorp?: number; tier?: number; overallRank?: number;
+  // player-card fields (drawer): schedule, weekly shape, bio, depth, last season
+  ppg: number;
+  opps: Record<number, string | null>;
+  weekPts: Record<number, number>;
+  playoffOpps: { week: number; opp: string }[];
+  injuryPart: string | null; injuryNotes: string | null; newsUpdated: number | null;
+  depthOrder: number | null; depthPos: string | null;
+  yearsExp: number | null; age: number | null;
+  height: string | null; weight: string | null; college: string | null; number: number | null;
+  lastSeason: number | null; lastSeasonRank: number | null;
 }
 const players: Baked[] = [];
 for (const row of seasonProj) {
@@ -217,10 +252,14 @@ for (const row of seasonProj) {
   let season = 0;
   const oppRanks: number[] = [];
   const poRanks: number[] = [];
+  const weekPts: Record<number, number> = {};
+  const playoffOpps: { week: number; opp: string }[] = [];
   for (let w = 1; w <= WEEKS; w++) {
     season += wk.weeks[w] ?? 0;
+    weekPts[w] = Math.round((wk.weeks[w] ?? 0) * 100) / 100;
     const opp = wk.opp[w];
     if (!opp) continue;
+    if (w >= 15 && w <= 17) playoffOpps.push({ week: w, opp });
     const r = sosRanks[opp]?.[g];
     if (!r) continue;
     if (w <= 14) oppRanks.push(r);
@@ -241,6 +280,23 @@ for (const row of seasonProj) {
     interest: m.search_rank && m.search_rank < 9999999 ? m.search_rank : null,
     injury: p.injury_status ?? m.injury_status ?? null,
     stats: projStatLine(stats),
+    ppg: Math.round((season / 17) * 100) / 100,
+    opps: wk.opp,
+    weekPts,
+    playoffOpps,
+    injuryPart: p.injury_body_part ?? m.injury_body_part ?? null,
+    injuryNotes: p.injury_notes ?? m.injury_notes ?? null,
+    newsUpdated: p.news_updated ?? m.news_updated ?? null,
+    depthOrder: m.depth_chart_order ?? null,
+    depthPos: m.depth_chart_position ?? null,
+    yearsExp: p.years_exp ?? m.years_exp ?? null,
+    age: m.age ?? null,
+    height: m.height ?? null,
+    weight: m.weight ?? null,
+    college: m.college ?? null,
+    number: m.number ?? null,
+    lastSeason: prior[pid] != null && prior[pid] > 0 ? Math.round(prior[pid] * 10) / 10 : null,
+    lastSeasonRank: priorRank[pid] ?? null,
   });
 }
 
@@ -254,6 +310,7 @@ for (const g of GROUPS) {
 }
 for (const p of players) p.vorp = Math.round((p.proj - replacement[p.group]!) * 10) / 10;
 players.sort((a, b) => b.vorp! - a.vorp!);
+players.forEach((p, i) => (p.overallRank = i + 1));
 for (const g of GROUPS) {
   const pool = players.filter((p) => p.group === g).sort((a, b) => b.proj - a.proj);
   if (!pool.length) continue;
@@ -278,7 +335,7 @@ for (const g of GROUPS) {
 }
 
 const out = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..', 'apps', 'web', 'public', 'players.json');
-writeFileSync(out, JSON.stringify({ bakedAt: new Date().toISOString(), season: SEASON, replacement, players }));
+writeFileSync(out, JSON.stringify({ bakedAt: new Date().toISOString(), season: SEASON, prior: PRIOR, replacement, sosRanks, players }));
 console.log(`${players.length} players baked`);
 console.log('top 5:', players.slice(0, 5).map((p) => `${p.name} ${p.pos} v${p.vorp}`).join(' | '));
 console.log('sample columns:', JSON.stringify(players.find((p) => p.name === 'Derrick Henry') ?? players[10]));

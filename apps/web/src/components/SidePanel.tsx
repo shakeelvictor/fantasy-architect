@@ -20,9 +20,10 @@ interface Props {
   act: (type: string, payload?: Record<string, unknown>) => void;
   events: DraftEvent[];
   openPanel: (p: 'keepers' | 'trades') => void;
+  onOpen?: (pid: string) => void;
 }
 
-export function SidePanel({ players, byPid, config, draft, session, mySlot, teamName, done, onClock, act, events, openPanel }: Props): React.JSX.Element {
+export function SidePanel({ players, byPid, config, draft, session, mySlot, teamName, done, onClock, act, events, openPanel, onOpen }: Props): React.JSX.Element {
   const isCommish = session.role === 'commish';
   const recs = done ? [] : recommendations(players, byPid, config, draft, mySlot, 8);
   const top = recs[0];
@@ -80,7 +81,7 @@ export function SidePanel({ players, byPid, config, draft, session, mySlot, team
               <div className="p-meta" style={{ marginBottom: 8 }}>
                 {onClock ? <span style={{ color: 'var(--accent-text, #00ceb8)' }}>You're on the clock!</span> : `Your next pick: #${nextFor(config, draft, mySlot) ?? '—'}`}
               </div>
-              <div className="top-sug" data-pid={top!.p.pid}>
+              <div className="top-sug" data-pid={top!.p.pid} onClick={() => onOpen?.(top!.p.pid)}>
                 <div className="ts-label">★ TOP SUGGESTION</div>
                 <div className="ts-hero">
                   <span className={`ts-ring ring-${top!.p.group}`}>
@@ -98,15 +99,15 @@ export function SidePanel({ players, byPid, config, draft, session, mySlot, team
                   <div className="ts-stat"><b>{top!.p.adp != null ? top!.p.adp.toFixed(0) : '—'}</b><span>ADP</span></div>
                 </div>
                 {onClock && isCommish && (
-                  <button className="ts-draft" onClick={() => act('pick_made', { pid: top!.p.pid })}>Draft now ⚡</button>
+                  <button className="ts-draft" onClick={(e) => { e.stopPropagation(); act('pick_made', { pid: top!.p.pid }); }}>Draft now ⚡</button>
                 )}
                 {onClock && !isCommish && (
-                  <button className="ts-draft" onClick={() => act('pick_requested', { pid: top!.p.pid, slot: session.slot })}>Ask for him ⚡</button>
+                  <button className="ts-draft" onClick={(e) => { e.stopPropagation(); act('pick_requested', { pid: top!.p.pid, slot: session.slot }); }}>Ask for him ⚡</button>
                 )}
               </div>
               <div className="ts-next-label">NEXT BEST</div>
               {recs.slice(1).map(({ p, atRisk }) => (
-                <div key={p.pid} className="rec-item" data-pid={p.pid}>
+                <div key={p.pid} className="rec-item" data-pid={p.pid} onClick={() => onOpen?.(p.pid)}>
                   <span className={`pos-pill pos-${p.pos}`}>{p.pos}</span>
                   <div className="rec-main">
                     <div className="rec-name">{p.name}</div>
