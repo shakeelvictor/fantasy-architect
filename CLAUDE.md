@@ -179,6 +179,13 @@ grades badly here, and separating the two is the point. The panel says so
 directly, because "actual grade F" otherwise reads as a bad season. **The 2026 season had not
 kicked off as of Sep 2026**, so the panel shows the not-yet state.
 
+Parked, not a gap — a SECOND analyzer (Shak, Sep 2026): pull each team's
+final MFL roster, diff it against what they drafted, and write one
+end-of-season review of the year as managed. Deliberately separate from the
+retrospective above, which grades the draft and should stay that single
+claim. Needs MFL transaction/roster history and is only buildable once a
+season has actually been played — earliest Dec 2026 for the 2026 league.
+
 Known gaps, deliberate: Sleepers & Busts has no trending "buzz" column yet
 (the drawer's 🔥 badge is the only trending consumer); `player_moved` is
 still a reducer no-op; mock redo restores a multi-pick rewind one pick at
