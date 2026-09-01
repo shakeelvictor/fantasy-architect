@@ -13,6 +13,57 @@
 // with "Field login XML: Must Be Less Than 1 Characters Long" before it
 // ever checks the credentials (v1's hard-won lesson).
 
+// ------------------------------------------------------- who may push
+//
+// Pushing rewrites the real league: MFL's import REPLACES every existing
+// draft result, for whatever season it is aimed at. It is the most
+// destructive thing this app can reach, so the rule that guards it lives
+// HERE, in the module both the edge function and tools/dev-api already
+// share, rather than being hand-rolled either side of the wire. Two copies
+// of a security check are two copies to keep in step, and the one that
+// drifts is the one nobody notices.
+
+import { verifyJwt } from '../auth-pin/jwt.ts';
+
+export type PushAuth =
+  | { ok: true; claims: Record<string, unknown> }
+  | { ok: false; status: number; error: string };
+
+/** Commissioner-only, for every season, now and in future years. Nothing here
+ *  is year-specific: the claim is a ROLE, so a 2028 commissioner passes and a
+ *  2028 team does not, with no code change in between. */
+export async function authorizePush(
+  authorizationHeader: string | null | undefined,
+  secret: string | undefined,
+): Promise<PushAuth> {
+  // Fail CLOSED on a missing secret. `verifyJwt(token, '')` happily verifies
+  // a token signed with the empty string, so a secret that goes missing —
+  // rotated, mistyped, a fresh project without it set — would turn this from
+  // commissioner-only into anyone-only, silently and at exactly the moment
+  // nobody is looking.
+  if (!secret) {
+    return { ok: false, status: 500, error: 'server is missing its signing secret; refusing to push' };
+  }
+  const token = (authorizationHeader ?? '').replace(/^Bearer\s+/i, '').trim();
+  if (!token) return { ok: false, status: 403, error: 'commissioner only' };
+
+  // verifyJwt THROWS on a malformed token rather than returning null (its
+  // base64 decode gives up on junk), which would surface as a 500 — an
+  // ambiguous answer to an unambiguous question. Anything that is not a
+  // verified token is a refusal, so treat a throw as one.
+  let claims: Record<string, unknown> | null = null;
+  try {
+    claims = await verifyJwt(token, secret);
+  } catch {
+    claims = null;
+  }
+  // covers a forged, tampered or malformed token AND an expired session,
+  // since verifyJwt checks exp — a stale tab must not still be able to push
+  if (!claims) return { ok: false, status: 403, error: 'session is invalid or expired' };
+  if (claims.app_role !== 'commish') return { ok: false, status: 403, error: 'commissioner only' };
+  return { ok: true, claims };
+}
+
 export const MFL_LEAGUE_ID = '19716';
 const MFL_HOST = 'https://www44.myfantasyleague.com';
 const MFL_API_HOST = 'https://api.myfantasyleague.com';

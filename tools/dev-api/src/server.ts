@@ -278,9 +278,9 @@ const server = createServer((req, res) => {
           });
         }
         if (body.op === 'push') {
-          const token = (req.headers.authorization ?? '').replace(/^Bearer\s+/i, '');
-          const claims = await verifyJwt(token, JWT_SECRET);
-          if (!claims || claims.app_role !== 'commish') return json(res, 403, { error: 'commissioner only' });
+          // the same shared rule the hosted edge function applies
+          const auth = await mflCore.authorizePush(req.headers.authorization, JWT_SECRET);
+          if (!auth.ok) return json(res, auth.status, { error: auth.error });
           if (!body.username || !body.password || !body.xml) {
             return json(res, 400, { error: 'username, password, and xml are required' });
           }

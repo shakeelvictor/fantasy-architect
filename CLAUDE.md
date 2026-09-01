@@ -155,7 +155,7 @@ All seven remaining v1 surfaces are ported and deployed, each with e2e:
 6. **Exports/MFL** (`xlsx.ts`, `exports.ts`, `MflPanel.tsx`,
    `supabase/functions/mfl/`) — the MFL core is platform-neutral and shared
    by the edge function AND dev-api's `/mfl` (like auth-pin/jwt.ts). `setup`
-   is open; `push` needs a commish JWT. Deployed + verified vs the real 2026
+   is open; `push` needs a commish JWT — see **Who may push to MFL** below. Deployed + verified vs the real 2026
    league. NOTE: the client asks MFL for VITE_SEASON's year — the 2027 MFL
    site 404s until the league renews there (check the league id then too).
 7. **Archives** (`archive.ts`, `ArchiveTab.tsx`) — v1's document schema
@@ -164,6 +164,39 @@ All seven remaining v1 surfaces are ported and deployed, each with e2e:
    pins each pick's `vorp` and each team's draft-night `draftGrade`/`draftZ`,
    so it can be re-graded years later without the bake that produced it (the
    2026 seed was backfilled once from the 2026 pool).
+
+## Who may push to MFL
+
+Pushing REPLACES every draft result in the league, for whatever season it is
+aimed at, so it is the most destructive call the app can reach. Four
+independent things have to hold, and they are layered on purpose:
+
+1. `authorizePush()` in `supabase/functions/mfl/core.ts` is the ONE rule,
+   shared by the hosted edge function and dev-api. It was hand-rolled either
+   side of the wire before; two copies of a security check are two copies to
+   keep in step, and the one that drifts is the one nobody notices.
+2. It **fails closed on a missing signing secret**. `verifyJwt(token, '')`
+   happily verifies a token signed with the empty string, so a secret that
+   went missing — rotated, mistyped, a fresh project without it — would have
+   turned commissioner-only into anyone-only, silently. A missing secret is
+   now a 500 refusal, never a pass.
+3. A malformed token is a clean 403. `verifyJwt` THROWS on junk rather than
+   returning null, which used to surface as a 500 (found by the e2e).
+4. The rule is on the ROLE, not the season, so 2028 needs no code change: a
+   2028 commissioner passes, a 2028 team does not. Expired sessions are
+   refused too — a stale tab cannot push.
+
+MFL credentials are typed per push and never persisted anywhere: not in
+localStorage (only the franchise map is), not on our servers, not in logs.
+That is deliberate and worth keeping — with no stored credentials, no
+automated or background push is even possible, whatever else goes wrong.
+MFL's own commissioner login is the final backstop.
+
+Tested at three levels: `packages/rules/test/mfl-auth.test.ts` (9 cases —
+role, no token, forged signature, tampered payload, expiry, garbage, missing
+secret; mutation-checked), `apps/web/e2e/mfl-guard.spec.ts` (the REAL dev-api
+route, since exports.spec stubs the proxy, plus "a team never even sees the
+button"), and a live check against the hosted function after each deploy.
 
 ## The public draft record — `/{year}`
 

@@ -15,8 +15,7 @@
 // The MFL site year defaults to the current league season; pass `season`
 // to point at a different MFL year.
 
-import { verifyJwt } from '../auth-pin/jwt.ts';
-import { buildIdMap, getMflLeague, pushDraftResults, type AppPlayer } from './core.ts';
+import { authorizePush, buildIdMap, getMflLeague, pushDraftResults, type AppPlayer } from './core.ts';
 
 const CORS = {
   'access-control-allow-origin': '*',
@@ -57,10 +56,13 @@ Deno.serve(async (req: Request): Promise<Response> => {
     }
 
     if (body.op === 'push') {
-      // the one call that rewrites the real league — commissioner JWT only
-      const auth = (req.headers.get('authorization') ?? '').replace(/^Bearer\s+/i, '');
-      const claims = auth ? await verifyJwt(auth, Deno.env.get('FA_JWT_SECRET') ?? '') : null;
-      if (!claims || claims.app_role !== 'commish') return err(403, 'commissioner only');
+      // the one call that rewrites the real league — commissioner JWT only,
+      // decided by the shared rule in core.ts so this and dev-api cannot drift
+      const auth = await authorizePush(
+        req.headers.get('authorization'),
+        Deno.env.get('FA_JWT_SECRET'),
+      );
+      if (!auth.ok) return err(auth.status, auth.error);
       if (!body.username || !body.password || !body.xml) {
         return err(400, 'username, password, and xml are required');
       }
