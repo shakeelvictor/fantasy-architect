@@ -1,4 +1,4 @@
-# Fantasy Architect 2.0
+# fantasy-architect
 
 Event-sourced rebuild of the INDOMEXPAK draft tool. Architecture proposal:
 see the pinned artifact. Phase 0 = `packages/scoring`, a TypeScript port of

@@ -1,5 +1,5 @@
 {
-  "name": "fantasy-architect-2",
+  "name": "fantasy-architect",
   "private": true,
   "packageManager": "pnpm@9.15.4",
   "scripts": {
