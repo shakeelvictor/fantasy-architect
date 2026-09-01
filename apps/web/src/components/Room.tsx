@@ -15,6 +15,7 @@ import { MockControls } from './MockControls';
 import { Pool } from './Pool';
 import { SidePanel } from './SidePanel';
 import { TeamsTab } from './TeamsTab';
+import { Ticker } from './Ticker';
 import { TradesPanel } from './TradesPanel';
 import { Values } from './Values';
 
@@ -164,6 +165,8 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
           ⏻
         </button>
       </header>
+
+      <Ticker config={config} draft={draft} byPid={byPid} teamName={teamName} mySlot={mySlot} done={done} />
 
       {toast && (
         <div data-testid="toast" className="watch-banner" role="alert" style={{ borderColor: 'var(--danger, #ff5c5c)' }}>

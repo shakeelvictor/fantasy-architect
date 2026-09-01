@@ -41,6 +41,10 @@ test('a full slice of draft night, in two browsers', async ({ browser }) => {
   console.log(`propagation: ${propagation}ms`);
   await expect(commish.getByTestId('onclock')).toContainText('Vip');
 
+  // ---- the ticker scrolls the pick and who's on the clock, both browsers
+  await expect(commish.locator('#pick-ticker')).toContainText(firstName.toUpperCase());
+  await expect(team.locator('#pick-ticker')).toContainText('ON THE CLOCK');
+
   // ---- the team asks for a player; commissioner takes it
   // data-independent: whoever tops the available list after pick #1
   const askBtn = team.locator('[data-testid^="ask-"]').first();
