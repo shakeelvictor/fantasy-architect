@@ -34,3 +34,14 @@ describe('auth-pin jwt', () => {
     );
   });
 });
+
+describe('verifyJwt', () => {
+  it('accepts its own tokens, rejects bad signatures and expiry', async () => {
+    const { mintJwt, verifyJwt } = await import('../../../supabase/functions/auth-pin/jwt.ts');
+    const t = await mintJwt({ app_role: 'team', app_slot: 4 }, 'sek', 1_700_000_000);
+    expect(await verifyJwt(t, 'sek', 1_700_000_100)).toMatchObject({ app_role: 'team', app_slot: 4 });
+    expect(await verifyJwt(t, 'wrong', 1_700_000_100)).toBeNull();
+    expect(await verifyJwt(t, 'sek', 1_700_090_000)).toBeNull(); // past exp
+    expect(await verifyJwt('garbage', 'sek')).toBeNull();
+  });
+});

@@ -1,0 +1,84 @@
+// The Phase 2 exit criteria, executable: two real browsers — commissioner
+// and a team — against the real migration. A pick made in one appears in the
+// other in under a second; killing the network mid-pick loses nothing; the
+// Take-it/Reject flow lands a team's ask as a real pick.
+
+import { expect, test, type Page } from '@playwright/test';
+
+async function login(page: Page, pin: string): Promise<void> {
+  await page.goto('/');
+  await page.getByTestId('pin-input').fill(pin);
+  await page.getByTestId('pin-submit').click();
+  await expect(page.getByTestId('conn')).toContainText('live');
+}
+
+test('a full slice of draft night, in two browsers', async ({ browser }) => {
+  const commishCtx = await browser.newContext();
+  const teamCtx = await browser.newContext();
+  const commish = await commishCtx.newPage();
+  const team = await teamCtx.newPage();
+
+  await login(commish, '1111'); // commissioner
+  await login(team, '2202'); // slot 2 — Vip
+
+  // ---- start the draft; both browsers see it
+  await commish.getByTestId('start-draft').click();
+  await expect(commish.getByTestId('onclock')).toContainText('Anand');
+  await expect(team.getByTestId('onclock')).toContainText('Anand');
+
+  // ---- commissioner drafts the top player; the team browser sees it FAST
+  const topRow = commish.locator('[data-testid^="row-"]').first();
+  // innerText merges the inline <small>, so only the first token is safe
+  const firstName = (await topRow.locator('span >> nth=2').innerText()).split(/\s/)[0]!;
+  await topRow.locator('button').click();
+  const t0 = Date.now();
+  await expect(team.getByTestId('cell-1')).toContainText(firstName, { timeout: 1000 });
+  const propagation = Date.now() - t0;
+  console.log(`propagation: ${propagation}ms`);
+  await expect(commish.getByTestId('onclock')).toContainText('Vip');
+
+  // ---- the team asks for a player; commissioner takes it
+  await team.getByTestId('pool-search').fill('Bijan');
+  const bijanAsk = team.locator('[data-testid^="ask-"]').first();
+  await bijanAsk.click();
+  await expect(bijanAsk).toContainText('Asked');
+  await expect(commish.getByTestId('req-banner')).toContainText('Vip');
+  await expect(commish.getByTestId('req-banner')).toContainText('Bijan');
+  await commish.getByTestId('req-accept').click();
+  await expect(team.getByTestId('cell-2')).toContainText('Bijan');
+  await expect(commish.getByTestId('cell-2')).toContainText('Bijan');
+
+  // ---- authorization on the wire: the team's own UI offers Ask, never Draft
+  await expect(team.locator('[data-testid^="draft-"]')).toHaveCount(0);
+
+  // ---- undo propagates too
+  await commish.getByTestId('undo').click();
+  await expect(team.getByTestId('cell-2')).not.toContainText('Bijan');
+  await expect(commish.getByTestId('onclock')).toContainText('Vip');
+
+  // ---- kill the network mid-pick: the pick fails LOUDLY, nothing corrupts
+  await commishCtx.setOffline(true);
+  // (the idle SSE socket only notices on its next heartbeat — the loud
+  // failure below is the exit criterion, not the indicator's timing)
+  await commish.getByTestId('pool-search').fill('Jahmyr');
+  await commish.locator('[data-testid^="draft-"]').first().click();
+  await expect(commish.getByTestId('toast')).toBeVisible();
+  await expect(commish.getByTestId('cell-2')).not.toContainText('Gibbs');
+
+  // ---- back online: reconnects, converges, and the pick goes through clean
+  await commishCtx.setOffline(false);
+  await expect(commish.getByTestId('conn')).toContainText('live', { timeout: 10_000 });
+  await commish.locator('[data-testid="pool-search"]').fill('Jahmyr');
+  await commish.locator('[data-testid^="draft-"]').first().click();
+  await expect(commish.getByTestId('cell-2')).toContainText('Gibbs');
+  await expect(team.getByTestId('cell-2')).toContainText('Gibbs');
+
+  // exactly two picks on both boards — the offline failure left no residue
+  for (const page of [commish, team]) {
+    await expect(page.locator('[data-testid^="cell-"]').locator('text=🔒')).toHaveCount(0);
+    await expect(page.getByTestId('cell-3')).not.toContainText(/[A-Za-z]{3}/);
+  }
+
+  await commishCtx.close();
+  await teamCtx.close();
+});

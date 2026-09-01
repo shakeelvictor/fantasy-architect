@@ -56,3 +56,28 @@ export function decodeJwtPayload(jwt: string): Record<string, unknown> {
   const b64 = part.replace(/-/g, '+').replace(/_/g, '/');
   return JSON.parse(atob(b64)) as Record<string, unknown>;
 }
+
+/** Verify an HS256 JWT's signature and expiry; returns its claims or null. */
+export async function verifyJwt(
+  jwt: string,
+  secret: string,
+  nowSeconds = Math.floor(Date.now() / 1000),
+): Promise<Record<string, unknown> | null> {
+  const [h, p, sig] = jwt.split('.');
+  if (!h || !p || !sig) return null;
+  const key = await crypto.subtle.importKey(
+    'raw',
+    enc.encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['verify'],
+  );
+  const b64 = sig.replace(/-/g, '+').replace(/_/g, '/');
+  const raw = atob(b64.padEnd(b64.length + ((4 - (b64.length % 4)) % 4), '='));
+  const sigBytes = Uint8Array.from(raw, (c) => c.charCodeAt(0));
+  const ok = await crypto.subtle.verify('HMAC', key, sigBytes, enc.encode(`${h}.${p}`));
+  if (!ok) return null;
+  const claims = decodeJwtPayload(jwt);
+  if (typeof claims.exp === 'number' && claims.exp < nowSeconds) return null;
+  return claims;
+}

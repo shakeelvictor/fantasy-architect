@@ -1,0 +1,15 @@
+.wrap { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+.card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 34px 38px; max-width: 380px; text-align: center;
+}
+.card h1 { font-size: 22px; margin: 14px 0 6px; letter-spacing: -0.01em; }
+.card p { color: var(--muted); font-size: 13.5px; margin: 0 0 18px; }
+.mark {
+  width: 46px; height: 46px; margin: 0 auto; display: grid; place-items: center;
+  background: var(--accent-dim); color: var(--accent); border-radius: 12px;
+  font-weight: 800; letter-spacing: 0.03em;
+}
+.row { display: flex; gap: 8px; justify-content: center; }
+.row input { width: 130px; text-align: center; letter-spacing: 0.3em; }
+.error { color: var(--danger); font-size: 13px; margin-top: 12px; }

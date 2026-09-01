@@ -1,0 +1,60 @@
+/* Design tokens — the app's visual identity carried over from v1:
+   deep navy ground, teal accent, Inter + tabular numerals. Dark-first with
+   a full light theme via light-dark(); components read tokens only. */
+
+:root {
+  color-scheme: dark light;
+
+  --bg: light-dark(#f5f7fa, #0d1220);
+  --surface: light-dark(#ffffff, #151b2e);
+  --surface-2: light-dark(#eef1f7, #1b2338);
+  --border: light-dark(#d8deea, #262f47);
+  --text: light-dark(#1a2233, #e8ecf5);
+  --muted: light-dark(#5d6779, #8a93a6);
+  --accent: light-dark(#009e8e, #00ceb8);
+  --accent-dim: light-dark(rgba(0, 158, 142, 0.1), rgba(0, 206, 184, 0.12));
+  --danger: light-dark(#c43c3c, #ff5c5c);
+  --warn: light-dark(#b07a00, #f0b429);
+
+  --font: Inter, system-ui, -apple-system, sans-serif;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface-2);
+  color: var(--text);
+  padding: 5px 12px;
+}
+button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+button:disabled { opacity: 0.45; cursor: default; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+input {
+  font: inherit;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 6px 10px;
+}
+
+.num { font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

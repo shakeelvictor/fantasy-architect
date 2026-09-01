@@ -11,10 +11,7 @@ import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const MIGRATION = join(
-  dirname(fileURLToPath(import.meta.url)),
-  '..', '..', '..', 'supabase', 'migrations', '0001_foundation.sql',
-);
+const SUPABASE = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..', 'supabase');
 
 export interface Claims {
   app_role: 'commish' | 'team';
@@ -30,22 +27,9 @@ export interface SubmitResult {
 
 export async function createDb(): Promise<Harness> {
   const db = new PGlite();
-  // What Supabase's platform provides before any migration runs:
-  await db.exec(`
-    create schema auth;
-    create function auth.jwt() returns jsonb language sql stable as
-      $$ select coalesce(nullif(current_setting('request.jwt.claims', true), ''), '{}')::jsonb $$;
-    create role anon nologin;
-    create role authenticated nologin;
-  `);
-  await db.exec(readFileSync(MIGRATION, 'utf8'));
-  await db.exec(`
-    grant usage on schema public, auth to anon, authenticated;
-    grant select, insert, update, delete on all tables in schema public to anon, authenticated;
-    grant usage, select on all sequences in schema public to anon, authenticated;
-    grant execute on all functions in schema public to anon, authenticated;
-    grant execute on all functions in schema auth to anon, authenticated;
-  `);
+  await db.exec(readFileSync(join(SUPABASE, 'dev', 'shim.sql'), 'utf8'));
+  await db.exec(readFileSync(join(SUPABASE, 'migrations', '0001_foundation.sql'), 'utf8'));
+  await db.exec(readFileSync(join(SUPABASE, 'dev', 'grants.sql'), 'utf8'));
   return new Harness(db);
 }
 
