@@ -12,6 +12,7 @@ import { Board } from './Board';
 import { DraftConfirm } from './DraftConfirm';
 import { Drawer } from './Drawer';
 import { KeepersPanel } from './KeepersPanel';
+import { MflPanel } from './MflPanel';
 import { MockControls } from './MockControls';
 import { Pool } from './Pool';
 import { SidePanel } from './SidePanel';
@@ -21,7 +22,7 @@ import { TradesPanel } from './TradesPanel';
 import { Values } from './Values';
 
 type Tab = 'draft' | 'board' | 'teams' | 'analyzer' | 'values' | 'archive';
-type Panel = 'keepers' | 'trades' | null;
+type Panel = 'keepers' | 'trades' | 'mfl' | null;
 
 const TAB_LABELS: [Tab, string][] = [
   ['draft', 'Draft Room'], ['board', 'Board'], ['teams', 'Teams'],
@@ -276,6 +277,9 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
       )}
       {panel === 'trades' && (
         <TradesPanel config={config} draft={room.draft} teamName={teamName} act={act} onClose={() => setPanel(null)} />
+      )}
+      {panel === 'mfl' && (
+        <MflPanel config={config} draft={room.draft} byPid={byPid} teamName={teamName} session={session} onClose={() => setPanel(null)} />
       )}
       {drawerPid && pool && (
         <Drawer

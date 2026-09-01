@@ -4,7 +4,8 @@
 // autosave, and the backup download is the whole log as JSON.
 
 import type { DraftEvent, DraftState, SeasonConfig } from '@fa/rules';
-import type { PoolPlayer, Session } from '../api';
+import { SEASON, type PoolPlayer, type Session } from '../api';
+import { exportXlsx } from '../exports';
 import { headshot, recommendations } from '../v1logic';
 
 interface Props {
@@ -19,7 +20,7 @@ interface Props {
   onClock: boolean;
   act: (type: string, payload?: Record<string, unknown>) => void;
   events: DraftEvent[];
-  openPanel: (p: 'keepers' | 'trades') => void;
+  openPanel: (p: 'keepers' | 'trades' | 'mfl') => void;
   onOpen?: (pid: string) => void;
   mock?: boolean;
   mockPanel?: React.ReactNode;
@@ -73,12 +74,22 @@ export function SidePanel({ players, byPid, config, draft, session, mySlot, team
           </div>
         </div>
       )}
-      {isCommish && (
+      {isCommish && !mock && (
         <div className="card" id="export-card">
           <h3>Export Results</h3>
           <div className="util-row">
-            <button className="btn" disabled title="After the draft — next phase">Excel (.xlsx)</button>
-            <button className="btn" disabled title="After the draft — next phase">Send to MFL</button>
+            <button className="btn" data-testid="xlsx-btn" id="xlsx-btn"
+              disabled={!draft.picks.length}
+              title={draft.picks.length ? 'Pick log, board grid, and rosters as a workbook' : 'No picks to export yet'}
+              onClick={() => exportXlsx(config, draft, byPid, teamName, SEASON)}>
+              Excel (.xlsx)
+            </button>
+            <button className="btn" data-testid="open-mfl" id="mfl-btn"
+              disabled={!draft.picks.length}
+              title={draft.picks.length ? 'Import the draft results into the MFL league' : 'No picks to send yet'}
+              onClick={() => openPanel('mfl')}>
+              Send to MFL
+            </button>
           </div>
         </div>
       )}

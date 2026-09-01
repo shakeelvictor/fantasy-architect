@@ -17,6 +17,7 @@ import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { mintJwt, sha256Hex, verifyJwt } from '../../../supabase/functions/auth-pin/jwt.ts';
+import * as mflCore from '../../../supabase/functions/mfl/core.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const PORT = Number(process.env.PORT ?? 8787);
@@ -217,6 +218,44 @@ const server = createServer((req, res) => {
         return json(res, 200, result);
       } catch (e) {
         return json(res, 400, { error: (e as Error).message.replace(/^.*?:\s*/, '') });
+      }
+    }
+
+    if (req.method === 'POST' && url.pathname === '/mfl') {
+      // same handler shape as the hosted mfl edge function, sharing its core
+      const body = JSON.parse(await readBody(req)) as {
+        op?: string; season?: string | number; leagueId?: string;
+        players?: import('../../../supabase/functions/mfl/core.ts').AppPlayer[];
+        username?: string; password?: string; xml?: string;
+      };
+      const mflSeason = String(body.season ?? SEASON);
+      try {
+        if (body.op === 'setup') {
+          const [league, idMap] = await Promise.all([
+            mflCore.getMflLeague(mflSeason, body.leagueId),
+            mflCore.buildIdMap(mflSeason, body.players ?? []),
+          ]);
+          return json(res, 200, {
+            leagueName: league.name,
+            franchises: league.franchises.franchise.map((f) => ({ id: f.id, name: f.name })),
+            ...idMap,
+          });
+        }
+        if (body.op === 'push') {
+          const token = (req.headers.authorization ?? '').replace(/^Bearer\s+/i, '');
+          const claims = await verifyJwt(token, JWT_SECRET);
+          if (!claims || claims.app_role !== 'commish') return json(res, 403, { error: 'commissioner only' });
+          if (!body.username || !body.password || !body.xml) {
+            return json(res, 400, { error: 'username, password, and xml are required' });
+          }
+          return json(res, 200, await mflCore.pushDraftResults({
+            season: mflSeason, leagueId: body.leagueId,
+            username: body.username, password: body.password, xml: body.xml,
+          }));
+        }
+        return json(res, 400, { error: 'unknown op' });
+      } catch (e) {
+        return json(res, 500, { error: String((e as Error).message ?? e) });
       }
     }
 

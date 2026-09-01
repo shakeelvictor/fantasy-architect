@@ -1,7 +1,7 @@
 // Reference data: the baked player pool (static JSON, same model as v1's
 // daily Netlify bake). Everything stateful lives behind src/transport.ts.
 
-export type { Session, SubmitResult } from './transport';
+export type { MflSetup, Session, SubmitResult } from './transport';
 export { SEASON, transport } from './transport';
 
 export interface PoolPlayer {

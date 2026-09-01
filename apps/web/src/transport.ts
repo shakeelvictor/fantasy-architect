@@ -22,9 +22,18 @@ export interface SubmitResult {
   seq: number;
 }
 
+export interface MflSetup {
+  leagueName: string;
+  franchises: { id: string; name: string }[];
+  map: Record<string, string>;
+  unmatched: { id: string; name: string; pos: string; team: string | null }[];
+}
+
 export interface Transport {
   kind: 'local' | 'supabase';
   login(pin: string): Promise<Session>;
+  /** MFL proxy (no CORS on MFL, so calls go through our server side). */
+  mfl(session: Session, body: Record<string, unknown>): Promise<Record<string, unknown>>;
   bootstrap(): Promise<{ config: SeasonConfig; events: DraftEvent[] }>;
   submit(session: Session, type: string, payload?: Record<string, unknown>): Promise<SubmitResult>;
   /** Live events with reconnect; implementations must refill gaps from since(). */
@@ -47,6 +56,15 @@ function localTransport(): Transport {
   const API = '/api';
   return {
     kind: 'local',
+    async mfl(session, body) {
+      return jsonOrThrow(
+        await fetch(`${API}/mfl`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', authorization: `Bearer ${session.token}` },
+          body: JSON.stringify(body),
+        }),
+      );
+    },
     async login(pin) {
       return jsonOrThrow(
         await fetch(`${API}/auth`, {
@@ -101,6 +119,19 @@ function supabaseTransport(url: string, anonKey: string): Transport {
   const client = createClient(url, anonKey);
   return {
     kind: 'supabase',
+    async mfl(session, body) {
+      return jsonOrThrow(
+        await fetch(`${url}/functions/v1/mfl`, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            apikey: anonKey,
+            authorization: `Bearer ${session.token}`,
+          },
+          body: JSON.stringify(body),
+        }),
+      );
+    },
     async login(pin) {
       return jsonOrThrow(
         await fetch(`${url}/functions/v1/auth-pin`, {

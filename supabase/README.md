@@ -30,6 +30,11 @@ for development. To stand up the real thing:
    so PostgREST accepts the minted tokens):
    supabase secrets set FA_JWT_SECRET=<jwt-secret>
    supabase functions deploy auth-pin --no-verify-jwt
+   supabase functions deploy mfl --no-verify-jwt
+   (mfl is the MyFantasyLeague proxy — MFL has no CORS. `setup` is open,
+   public MFL data only; `push` requires a commissioner JWT, verified with
+   the same FA_JWT_SECRET. Deployed + verified 1 Sep 2026 against the real
+   2026 league; the 2027 MFL site 404s until the league renews there.)
 4. Keep-warm (free tier pauses after ~1 week idle): a weekly GitHub Actions
    cron hitting fold_state via PostgREST is enough:
    curl "$SUPABASE_URL/rest/v1/rpc/fold_state" -X POST \
