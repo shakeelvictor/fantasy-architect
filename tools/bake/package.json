@@ -1,0 +1,16 @@
+{
+  "name": "@fa/bake",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bake": "tsx src/bake.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": { "@fa/scoring": "workspace:*" },
+  "devDependencies": {
+    "@types/node": "^22.13.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}

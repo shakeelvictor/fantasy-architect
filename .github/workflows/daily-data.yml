@@ -1,0 +1,39 @@
+# Daily player-data refresh, v1's architecture carried over: bake from
+# Sleeper, commit if changed, build + deploy. (The bake commits with the
+# default token, whose pushes deliberately do NOT retrigger workflows — so
+# this job deploys itself rather than relying on deploy.yml.)
+name: daily-data
+on:
+  schedule:
+    - cron: '0 10 * * *' # 10:00 UTC ≈ 6am ET, same as v1
+  workflow_dispatch:
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    permissions: { contents: write }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: bake players.json from Sleeper
+        run: pnpm --filter @fa/bake bake
+      - name: commit if changed
+        run: |
+          git config user.name "fa-bake"
+          git config user.email "bake@users.noreply.github.com"
+          git add apps/web/public/players.json
+          git diff --cached --quiet || git commit -m "Daily data bake" && git push
+      - name: build
+        run: pnpm --filter @fa/web build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          VITE_SEASON: '2027'
+      - name: deploy to Netlify
+        run: pnpm dlx netlify-cli deploy --prod --dir apps/web/dist --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --message "daily bake"
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}

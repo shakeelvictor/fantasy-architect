@@ -42,40 +42,40 @@ test('a full slice of draft night, in two browsers', async ({ browser }) => {
   await expect(commish.getByTestId('onclock')).toContainText('Vip');
 
   // ---- the team asks for a player; commissioner takes it
-  await team.getByTestId('pool-search').fill('Bijan');
-  const bijanAsk = team.locator('[data-testid^="ask-"]').first();
-  await bijanAsk.click();
-  await expect(bijanAsk).toContainText('Asked');
+  // data-independent: whoever tops the available list after pick #1
+  const askBtn = team.locator('[data-testid^="ask-"]').first();
+  const askedPid = (await askBtn.getAttribute('data-testid'))!.replace('ask-', '');
+  const askedName = (await team.getByTestId(`row-${askedPid}`).locator('span >> nth=2').innerText()).split(/\s/)[0]!;
+  await askBtn.click();
+  await expect(team.getByTestId(`ask-${askedPid}`)).toContainText('Asked');
   await expect(commish.getByTestId('req-banner')).toContainText('Vip');
-  await expect(commish.getByTestId('req-banner')).toContainText('Bijan');
+  await expect(commish.getByTestId('req-banner')).toContainText(askedName);
   await commish.getByTestId('req-accept').click();
-  await expect(team.getByTestId('cell-2')).toContainText('Bijan');
-  await expect(commish.getByTestId('cell-2')).toContainText('Bijan');
+  await expect(team.getByTestId('cell-2')).toContainText(askedName);
+  await expect(commish.getByTestId('cell-2')).toContainText(askedName);
 
   // ---- authorization on the wire: the team's own UI offers Ask, never Draft
   await expect(team.locator('[data-testid^="draft-"]')).toHaveCount(0);
 
   // ---- undo propagates too
   await commish.getByTestId('undo').click();
-  await expect(team.getByTestId('cell-2')).not.toContainText('Bijan');
+  await expect(team.getByTestId('cell-2')).not.toContainText(askedName);
   await expect(commish.getByTestId('onclock')).toContainText('Vip');
 
   // ---- kill the network mid-pick: the pick fails LOUDLY, nothing corrupts
   await commishCtx.setOffline(true);
   // (the idle SSE socket only notices on its next heartbeat — the loud
   // failure below is the exit criterion, not the indicator's timing)
-  await commish.getByTestId('pool-search').fill('Jahmyr');
   await commish.locator('[data-testid^="draft-"]').first().click();
   await expect(commish.getByTestId('toast')).toBeVisible();
-  await expect(commish.getByTestId('cell-2')).not.toContainText('Gibbs');
+  await expect(commish.getByTestId('cell-2')).not.toContainText(askedName);
 
   // ---- back online: reconnects, converges, and the pick goes through clean
   await commishCtx.setOffline(false);
   await expect(commish.getByTestId('conn')).toContainText('live', { timeout: 10_000 });
-  await commish.locator('[data-testid="pool-search"]').fill('Jahmyr');
   await commish.locator('[data-testid^="draft-"]').first().click();
-  await expect(commish.getByTestId('cell-2')).toContainText('Gibbs');
-  await expect(team.getByTestId('cell-2')).toContainText('Gibbs');
+  await expect(commish.getByTestId('cell-2')).toContainText(askedName);
+  await expect(team.getByTestId('cell-2')).toContainText(askedName);
 
   // exactly two picks on both boards — the offline failure left no residue
   for (const page of [commish, team]) {
