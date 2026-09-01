@@ -1,6 +1,6 @@
 // v1's shell, verbatim: topbar (brand / clock pill / mode switch / theme),
 // the six main tabs, and each tab's v1 layout — over v2's event-sourced
-// state. Mock mode is the one explicitly-pending piece.
+// state. The mode switch flips between the real draft and the local mock.
 
 import { useEffect, useMemo, useState } from 'react';
 import { currentOverall, ownerOf, redoablePids, rosterBalance, roundOf } from '@fa/rules';

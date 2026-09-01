@@ -99,24 +99,38 @@ everyone (corrections are compensating events).
 - `security find-generic-password -s "Supabase CLI" -w` → access token;
   Netlify token in `~/Library/Preferences/netlify/config.json`.
 
-## Next up (owner-confirmed order of interest)
+## v1 surface port — DONE (Sep 2026, one commit per feature)
 
-Port the remaining v1 surfaces, using v1's source as the spec:
-1. **Player card/drawer** — v1 `openDrawer()`: bio strip, Sleeper outlook/
-   news (open-CORS graphql), 2025 game log scored client-side via
-   `@fa/scoring` `scoreWeek(stats, true)`, depth tab. Row/board/rec clicks
-   already pass pid (`onOpen` prop on Pool is wired but unused).
-2. **Mock drafts** — client-side only: bot picks through the SHARED reducer
-   (`foldEvents` over a local event list), never touching the server. v1's
-   bot logic in `botPick()`. Manual/Mock switch is in the topbar, disabled.
-3. **Redo** — compensating-event pair; needs a small design (an undone
-   pick's events are still in the log — redo = resubmit pick_made).
-4. **Pick ticker** — v1 `renderTicker()`, marquee under the header.
-5. **Confirm-before-draft** — v1's confirm card (`pendingDraftConfirm`).
-6. **Exports/MFL push** — port `public/xlsx.js` + `lib/mfl.js`; MFL login
-   must proxy through a Supabase edge function (no CORS on MFL; XML=1 in
-   query string ONLY — see v1 CLAUDE.md). Buttons stubbed in SidePanel.
-7. **Archives** — a fold over the completed log + the Past Drafts tab; v1's
-   2026 archive could be imported as seed content.
+All seven remaining v1 surfaces are ported and deployed, each with e2e:
+1. **Player card/drawer** (`Drawer.tsx` + `profile.ts`) — hero/vitals/ranks,
+   Summary (Sleeper outlook, clamped), Game Log (prior season re-scored via
+   `@fa/scoring`), Depth (pure bake), News + wide rail. The bake now emits
+   the card's fields (bio/depth/opps/weekPts/lastSeason/overallRank) plus
+   top-level `sosRanks` — additive; Gibbs invariant still 416.3 T1 +206.8.
+2. **Mock drafts** (`mock.ts`, `MockControls.tsx`) — a LOCAL event list
+   through the SHARED reducer, mirroring submit_event (pick coords, keeper
+   chaining, v1's mock undo-rewind). Keepers/trades stay real; picks never
+   touch the server. Persisted per browser (`fa-mock-<season>`).
+3. **Redo** (`redoablePids` in @fa/rules, unit-tested) — walk the log with a
+   redo stack; redo = resubmit ONE pick_made, keepers re-chain server-side.
+4. **Pick ticker** (`Ticker.tsx`) — markup memoized so re-renders never
+   restart the marquee.
+5. **Confirm-before-draft** (`DraftConfirm.tsx`) — guards the three HUMAN
+   buttons only (pool row / top suggestion / drawer); Ask, Take-it, bots,
+   redo are exempt (v1's rule).
+6. **Exports/MFL** (`xlsx.ts`, `exports.ts`, `MflPanel.tsx`,
+   `supabase/functions/mfl/`) — the MFL core is platform-neutral and shared
+   by the edge function AND dev-api's `/mfl` (like auth-pin/jwt.ts). `setup`
+   is open; `push` needs a commish JWT. Deployed + verified vs the real 2026
+   league. NOTE: the client asks MFL for VITE_SEASON's year — the 2027 MFL
+   site 404s until the league renews there (check the league id then too).
+7. **Archives** (`archive.ts`, `ArchiveTab.tsx`) — v1's document schema
+   unchanged; v1's completed 2026 draft is committed as
+   `apps/web/public/drafts/2026.json` seed history.
+
+Known gaps, deliberate: Sleepers & Busts has no trending "buzz" column yet
+(the drawer's 🔥 badge is the only trending consumer); `player_moved` is
+still a reducer no-op; mock redo restores a multi-pick rewind one pick at
+a time.
 
 Keep commits with explicit file lists; Shakeel edits repos himself.
