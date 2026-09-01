@@ -15,6 +15,10 @@ test('the PIN gate rejects a wrong PIN and admits a right one', async ({ browser
   // the error line holds its space from the start, so the button never jumps
   const err = page.getByTestId('gate-error');
   await expect(err).toHaveText('');
+  // The card now settles in with a 200ms translate, so measure only once it
+  // has arrived — otherwise "did the error move the button" is really
+  // measuring the entrance, and the card drifts ~2px between the two reads.
+  await expect(page.locator('form')).toHaveCSS('transform', 'matrix(1, 0, 0, 1, 0, 0)');
   const boxBefore = await err.boundingBox();
 
   await page.getByTestId('pin-input').fill('0000');

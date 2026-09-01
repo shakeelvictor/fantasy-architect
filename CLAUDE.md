@@ -289,6 +289,37 @@ retrospective above, which grades the draft and should stay that single
 claim. Needs MFL transaction/roster history and is only buildable once a
 season has actually been played — earliest Dec 2026 for the 2026 league.
 
+## Motion: native, no library
+
+Evaluated Framer Motion / GSAP (Sep 2026) and did not take either. The app
+was already heavily animated — v1.css carries 36 `@keyframes`, 50 animation
+rules and 8 `prefers-reduced-motion` blocks — so the gaps were never "add
+animation", they were the few v2-authored surfaces that still snapped. GSAP's
+timelines duplicate what v1.css already does well; Motion's `layout` is the
+one thing genuinely hard to hand-roll, and it costs 18–34KB gz against a
+~104KB gz bundle for flare on a draft-night phone.
+
+`@starting-style` does the enter animation for the panels and the Gate with
+**+110 bytes of CSS and +20 bytes of JS**, measured. Two rules to keep:
+animate ONLY `opacity` and `transform` (compositor-only — a width or top
+costs a layout pass per frame), and mirror v1's reduced-motion discipline.
+Exit is deliberately instant: React unmounts these, so an exit transition
+means keeping them mounted with their state and effects alive (MflPanel
+fetches on mount) for the least-noticed half of the motion.
+
+`motion.spec.ts` guards it, and the guard needs care — asserting the settled
+state proves nothing, because deleting the `@starting-style` just makes the
+panel appear at its end state and every after-the-fact check still passes.
+It asserts the rule exists in the CSSOM, scoped to that panel's own hashed
+class (a global scan silently matches the Gate's instead).
+
+Still open if the appetite is there, in value order: pool rows snapping on
+re-sort (the one place a library would earn its weight), the drawer's
+hand-rolled close (`animationend` + a 400ms backstop timer — `@starting-style`
+with `allow-discrete` would delete both), the news rail's fade-at-end
+(a `ResizeObserver` that `animation-timeline: view()` replaces), and tab
+switching via the View Transitions API.
+
 Known gaps, deliberate: Sleepers & Busts has no trending "buzz" column yet
 (the drawer's 🔥 badge is the only trending consumer); `player_moved` is
 still a reducer no-op; mock redo restores a multi-pick rewind one pick at

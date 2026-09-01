@@ -1,10 +1,46 @@
+/* Enter animation with no JavaScript and no library: @starting-style gives
+ * the browser a "before" to transition FROM the first time an element is
+ * painted, which is exactly what a panel appearing needs.
+ *
+ * Only opacity and transform are animated, deliberately. Those two are the
+ * properties a compositor can handle on its own thread — no layout, no
+ * repaint, no main-thread work competing with the draft. Animating width,
+ * height or top here would look identical and cost a layout pass per frame
+ * on somebody's phone mid-draft.
+ *
+ * The backdrop's blur is static for the same reason: backdrop-filter is
+ * expensive to animate, and fading the tint alone reads the same.
+ *
+ * Exit is deliberately instant. React unmounts these panels, so an exit
+ * transition would mean keeping them mounted and holding their form state
+ * and effects alive (MflPanel fetches on mount) — real complexity for the
+ * least-noticed half of the motion. */
 .backdrop {
   position: fixed; inset: 0; z-index: 20; display: grid; place-items: center;
   background: rgba(6, 9, 18, 0.55); backdrop-filter: blur(2px); padding: 18px;
+  opacity: 1;
+  transition: opacity 140ms ease-out;
+}
+@starting-style {
+  .backdrop { opacity: 0; }
 }
 .card {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
   padding: 20px 22px; width: min(560px, 100%); max-height: 86vh; overflow: auto;
+  opacity: 1; transform: translateY(0) scale(1);
+  transition: opacity 160ms ease-out, transform 160ms cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+@starting-style {
+  .card { opacity: 0; transform: translateY(8px) scale(0.985); }
+}
+/* Matches the discipline already in v1.css: motion is a garnish, and someone
+ * who has asked for less of it gets the panel with none. */
+@media (prefers-reduced-motion: reduce) {
+  .backdrop, .card { transition: none; }
+  @starting-style {
+    .backdrop { opacity: 1; }
+    .card { opacity: 1; transform: none; }
+  }
 }
 .card h2 { margin: 0 0 6px; font-size: 19px; }
 .card h3 { margin: 14px 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
