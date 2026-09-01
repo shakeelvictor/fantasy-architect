@@ -6,7 +6,13 @@
     <meta name="color-scheme" content="dark light" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+    <!-- v1's exact faces. v1.css asks for Archivo (display) and Nunito (data +
+         body); loading anything else silently falls the whole app back to
+         -apple-system, which is what made every heading and stat read lighter
+         than v1. The italic Archivo weights are load-bearing too — .drawer h2
+         and the board cells are 900 italic, and a synthesized oblique is not
+         the same letterform. -->
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <title>Fantasy Architect</title>
   </head>
   <body>

@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { currentOverall, ownerOf, redoablePids, rosterBalance, roundOf } from '@fa/rules';
 import { fetchPool, transport, type PoolDoc, type Session } from '../api';
 import { useRoom } from '../store';
+import { useTopbarFit } from '../topbar';
 import { mockEvents, mockState, mockSubmit, stopBots, useMock } from '../mock';
 import { Analyzer } from './Analyzer';
 import { ArchiveTab } from './ArchiveTab';
@@ -42,6 +43,8 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
   const mock = useMock();
   const [theme, setTheme] = useState(() => localStorage.getItem('fa-theme') ?? '');
   const players = pool?.players ?? [];
+
+  useTopbarFit(room.ready && !!room.config);
 
   useEffect(() => {
     void fetchPool().then(setPool);

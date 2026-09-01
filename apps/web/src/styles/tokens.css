@@ -1,72 +1,59 @@
-/* Design tokens — the app's visual identity carried over from v1:
-   deep navy ground, teal accent, Inter + tabular numerals. Dark-first with
-   a full light theme via light-dark(); components read tokens only. */
+/* v2-ONLY tokens — everything else comes from v1.css.
+ *
+ * This file used to carry a whole parallel design system (Inter, JetBrains
+ * Mono, light-dark() colors, and base resets for button/input). Once
+ * v1.css landed verbatim that became a second, competing source of truth:
+ * v1.css re-declares the same :root names later so it won the colors, but
+ * the BASE RULES had no competitor and kept applying. `button { padding:
+ * 5px 12px }` in particular — v1's only bare-button rule is
+ * `font-family: inherit; cursor: pointer`, and its `.icon-btn` is a bare
+ * 36x36 box that centers its glyph precisely because nothing pads it. That
+ * stray padding is what pushed the drawer's ✕ down and to the right.
+ *
+ * So: no resets here, no fonts here, no palette here. v1.css owns all of
+ * that (including `* { box-sizing: border-box; margin: 0; padding: 0 }`,
+ * the position colors, and the `[data-theme="light"]` switch). What's left
+ * is the handful of names used only by v2's own components — the Gate and
+ * the side panels — mapped onto v1's variables so they follow v1's light
+ * theme for free instead of running a second theme system. */
 
 :root {
-  color-scheme: dark light;
-
-  --bg: light-dark(#f5f7fa, #0d1220);
-  --surface: light-dark(#ffffff, #151b2e);
-  --surface-2: light-dark(#eef1f7, #1b2338);
-  --border: light-dark(#d8deea, #262f47);
-  --text: light-dark(#1a2233, #e8ecf5);
-  --muted: light-dark(#5d6779, #8a93a6);
-  --accent: light-dark(#009e8e, #00ceb8);
-  --accent-dim: light-dark(rgba(0, 158, 142, 0.1), rgba(0, 206, 184, 0.12));
-  --danger: light-dark(#c43c3c, #ff5c5c);
-  --warn: light-dark(#b07a00, #f0b429);
-
-  --font: Inter, system-ui, -apple-system, sans-serif;
+  --surface: var(--bg2);          /* card ground — v1's modal-card surface */
+  --accent-dim: var(--accent-soft);
   --radius: 10px;
+  --warn: #f0b429;                /* genuinely v2-only: the connection pill */
 }
 
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font);
-  font-size: 15px;
-  line-height: 1.5;
+:root[data-theme="light"] {
+  --warn: #a06c00;                /* amber needs to deepen to stay legible */
 }
 
-button {
-  font: inherit;
-  cursor: pointer;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  background: var(--surface-2);
-  color: var(--text);
-  padding: 5px 12px;
-}
-button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
-button:disabled { opacity: 0.45; cursor: default; }
-button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-
-input {
-  font: inherit;
-  background: var(--surface);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  padding: 6px 10px;
-}
-
+/* v1.css scopes its numeric alignment per table (.pool-table .num,
+   .log-table .num); v2 components use the class on its own too. */
 .num { font-variant-numeric: tabular-nums; }
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; }
+/* Chrome for the controls v2 adds that v1 had no equivalent of — the Gate's
+ * PIN field, and the keeper/trade/MFL panel forms. v1 never needed a base
+ * rule because every one of its inputs sat inside a styled container.
+ *
+ * Two guards keep this from repeating the old mistake. `:not([class])` means
+ * it only reaches elements carrying no class at all, so .icon-btn, .btn,
+ * .pos-tabs button and friends are untouched — crucially, .icon-btn keeps
+ * the zero padding that centers its glyph. `:where()` then pins specificity
+ * at 0, so even an id- or descendant-based v1 rule (#search, .tabs button)
+ * wins without needing !important. Values mirror v1's own form styling
+ * (.settings-grid input) so these read as part of the same app. */
+:where(button):not([class]) {
+  background: var(--panel2); color: var(--text); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 12px; font-family: var(--font-body);
+  font-size: var(--fs-13); font-weight: 600;
 }
+:where(button):not([class]):hover:not(:disabled) { border-color: var(--accent-line); }
+:where(button):not([class]):disabled { opacity: 0.4; pointer-events: none; }
 
-/* v1's position palette — the identity of the board */
-:root {
-  --qb: #f8296d;
-  --rb: light-dark(#009e8e, #00ceb8);
-  --wr: light-dark(#2f6fd0, #58a7ff);
-  --te: light-dark(#c07a1d, #ffae58);
-  --k: light-dark(#8a3fd0, #b45eff);
-  --idp: light-dark(#1d9c58, #34d17d);
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+:where(input:not([type="range"]):not([type="checkbox"]), select):not([class]) {
+  background: var(--bg); color: var(--text); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 10px; font-family: var(--font-body);
+  font-size: var(--fs-13); outline: none;
 }
-.mono { font-family: var(--font-mono); }
+:where(input, select):not([class]):focus-visible { border-color: var(--accent-line); }
