@@ -6,22 +6,29 @@
 // that have picked, so a team is never marked down mid-draft for simply
 // having picked fewer times. An archived draft is graded from the letter
 // pinned into its document, which is the assessment as it stood on the night.
+//
+// Every grade card opens v1's hot take (blurbs.ts) — the last piece of the
+// Analyzer the original port skipped. It works on the live board and on an
+// archived one, so the public /{year} page gets it too.
 
 import { useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import type { DraftState, SeasonConfig } from '@fa/rules';
 import { SEASON, type PoolPlayer } from '../api';
 import { gradesFromArchive, type ArchiveDoc } from '../archive';
 import { computeGrades, type TeamGrade } from '../grades';
 import { buildRetro, fetchActuals, type Actuals, type PlayerVerdict, type Retro } from '../hindsight';
-import { pendingKeepersForSlot, rosterForSlot } from '../v1logic';
+import { blurbContext, buildTeamBlurb, groupOf, takesFromArchive, type BlurbTeam } from '../blurbs';
+import { isSleeper, pendingKeepersForSlot, rosterForSlot } from '../v1logic';
 
 interface Source { season: number; label: string; file?: string }
 
-export function Analyzer({ config, draft, byPid, teamName }: {
+export function Analyzer({ config, draft, byPid, teamName, mySlot }: {
   config: SeasonConfig;
   draft: DraftState;
   byPid: Map<string, PoolPlayer>;
   teamName: (slot: number) => string;
+  mySlot?: number;
 }): React.JSX.Element {
   const [past, setPast] = useState<Source[]>([]);
   const [sel, setSel] = useState(0); // 0 = the live draft
@@ -76,6 +83,36 @@ export function Analyzer({ config, draft, byPid, teamName }: {
     [doc, actuals],
   );
 
+  // takes for the live draft: real picks, in board order, with the 💎 rule
+  // applied off each player's rank on the full board
+  const liveTakes: BlurbTeam[] = useMemo(() => liveGrades.map((g) => ({
+    slot: g.slot,
+    name: g.name,
+    grade: g.grade,
+    picks: draft.picks
+      .filter((pk) => pk.slot === g.slot)
+      .map((pk) => {
+        const p = byPid.get(pk.pid);
+        return {
+          name: p?.name ?? pk.pid,
+          pos: p?.pos ?? '',
+          group: p?.group ?? groupOf(p?.pos ?? ''),
+          round: pk.round,
+          overall: pk.overall,
+          keeper: pk.is_keeper,
+          adp: p?.adp ?? null,
+          sleeper: !!p && isSleeper(p, p.overallRank ?? Infinity),
+        };
+      }),
+  })), [liveGrades, draft.picks, byPid]);
+
+  const archiveTakes: BlurbTeam[] | null = useMemo(
+    () => (doc && archiveGrades
+      ? takesFromArchive(doc.teams, (slot) => archiveGrades.find((g) => g.slot === slot)?.grade ?? 'C')
+      : null),
+    [doc, archiveGrades],
+  );
+
   return (
     <div className="analyzer" id="analyzer-content">
       {past.length > 0 && (
@@ -94,7 +131,7 @@ export function Analyzer({ config, draft, byPid, teamName }: {
 
       {sel === 0 ? (
         <>
-          <GradeGrid teams={liveGrades} />
+          <GradeGrid teams={liveGrades} takes={liveTakes} mySlot={mySlot} />
           {!draft.picks.length && (
             <p className="p-meta" style={{ marginTop: 12 }}>Grades sharpen as picks land.</p>
           )}
@@ -107,7 +144,7 @@ export function Analyzer({ config, draft, byPid, teamName }: {
             {doc.league} · {doc.season} · {doc.picks.length} picks · graded on the projections
             the board held that night.
           </p>
-          <GradeGrid teams={archiveGrades} />
+          <GradeGrid teams={archiveGrades} takes={archiveTakes ?? undefined} />
           <Retrospective season={doc.season} retro={retro} actuals={actuals} />
         </>
       )}
@@ -115,23 +152,91 @@ export function Analyzer({ config, draft, byPid, teamName }: {
   );
 }
 
-export function GradeGrid({ teams }: { teams: TeamGrade[] }): React.JSX.Element {
+export function GradeGrid({ teams, takes, mySlot }: {
+  teams: TeamGrade[];
+  /** Supply this and the cards become clickable, opening v1's hot take. */
+  takes?: BlurbTeam[] | undefined;
+  mySlot?: number | undefined;
+}): React.JSX.Element {
+  const [open, setOpen] = useState<number | null>(null);
+  // one context for the whole grid: the rotation that keeps two teams from
+  // drawing the same sentence only works if every team is considered together
+  const ctx = useMemo(() => (takes ? blurbContext(takes) : null), [takes]);
+  const shown = takes?.find((t) => t.slot === open) ?? null;
+
   return (
-    <div className="grade-grid">
-      {teams.map((t) => (
-        <div key={t.slot} className="grade-card" data-slot={t.slot} data-testid={`grade-${t.slot}`}>
-          <div className="grade-head">
-            <span className="grade-team">{t.name}</span>
-            <span className={`grade-letter g-${t.grade}`}>{t.grade}</span>
+    <>
+      <div className="grade-grid">
+        {teams.map((t) => (
+          <div key={t.slot} className={`grade-card${takes ? ' clickable' : ''}`}
+            data-slot={t.slot} data-testid={`grade-${t.slot}`}
+            title={takes ? 'Click for the hot take' : undefined}
+            onClick={takes ? () => setOpen(t.slot) : undefined}>
+            <div className="grade-head">
+              <span className="grade-team">{t.name}{t.slot === mySlot ? ' ⭐' : ''}</span>
+              <span className={`grade-letter g-${t.grade}`}>{t.grade}</span>
+            </div>
+            <div className="grade-stats">
+              Projected points: <b>{t.proj.toFixed(0)}</b><br />
+              Value over replacement: <b>{t.totalVorp.toFixed(0)}</b><br />
+              Picks made: <b>{t.count}</b>
+            </div>
+            {takes && <div className="grade-hint">🎙 the hot take →</div>}
           </div>
-          <div className="grade-stats">
-            Projected points: <b>{t.proj.toFixed(0)}</b><br />
-            Value over replacement: <b>{t.totalVorp.toFixed(0)}</b><br />
-            Picks made: <b>{t.count}</b>
-          </div>
+        ))}
+      </div>
+      {shown && ctx && (
+        <TeamTake team={shown} ctx={ctx} grade={teams.find((x) => x.slot === shown.slot)}
+          isMe={shown.slot === mySlot} onClose={() => setOpen(null)} />
+      )}
+    </>
+  );
+}
+
+// v1's #team-modal, markup for markup — .team-take, .team-take-head,
+// .team-blurb and .grade-letter.big are all already in v1.css.
+//
+// PORTALLED to document.body, and that is not decoration. v1 put this modal
+// at the end of #app; rendering it where the grid lives instead puts it
+// inside `.card`, which carries a transform — and a transform makes a
+// `position: fixed` descendant resolve against THAT box rather than the
+// viewport. The modal was landing 3600px down the page, off screen. A portal
+// restores v1's placement and is immune to whatever wraps the grid next.
+function TeamTake({ team, ctx, grade, isMe, onClose }: {
+  team: BlurbTeam;
+  ctx: ReturnType<typeof blurbContext>;
+  grade: TeamGrade | undefined;
+  isMe: boolean;
+  onClose: () => void;
+}): React.JSX.Element {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent): void => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  return createPortal(
+    <div className="modal" id="team-modal" data-testid="team-take"
+      onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="modal-card team-take">
+        <div className="team-take-head">
+          <h2 id="team-modal-name">{team.name}{isMe ? ' ⭐' : ''}</h2>
+          <span className={`grade-letter big g-${team.grade}`}>{team.grade}</span>
         </div>
-      ))}
-    </div>
+        <p className="team-blurb" data-testid="team-take-blurb">
+          {buildTeamBlurb(team, ctx, isMe)}
+        </p>
+        <div className="p-meta" data-testid="team-take-facts">
+          {grade && grade.count
+            ? `${grade.count} pick${grade.count === 1 ? '' : 's'} · ${grade.proj.toFixed(0)} projected points · ${grade.totalVorp.toFixed(0)} value over replacement`
+            : ''}
+        </div>
+        <div className="modal-actions">
+          <button className="btn" onClick={onClose}>Close</button>
+        </div>
+      </div>
+    </div>,
+    document.body,
   );
 }
 

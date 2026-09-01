@@ -46,6 +46,12 @@ test('past-draft grades and the empty retrospective', async ({ browser }) => {
   await expect(page.getByTestId('retro-pending')).toContainText('has not kicked off');
   await expect(page.getByTestId('retro-grid')).toHaveCount(0);
 
+  // the hot take works on the live board too, not just the public page
+  await page.getByTestId('an-src-live').click();
+  await page.getByTestId('grade-1').click();
+  await expect(page.getByTestId('team-take-blurb')).not.toHaveText('');
+  await page.getByTestId('team-take').getByRole('button', { name: 'Close' }).click();
+
   await ctx.close();
 });
 

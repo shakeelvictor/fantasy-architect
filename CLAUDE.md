@@ -180,6 +180,28 @@ makes it more deterministic than a log, not less.
 
 ## The Analyzer, past drafts, and the retrospective
 
+Every grade card is clickable and opens v1's **hot take** (`blurbs.ts`) — 2-4
+sentences, tone scaled to the grade, seasoned with real facts mined from that
+team's picks (biggest steal vs ADP, worst reach, an early kicker, a third QB
+in a 1-QB league, RB/WR hoarding, 💎 sleepers). All 98 line pools are v1's
+verbatim — checked byte-for-byte against v1's app.js, because retyping is how
+a port becomes a rewrite.
+
+The rotation is the load-bearing part and the reason it isn't `Math.random()`:
+teams sharing a group (same grade, both having a steal…) draw from a shared
+pool at an offset derived from their position in that group, so no two get the
+same sentence while the pool is deep enough — and the offset is seeded from
+the pick count, so the same board always reads the same way. Testing that
+needs care: every line interpolates the team name, so comparing rendered
+sentences proves nothing (five teams always yield five distinct strings). The
+e2e strips each team's own name and compares the SHAPE.
+
+The modal is portalled to `document.body`. v1 put `#team-modal` at the end of
+`#app`; rendering it where the grid lives instead puts it inside `.card`,
+which carries a transform — and a transform makes a `position: fixed`
+descendant resolve against THAT box, not the viewport. It landed 3600px down
+the page until the portal went in.
+
 `grades.ts` is the one grading implementation: VORP **per pick** (v1's rule —
 grading on a total marks a team down mid-draft for simply having picked
 fewer times), z-scored across the teams that have picked. v2 had drifted to

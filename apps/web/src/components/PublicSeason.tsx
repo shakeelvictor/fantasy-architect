@@ -17,6 +17,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { gradesFromArchive, type ArchiveDoc, type ArchivePick } from '../archive';
 import { buildRetro, fetchActuals, type Actuals } from '../hindsight';
+import { takesFromArchive } from '../blurbs';
 import { GradeGrid, Retrospective } from './Analyzer';
 import { ArchiveDocView } from './ArchiveTab';
 
@@ -47,6 +48,12 @@ export function PublicSeason({ year }: { year: number }): React.JSX.Element {
   }, [year]);
 
   const grades = useMemo(() => (doc ? gradesFromArchive(doc) : null), [doc]);
+  const takes = useMemo(
+    () => (doc && grades
+      ? takesFromArchive(doc.teams, (slot) => grades.find((g) => g.slot === slot)?.grade ?? 'C')
+      : null),
+    [doc, grades],
+  );
   const retro = useMemo(() => (doc && actuals ? buildRetro(doc, actuals) : null), [doc, actuals]);
 
   const teams = doc?.config?.teams ?? doc?.teams.length ?? 0;
@@ -152,7 +159,7 @@ export function PublicSeason({ year }: { year: number }): React.JSX.Element {
               <p className="p-meta" style={{ margin: '0 0 12px' }}>
                 Graded on the projections the board held that night, on value per pick.
               </p>
-              {grades && <GradeGrid teams={grades} />}
+              {grades && <GradeGrid teams={grades} takes={takes ?? undefined} />}
               <Retrospective season={doc.season} retro={retro} actuals={actuals} />
             </div>
           </>

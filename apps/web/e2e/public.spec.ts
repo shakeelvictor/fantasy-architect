@@ -46,6 +46,57 @@ test('a past draft is readable with no session at all', async ({ browser }) => {
   // 2026 has not been played, so the retrospective holds off
   await expect(page.getByTestId('retro-pending')).toContainText('has not kicked off');
 
+  // ---- v1's hot take: a grade card opens the analysis behind it
+  await page.getByTestId('grade-2').click();
+  const take = page.getByTestId('team-take');
+  await expect(take).toBeVisible();
+  await expect(take.locator('#team-modal-name')).toHaveText('Vip');
+  await expect(take.locator('.grade-letter.big')).toHaveText('A');
+  await expect(take.getByTestId('team-take-facts')).toContainText('20 picks');
+  // seasoned with facts from the real picks, not generic filler
+  await expect(take.getByTestId('team-take-blurb')).toContainText(/Vip/);
+
+  // The modal must cover the VIEWPORT. It renders inside .card, which carries
+  // a transform, and a transform makes a fixed descendant resolve against
+  // that box instead — which put this 3600px down the page until it was
+  // portalled to body. A rect starting at 0,0 is the proof.
+  const box = await take.boundingBox();
+  expect(box!.x).toBe(0);
+  expect(box!.y).toBe(0);
+  expect(box!.height).toBeGreaterThan(300);
+
+  await take.getByRole('button', { name: 'Close' }).click();
+  await expect(take).toHaveCount(0);
+
+  await ctx.close();
+});
+
+test('teams sharing a grade get different takes', async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  await page.route(/sleeper(cdn)?\.(app|com)/, (r) => r.abort());
+  await page.goto('/2026');
+
+  // The rotation is the whole reason this is not Math.random(): teams in the
+  // same grade band draw from a shared pool at different offsets. Five of the
+  // 2026 teams graded C, and five identical paragraphs would be the failure.
+  //
+  // Compare the SHAPE, with each team's own name stripped out. Comparing the
+  // rendered sentences instead proves nothing — every line interpolates the
+  // team name, so five teams yield five distinct strings even when they all
+  // drew the same template, which is precisely the bug being guarded against.
+  const shapes = new Set<string>();
+  for (const slot of [1, 3, 4, 6, 7]) { // the C-graded teams
+    await page.getByTestId(`grade-${slot}`).click();
+    const take = page.getByTestId('team-take');
+    await expect(take.locator('.grade-letter.big')).toHaveText('C');
+    const name = await take.locator('#team-modal-name').innerText();
+    const opener = (await take.getByTestId('team-take-blurb').innerText()).split('. ')[0]!;
+    shapes.add(opener.split(name).join('«team»'));
+    await take.getByRole('button', { name: 'Close' }).click();
+  }
+  expect(shapes.size).toBe(5);
+
   await ctx.close();
 });
 

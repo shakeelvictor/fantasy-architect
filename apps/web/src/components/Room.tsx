@@ -283,7 +283,7 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
           <TeamsTab config={config} draft={draft} byPid={byPid} teamName={teamName} mySlot={session.slot} onOpen={setDrawerPid} />
         </section>
         <section className={`tab-panel ${tab === 'analyzer' ? 'active' : ''}`} id="tab-analyzer">
-          <Analyzer config={config} draft={draft} byPid={byPid} teamName={teamName} />
+          <Analyzer config={config} draft={draft} byPid={byPid} teamName={teamName} mySlot={mySlot} />
         </section>
         <section className={`tab-panel ${tab === 'values' ? 'active' : ''}`} id="tab-values">
           <Values players={players} draft={draft} onOpen={setDrawerPid} />
