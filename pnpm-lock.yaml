@@ -8,6 +8,21 @@ importers:
 
   .: {}
 
+  packages/rules:
+    devDependencies:
+      '@electric-sql/pglite':
+        specifier: ^0.3.6
+        version: 0.3.16
+      '@types/node':
+        specifier: ^22.13.0
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.5
+        version: 3.2.7(@types/node@22.20.1)
+
   packages/scoring:
     devDependencies:
       '@types/node':
@@ -21,6 +36,9 @@ importers:
         version: 3.2.7(@types/node@22.20.1)
 
 packages:
+
+  '@electric-sql/pglite@0.3.16':
+    resolution: {integrity: sha512-mZkZfOd9OqTMHsK+1cje8OSzfAQcpD7JmILXTl5ahdempjUDdmg4euf1biDex5/LfQIDJ3gvCu6qDgdnDxfJmA==}
 
   '@esbuild/aix-ppc64@0.28.2':
     resolution: {integrity: sha512-XExcO+dvLKvVtNTibSTBej1NCAbaGhWn9Ww1ZPx80qsahhPFe/8jgWP0IchNe0F3HwkU7n8ejhH8bjonqht8mQ==}
@@ -576,6 +594,8 @@ packages:
     hasBin: true
 
 snapshots:
+
+  '@electric-sql/pglite@0.3.16': {}
 
   '@esbuild/aix-ppc64@0.28.2':
     optional: true
