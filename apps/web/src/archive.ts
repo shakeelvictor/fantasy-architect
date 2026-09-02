@@ -90,6 +90,17 @@ export function buildArchive(
   };
 }
 
+/** Whether a document carries the board's own numbers.
+ *
+ *  An archive reconstructed after the fact — the 2025 draft was imported from
+ *  a spreadsheet — has the picks but not the projections that were on screen
+ *  that night, and those are gone for good. Grading it anyway would hand
+ *  every team the same value and print eleven identical Cs, which looks like
+ *  an assessment and is not one. Callers use this to leave the grid out. */
+export function hasProjections(doc: ArchiveDoc): boolean {
+  return doc.teams.some((t) => t.roster.some((r) => r.proj != null || r.vorp != null));
+}
+
 /** Grade an archived draft, preferring the letter pinned into the document —
  *  what was actually said that night, not what today's formula would say. */
 export function gradesFromArchive(doc: ArchiveDoc): TeamGrade[] {

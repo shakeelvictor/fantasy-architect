@@ -274,6 +274,17 @@ year is therefore just the existing ritual: Past Drafts → Archive current
 draft → commit the JSON. The Past Drafts tab shows the shareable link next to
 each archived season.
 
+**2025** was imported from `Fantasy_Draft_2025.xlsx` (Sep 2026): 220 picks,
+11 teams, straight, 15 keepers, every player resolved to a Sleeper id and
+cross-checked against `actuals/2025.json`. It carries NO projections — the
+2025 board's numbers are gone — so `hasProjections(doc)` is false for it and
+both the Analyzer and `/2025` leave the grade grid and the retrospective out
+rather than grading against zeros and printing eleven identical Cs. Anything
+imported after the fact should follow that rule. Its `source` field records
+the provenance. One oddity in the source data, left as-is because it is the
+league's record and not mine to correct: Dante shows 3 keepers where the rule
+is max 2.
+
 NOTE: 2026 is NOT in Supabase (only 2027 is, and only the stray
 `draft_started`) — it was v1's draft, inherited as that committed file, which
 makes it more deterministic than a log, not less.

@@ -15,7 +15,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { DraftState, SeasonConfig } from '@fa/rules';
 import { SEASON, type PoolPlayer } from '../api';
-import { gradesFromArchive, type ArchiveDoc } from '../archive';
+import { gradesFromArchive, hasProjections, type ArchiveDoc } from '../archive';
 import { computeGrades, type TeamGrade } from '../grades';
 import { buildRetro, fetchActuals, type Actuals, type PlayerVerdict, type Retro } from '../hindsight';
 import { blurbContext, buildTeamBlurb, groupOf, takesFromArchive, type BlurbTeam } from '../blurbs';
@@ -76,7 +76,7 @@ export function Analyzer({ config, draft, byPid, teamName, mySlot }: {
   ), [config.teams, byPid, draft, teamName]);
 
   const archiveGrades: TeamGrade[] | null = useMemo(
-    () => (doc ? gradesFromArchive(doc) : null), [doc]);
+    () => (doc && hasProjections(doc) ? gradesFromArchive(doc) : null), [doc]);
 
   const retro = useMemo(
     () => (doc && actuals ? buildRetro(doc, actuals) : null),
@@ -135,6 +135,20 @@ export function Analyzer({ config, draft, byPid, teamName, mySlot }: {
           {!draft.picks.length && (
             <p className="p-meta" style={{ marginTop: 12 }}>Grades sharpen as picks land.</p>
           )}
+        </>
+      ) : doc && !hasProjections(doc) ? (
+        <>
+          <p className="p-meta" style={{ margin: '0 0 12px' }}>
+            {doc.league} · {doc.season} · {doc.picks.length} picks
+          </p>
+          <div className="card" data-testid="no-grades">
+                  <h3>No grades for this draft</h3>
+                  <p className="p-meta">
+                    This draft was reconstructed from a spreadsheet, so the projections the board
+                    held that night are gone. The picks, the rounds and the rosters are exact —
+                    grading them against nothing would print a letter that means nothing.
+                  </p>
+                </div>
         </>
       ) : !doc || !archiveGrades ? (
         <p className="p-meta">Loading {source?.label}…</p>

@@ -15,7 +15,7 @@
 // the Analyzer — so the public view can never drift from the private one.
 
 import { useEffect, useMemo, useState } from 'react';
-import { gradesFromArchive, type ArchiveDoc, type ArchivePick } from '../archive';
+import { gradesFromArchive, hasProjections, type ArchiveDoc, type ArchivePick } from '../archive';
 import { buildRetro, fetchActuals, type Actuals } from '../hindsight';
 import { takesFromArchive } from '../blurbs';
 import { GradeGrid, Retrospective } from './Analyzer';
@@ -47,7 +47,8 @@ export function PublicSeason({ year }: { year: number }): React.JSX.Element {
     return () => { live = false; };
   }, [year]);
 
-  const grades = useMemo(() => (doc ? gradesFromArchive(doc) : null), [doc]);
+  const graded = !!doc && hasProjections(doc);
+  const grades = useMemo(() => (doc && hasProjections(doc) ? gradesFromArchive(doc) : null), [doc]);
   const takes = useMemo(
     () => (doc && grades
       ? takesFromArchive(doc.teams, (slot) => grades.find((g) => g.slot === slot)?.grade ?? 'C')
@@ -159,8 +160,17 @@ export function PublicSeason({ year }: { year: number }): React.JSX.Element {
               <p className="p-meta" style={{ margin: '0 0 12px' }}>
                 Graded on the projections the board held that night, on value per pick.
               </p>
-              {grades && <GradeGrid teams={grades} takes={takes ?? undefined} />}
-              <Retrospective season={doc.season} retro={retro} actuals={actuals} />
+              {grades
+                ? <GradeGrid teams={grades} takes={takes ?? undefined} />
+                : <div className="card" data-testid="no-grades">
+                  <h3>No grades for this draft</h3>
+                  <p className="p-meta">
+                    This draft was reconstructed from a spreadsheet, so the projections the board
+                    held that night are gone. The picks, the rounds and the rosters are exact —
+                    grading them against nothing would print a letter that means nothing.
+                  </p>
+                </div>}
+              {graded && <Retrospective season={doc.season} retro={retro} actuals={actuals} />}
             </div>
           </>
         )}

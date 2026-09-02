@@ -3,5 +3,10 @@
     "season": 2026,
     "file": "2026.json",
     "label": "2026"
+  },
+  {
+    "season": 2025,
+    "file": "2025.json",
+    "label": "2025"
   }
 ]

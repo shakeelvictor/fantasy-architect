@@ -109,3 +109,31 @@ test('a year with no archive says so instead of erroring', async ({ browser }) =
   await expect(page.getByTestId('pin-input')).toHaveCount(0);
   await ctx.close();
 });
+
+test('2025 renders, and refuses to invent grades it does not have', async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  await page.route(/sleeper(cdn)?\.(app|com)/, (r) => r.abort());
+  await page.goto('/2025');
+
+  // the board and rosters are exact — 11 x 20, straight
+  await expect(page.locator('.board-cell')).toHaveCount(220);
+  await expect(page.getByTestId('year-2025')).toHaveClass(/active/);
+  await expect(page.getByTestId('year-2026')).toBeVisible(); // both years listed
+
+  // the keeper question, which is the reason this page exists
+  await page.getByTestId('public-search').fill('Puka Nacua');
+  await expect(page.getByTestId('public-results')).toContainText('11.11');
+  await expect(page.getByTestId('public-results')).toContainText('keeper');
+
+  // This draft was imported from a spreadsheet, so the projections behind the
+  // grades are gone. Grading it anyway would give every team identical value
+  // and print eleven identical Cs — an assessment-shaped thing that is not
+  // one. The page says so instead.
+  await expect(page.getByTestId('no-grades')).toContainText('reconstructed from a spreadsheet');
+  await expect(page.locator('[data-testid^="grade-"]')).toHaveCount(0);
+  await expect(page.getByTestId('retro-grid')).toHaveCount(0);
+  await expect(page.getByTestId('retro-pending')).toHaveCount(0);
+
+  await ctx.close();
+});

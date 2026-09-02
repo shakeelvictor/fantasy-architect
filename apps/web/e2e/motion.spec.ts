@@ -134,7 +134,8 @@ test('the news rail fades its edge from scroll, with no JS driving it', async ({
     const after = getComputedStyle(col, '::after');
     return {
       animation: after.animationName,
-      timeline: after.animationTimeline,
+      // not in lib.dom's CSSStyleDeclaration yet, but the browsers have it
+      timeline: after.getPropertyValue('animation-timeline'),
       exposed: col.getAnimations({ subtree: true })
         .map((a) => a.timeline?.constructor?.name),
     };
