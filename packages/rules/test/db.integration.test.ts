@@ -351,3 +351,85 @@ describe('season settings are the commissioner\'s, and only before the draft', (
     expect(await h.configOf(y)).toMatchObject({ teams: 3 }); // nothing partially applied
   });
 });
+
+// ------------------------------------------------------- teams draft
+//
+// A team drafting for itself removes the commissioner as a bottleneck on
+// every pick. The boundary has to be exact, so it is tested from both sides:
+// what a team may now do, and everything it still may not.
+
+describe('a team drafts on its own turn, and only then', () => {
+  const TEAM1 = { app_role: 'team', app_slot: 1 } as const;
+
+  it('drafts for itself when it is on the clock', async () => {
+    const y = await season();
+    await h.submit(COMMISH, y, `${y}-s`, 'draft_started');
+    const r = await h.submit(TEAM1, y, `${y}-p`, 'pick_made', { pid: 'p1' }); // slot 1 is up
+    expect(r.status).toBe('applied');
+    const st = await h.foldState(y);
+    expect((st.picks as { pid: string; slot: number }[])[0]).toMatchObject({ pid: 'p1', slot: 1 });
+  });
+
+  it('cannot draft on someone else\'s turn', async () => {
+    const y = await season();
+    await h.submit(COMMISH, y, `${y}-s`, 'draft_started');
+    // pick #1 belongs to slot 1, so slot 2 reaching for it is refused
+    const r = await h.submit(TEAM2, y, `${y}-p`, 'pick_made', { pid: 'p1' });
+    expect(r.error).toBeTruthy();
+    expect((await h.foldState(y)).picks).toHaveLength(0);
+  });
+
+  it('cannot forge a pick for another slot by writing the row directly', async () => {
+    const y = await season();
+    await h.submit(COMMISH, y, `${y}-s`, 'draft_started');
+    // slot 2 claiming to be slot 1, bypassing submit_event entirely
+    const r = await h.rawInsert(TEAM2, y, `${y}-forge`, 'pick_made',
+      { pid: 'p1', overall: 1, round: 1, slot: 1, is_keeper: false });
+    expect(r.error).toBeTruthy();
+    expect((await h.foldState(y)).picks).toHaveLength(0);
+  });
+
+  it('cannot claim its own slot for a pick that is not its turn', async () => {
+    const y = await season();
+    await h.submit(COMMISH, y, `${y}-s`, 'draft_started');
+    // overall 2 belongs to slot 2; slot 1 stamping its own number on it is
+    // caught by fa_validate before RLS even matters
+    const r = await h.rawInsert(TEAM1, y, `${y}-skip`, 'pick_made',
+      { pid: 'p1', overall: 2, round: 1, slot: 1, is_keeper: false });
+    expect(r.error).toBeTruthy();
+  });
+
+  it('cannot pass off a pick as a keeper fill', async () => {
+    const y = await season();
+    await h.submit(COMMISH, y, `${y}-s`, 'draft_started');
+    const r = await h.rawInsert(TEAM1, y, `${y}-k`, 'pick_made',
+      { pid: 'p1', overall: 1, round: 1, slot: 1, is_keeper: true });
+    expect(r.error).toBeTruthy();
+  });
+
+  it('still cannot undo, trade, keep, start or finish the draft', async () => {
+    const y = await season();
+    await h.submit(COMMISH, y, `${y}-s`, 'draft_started');
+    await h.submit(TEAM1, y, `${y}-p`, 'pick_made', { pid: 'p1' });
+    for (const [type, payload] of [
+      ['pick_undone', {}],
+      ['keeper_declared', { pid: 'p9', slot: 1, round: 4 }],
+      ['pick_traded', { round: 3, from_slot: 1, to_slot: 2 }],
+      ['draft_completed', {}],
+    ] as const) {
+      const r = await h.submit(TEAM1, y, `${y}-${type}`, type, payload);
+      expect(r.error, `a team must not be able to ${type}`).toBeTruthy();
+    }
+    // and the pick it legitimately made is still the only one
+    expect((await h.foldState(y)).picks).toHaveLength(1);
+  });
+
+  it('cannot resolve a request — not even its own', async () => {
+    const y = await season();
+    await h.submit(COMMISH, y, `${y}-s`, 'draft_started');
+    const req = await h.submit(TEAM2, y, `${y}-req`, 'pick_requested', { pid: 'p5', slot: 2 });
+    const r = await h.submit(TEAM2, y, `${y}-res`, 'pick_request_resolved',
+      { request_seq: req.seq, accepted: true });
+    expect(r.error).toBeTruthy();
+  });
+});

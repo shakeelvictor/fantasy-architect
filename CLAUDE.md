@@ -15,9 +15,10 @@ the v1 failure class where an empty Safari overwrote a finished draft is
 unrepresentable. League rules are a BEFORE INSERT trigger (`fa_validate` in
 `supabase/migrations/0001_foundation.sql`); the `submit_event()` RPC adds
 idempotency keys, keeper auto-fill chaining, and the undo cascade. RLS: a
-team JWT can express exactly one write — `pick_requested` for its own slot;
-spectators read everything with the anon key; the log is append-only for
-everyone (corrections are compensating events).
+team JWT can express exactly two writes — `pick_made` when its OWN slot is on
+the clock, and `pick_requested` for its own slot; spectators read everything
+with the anon key; the log is append-only for everyone (corrections are
+compensating events).
 
 ## Layout
 
@@ -197,6 +198,31 @@ role, no token, forged signature, tampered payload, expiry, garbage, missing
 secret; mutation-checked), `apps/web/e2e/mfl-guard.spec.ts` (the REAL dev-api
 route, since exports.spec stubs the proxy, plus "a team never even sees the
 button"), and a live check against the hosted function after each deploy.
+
+## Teams draft for themselves (migration 0006)
+
+A team drafts its own pick when its own slot is on the clock. Before this the
+commissioner had to convert every request into a pick, which made them a
+bottleneck on the whole night — step away, sign out, or miss the banner and
+the board stopped for everyone.
+
+The safety rests on something already true rather than on new checks:
+`fa_validate` has ALWAYS required a `pick_made`'s `slot` to equal
+`fa_owner_of()` and its `overall` to equal the next pick, for every author
+including the commissioner. So a pick out of turn, for another team, or for a
+player already gone is unrepresentable whoever sends it, and the only question
+left for RLS is whose turn it is — one comparison. The two layers compose into
+"a team may draft when, and only when, it is their turn" without either
+knowing the whole rule.
+
+`pick_requested` keeps its job and gets a sharper one: it is now specifically
+the OFF-the-clock move, a pre-pick the commissioner can take once that team
+comes up (`submit_event` only accepts a request whose slot is on the clock).
+The UI follows exactly: on the clock a team sees Draft, off it, Ask.
+
+Unchanged for teams: undo, redo, trades, keepers, starting or completing the
+draft, resolving any request (including their own), and any pick for another
+slot. All seven are asserted in `db.integration.test.ts`.
 
 ## Signing out mid-draft
 

@@ -128,6 +128,13 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
   // v1's rule: the confirm guard sits on the three HUMAN buttons only —
   // Ask/Take-it are their own confirmation, bots and redo never see it
   const requestDraft = (pid: string): void => setConfirmPid(pid);
+  // A team drafts for itself when its own slot is on the clock — the database
+  // allows exactly that (migration 0006) and nothing else. Off the clock the
+  // button stays an ask, which is a pre-pick the commissioner can take.
+  // Before this the commissioner had to convert every single pick, which made
+  // them a bottleneck on the whole night.
+  const myTurn = !done && onClockSlot === mySlot;
+  const canDraftNow = isCommish || myTurn;
   // mirrors 0005's trigger: only events that NAME a slot or round bind the
   // board's shape, so a season that has merely been started can still be set up
   const configFrozen = room.events.some(
@@ -262,7 +269,7 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
               draft={draft}
               config={config}
               teamName={teamName}
-              mode={isCommish || isMock ? 'commish' : 'team'}
+              mode={canDraftNow || isMock ? 'commish' : 'team'}
               mySlot={mySlot}
               disabled={!draft.started || done || (isMock && mock.running && onClockSlot !== mySlot)}
               onDraft={requestDraft}
@@ -337,7 +344,7 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
           config={config}
           draft={draft}
           teamName={teamName}
-          mode={isCommish || isMock ? 'commish' : 'team'}
+          mode={canDraftNow || isMock ? 'commish' : 'team'}
           mySlot={mySlot}
           done={done}
           disabled={!draft.started || done || (isMock && mock.running && onClockSlot !== mySlot)}

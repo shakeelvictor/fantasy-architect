@@ -30,6 +30,20 @@ test('a full slice of draft night, in two browsers', async ({ browser }) => {
   await expect(commish.getByTestId('onclock')).toContainText('Anand');
   await expect(team.getByTestId('onclock')).toContainText('Anand');
 
+  // ---- the team pre-picks while Anand is up. A request is now specifically
+  // the OFF-the-clock move: on its own turn a team drafts for itself
+  // (team-picks.spec), and the commissioner can only accept a request once
+  // that team is actually on the clock.
+  // the SECOND row: the commissioner takes the top one below, and a request
+  // for a player who is gone by the time it is accepted is a different test
+  const askBtn = team.locator('[data-testid^="ask-"]').nth(1);
+  const askedPid = (await askBtn.getAttribute('data-testid'))!.replace('ask-', '');
+  const askedName = (await team.getByTestId(`row-${askedPid}`).locator('.p-name').innerText()).split(/\s/)[0]!;
+  await askBtn.click();
+  await expect(team.getByTestId(`ask-${askedPid}`)).toContainText('Asked');
+  await expect(commish.getByTestId('req-banner')).toContainText('Vip');
+  await expect(commish.getByTestId('req-banner')).toContainText(askedName);
+
   // ---- commissioner drafts the top player; the team browser sees it FAST
   const topRow = commish.locator('[data-testid^="row-"]').first();
   // innerText merges the inline <small>, so only the first token is safe
@@ -48,15 +62,7 @@ test('a full slice of draft night, in two browsers', async ({ browser }) => {
   await expect(commish.locator('#pick-ticker')).toContainText(firstName.toUpperCase());
   await expect(team.locator('#pick-ticker')).toContainText('ON THE CLOCK');
 
-  // ---- the team asks for a player; commissioner takes it
-  // data-independent: whoever tops the available list after pick #1
-  const askBtn = team.locator('[data-testid^="ask-"]').first();
-  const askedPid = (await askBtn.getAttribute('data-testid'))!.replace('ask-', '');
-  const askedName = (await team.getByTestId(`row-${askedPid}`).locator('.p-name').innerText()).split(/\s/)[0]!;
-  await askBtn.click();
-  await expect(team.getByTestId(`ask-${askedPid}`)).toContainText('Asked');
-  await expect(commish.getByTestId('req-banner')).toContainText('Vip');
-  await expect(commish.getByTestId('req-banner')).toContainText(askedName);
+  // ---- now Vip IS on the clock, so the standing request can be taken
   await commish.getByTestId('req-accept').click();
   await expect(team.getByTestId('cell-2')).toContainText(askedName);
   await expect(commish.getByTestId('cell-2')).toContainText(askedName);

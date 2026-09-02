@@ -123,14 +123,16 @@ export function SidePanel({ players, byPid, config, draft, session, mySlot, team
                   <div className="ts-stat"><b>{(top!.p.vorp ?? 0) > 0 ? '+' : ''}{(top!.p.vorp ?? 0).toFixed(0)}</b><span>VS REPL</span></div>
                   <div className="ts-stat"><b>{top!.p.adp != null ? top!.p.adp.toFixed(0) : '—'}</b><span>ADP</span></div>
                 </div>
-                {onClock && (isCommish || mock) && (
+                {/* on the clock a team drafts for itself now, so the spotlight
+                    button is a real pick rather than a request */}
+                {onClock && (isCommish || mock || !!onDraft) && (
                   <button className="ts-draft" onClick={(e) => {
                     e.stopPropagation();
                     if (onDraft) onDraft(top!.p.pid);
                     else act('pick_made', { pid: top!.p.pid });
                   }}>Draft now ⚡</button>
                 )}
-                {onClock && !isCommish && !mock && (
+                {!onClock && !isCommish && !mock && (
                   <button className="ts-draft" onClick={(e) => { e.stopPropagation(); act('pick_requested', { pid: top!.p.pid, slot: session.slot }); }}>Ask for him ⚡</button>
                 )}
               </div>
