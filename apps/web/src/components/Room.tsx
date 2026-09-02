@@ -7,6 +7,7 @@ import { currentOverall, ownerOf, redoablePids, rosterBalance, roundOf } from '@
 import { fetchPool, transport, type PoolDoc, type Session } from '../api';
 import { useRoom } from '../store';
 import { useTopbarFit } from '../topbar';
+import { useTheme } from '../theme';
 import { suppressNextPickPop, useCelebrations } from '../celebrate';
 import { mockEvents, mockState, mockSubmit, stopBots, useMock } from '../mock';
 import { Analyzer } from './Analyzer';
@@ -43,7 +44,7 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
   const [confirmPid, setConfirmPid] = useState<string | null>(null);
   const [modeSel, setModeSel] = useState<'manual' | 'mock'>('manual');
   const mock = useMock();
-  const [theme, setTheme] = useState(() => localStorage.getItem('fa-theme') ?? '');
+  const theme = useTheme();
   const players = pool?.players ?? [];
 
   useTopbarFit(room.ready && !!room.config);
@@ -51,10 +52,6 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
   useEffect(() => {
     void fetchPool().then(setPool);
   }, []);
-  useEffect(() => {
-    if (theme) document.documentElement.dataset.theme = theme;
-    else delete document.documentElement.dataset.theme;
-  }, [theme]);
 
   const isMock = modeSel === 'mock';
   const mySlotSafe = session.slot ?? (room.config as { commish_slot?: number } | null)?.commish_slot ?? 11;
@@ -192,7 +189,7 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
           {room.connected ? '● live' : '○ reconnecting'}
         </span>
         <button className="icon-btn" id="theme-btn" title="Toggle light/dark theme"
-          onClick={() => { const next = theme === 'light' ? '' : 'light'; setTheme(next); localStorage.setItem('fa-theme', next); }}>
+          onClick={theme.toggle}>
           ☀
         </button>
         {isCommish && (

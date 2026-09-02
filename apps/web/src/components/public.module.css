@@ -1,0 +1,27 @@
+/* The public draft record's own chrome. v1 had no equivalent of these — it
+ * never had a page anyone could read without a PIN — so they live here rather
+ * than in v1.css, which stays verbatim.
+ *
+ * Every colour is a v1 variable, so the light theme comes for free and these
+ * cannot drift from the app's palette. */
+
+.years {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 10px 18px; background: var(--bg2); border-bottom: 1px solid var(--border);
+}
+.yearsLabel {
+  color: var(--faint); font-family: var(--font-data); font-weight: 700;
+  font-size: var(--fs-9-5); text-transform: uppercase; letter-spacing: 0.12em;
+}
+/* the shape of v1's .pos-tabs buttons, on anchors — real links, so a year is
+   shareable, opens in a new tab, and the back button works */
+.year {
+  background: var(--bg); border: 1px solid var(--border); color: var(--muted);
+  padding: 7px 12px; border-radius: 9px; text-decoration: none;
+  font-family: var(--font-data); font-weight: 600; font-size: var(--fs-11);
+}
+.year:hover { border-color: var(--accent-line); color: var(--text); }
+.year[aria-current='page'] {
+  background: var(--accent); border-color: var(--accent);
+  color: var(--accent-ink); font-weight: 700;
+}

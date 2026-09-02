@@ -118,7 +118,9 @@ test('2025 renders, and refuses to invent grades it does not have', async ({ bro
 
   // the board and rosters are exact — 11 x 20, straight
   await expect(page.locator('.board-cell')).toHaveCount(220);
-  await expect(page.getByTestId('year-2025')).toHaveClass(/active/);
+  // aria-current, not a class name: it tells a screen reader which year is
+  // showing as well as styling it, and it survives the CSS-module hashing
+  await expect(page.getByTestId('year-2025')).toHaveAttribute('aria-current', 'page');
   await expect(page.getByTestId('year-2026')).toBeVisible(); // both years listed
 
   // the keeper question, which is the reason this page exists
@@ -134,6 +136,32 @@ test('2025 renders, and refuses to invent grades it does not have', async ({ bro
   await expect(page.locator('[data-testid^="grade-"]')).toHaveCount(0);
   await expect(page.getByTestId('retro-grid')).toHaveCount(0);
   await expect(page.getByTestId('retro-pending')).toHaveCount(0);
+
+  await ctx.close();
+});
+
+test('the archive pages honour the light theme, and can change it', async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  await page.route(/sleeper(cdn)?\.(app|com)/, (r) => r.abort());
+
+  // a preference set anywhere in the app applies here too — these pages used
+  // to be dark for everyone because the theme was only applied after sign-in
+  await page.goto('/2026');
+  await page.evaluate(() => localStorage.setItem('fa-theme', 'light'));
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  // and it is a real repaint, not just an attribute
+  const light = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+
+  await page.getByTestId('public-theme').click();
+  await expect(page.locator('html')).not.toHaveAttribute('data-theme', 'light');
+  const dark = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+  expect(dark).not.toBe(light);
+
+  // the choice sticks, and carries to the other year
+  await page.goto('/2025');
+  await expect(page.locator('html')).not.toHaveAttribute('data-theme', 'light');
 
   await ctx.close();
 });

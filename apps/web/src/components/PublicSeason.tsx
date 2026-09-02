@@ -20,6 +20,8 @@ import { buildRetro, fetchActuals, type Actuals } from '../hindsight';
 import { takesFromArchive } from '../blurbs';
 import { GradeGrid, Retrospective } from './Analyzer';
 import { ArchiveDocView } from './ArchiveTab';
+import { useTheme } from '../theme';
+import styles from './public.module.css';
 
 interface Entry { season: number; label: string; file: string }
 
@@ -67,6 +69,7 @@ export function PublicSeason({ year }: { year: number }): React.JSX.Element {
       .slice(0, 12);
   }, [doc, term]);
 
+  const theme = useTheme();
   const teamOf = (slot: number): string =>
     doc?.teams.find((t) => t.slot === slot)?.name ?? `Team ${slot}`;
 
@@ -85,13 +88,22 @@ export function PublicSeason({ year }: { year: number }): React.JSX.Element {
         <div className="clock-banner">
           <span className="clock-pill" data-testid="public-banner">Draft record · read-only</span>
         </div>
+        {/* the same toggle the app has. Without it these pages sat on v1.css's
+            dark defaults no matter what someone had picked inside the app,
+            because the theme was only ever applied after signing in. */}
+        <button className="icon-btn" data-testid="public-theme" id="theme-btn"
+          title="Toggle light/dark theme" onClick={theme.toggle}>
+          ☀
+        </button>
       </header>
 
       {index && index.length > 1 && (
-        <nav className="tabs" id="public-years">
+        <nav className={styles.years} id="public-years" aria-label="Draft year">
+          <span className={styles.yearsLabel}>Draft year</span>
           {index.map((e) => (
             <a key={e.season} href={`/${e.season}`} data-testid={`year-${e.season}`}
-              className={e.season === year ? 'active' : ''}>
+              className={styles.year}
+              aria-current={e.season === year ? 'page' : undefined}>
               {e.label}
             </a>
           ))}
