@@ -210,11 +210,16 @@ export function Room({ session, onLogout }: { session: Session; onLogout: () => 
             // in, which is worth a question mid-draft and is not worth one
             // otherwise. The wording says what is actually at stake so nobody
             // reads a sign-out prompt as a warning about losing the draft.
+            //
+            // Kept honest against 0006: teams draft their own picks now, so
+            // the board does NOT stall while the commissioner is away. What
+            // does wait is everything only they can do — undo, accepting a
+            // request, keepers, trades, settings, finishing the draft.
             const live = draft.started && !done;
             if (live && !window.confirm(
               isCommish
-                ? 'Sign out of the commissioner board?\n\nThe draft is live. Nothing is lost — every pick is saved on the server — but no one else can make picks until you sign back in with your PIN.'
-                : 'Sign out?\n\nThe draft is live. Nothing is lost — the board and your queue are saved — but you will need your PIN to get back in.',
+                ? 'Sign out of the commissioner board?\n\nThe draft keeps going — teams draft their own picks. But undo, keepers, trades and accepting a request all wait until you are back with your PIN.'
+                : 'Sign out?\n\nNothing is lost — the board and your queue are saved. But you draft your own picks, so if your turn comes while you are out, the room waits on you.',
             )) return;
             onLogout();
           }}>

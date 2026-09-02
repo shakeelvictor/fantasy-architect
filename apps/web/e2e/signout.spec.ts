@@ -66,7 +66,12 @@ test('a mid-draft sign-out costs the board nothing — commissioner and team', a
   await commish.getByTestId('sign-out').click();
   await expect(commish.getByTestId('pin-input')).toBeVisible();
   expect(asked, 'a live draft must ask before signing out').toContain('commissioner');
-  expect(asked).toContain('Nothing is lost');
+  // Tie the assertion to the BEHAVIOUR the sentence claims, not to a stock
+  // phrase. The previous version checked for "Nothing is lost", which stayed
+  // true and green while the sentence beside it ("no one else can make
+  // picks") was made false by teams drafting for themselves.
+  expect(asked, 'the prompt must not claim the board stalls — teams draft now')
+    .toContain('teams draft their own picks');
 
   // the team's board is untouched while the commissioner is away — the draft
   // carries on existing, it just cannot advance
@@ -92,6 +97,7 @@ test('a mid-draft sign-out costs the board nothing — commissioner and team', a
   await team.getByTestId('sign-out').click();
   await expect(team.getByTestId('pin-input')).toBeVisible();
   expect(teamAsked, 'a team mid-draft must be asked too').toContain('your queue');
+  expect(teamAsked).toContain('your own picks');
   await login(team, '2202');
 
   // four picks still there, and the starred queue survived — it is a
