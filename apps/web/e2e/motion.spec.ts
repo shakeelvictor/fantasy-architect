@@ -122,15 +122,27 @@ test('the news rail fades its edge from scroll, with no JS driving it', async ({
   await expect(page.locator('#pc-news-rail')).toHaveCSS('scroll-timeline-name', '--rail');
   await expect(page.locator('.pc-news')).toHaveCSS('timeline-scope', '--rail');
 
-  // and the veil is genuinely driven by that scroll, not by a class someone
-  // has to keep in sync — a ScrollTimeline is the proof
-  const drivenByScroll = await page.evaluate(() => {
-    const col = document.querySelector('.pc-news');
-    if (!col) return 'no rail at this width';
-    return col.getAnimations({ subtree: true })
-      .some((a) => a.timeline?.constructor.name === 'ScrollTimeline');
+  // The veil must be driven by that scroll, not by a class someone keeps in
+  // sync. Assert the strongest thing each engine can actually tell us:
+  // Chromium exposes the pseudo-element's animation through getAnimations()
+  // and names its timeline ScrollTimeline. WebKit returns the animation but
+  // leaves .timeline undefined, so it cannot answer that question at all —
+  // there the computed wiring is the evidence. Assert whatever each engine
+  // is actually able to tell us rather than the lowest common denominator.
+  const veil = await page.evaluate(() => {
+    const col = document.querySelector('.pc-news')!;
+    const after = getComputedStyle(col, '::after');
+    return {
+      animation: after.animationName,
+      timeline: after.animationTimeline,
+      exposed: col.getAnimations({ subtree: true })
+        .map((a) => a.timeline?.constructor?.name),
+    };
   });
-  expect(drivenByScroll).toBe(true);
+  expect(veil.animation).toBe('rail-veil');
+  expect(veil.timeline).toBe('--rail');
+  const namedTimelines = veil.exposed.filter(Boolean);
+  if (namedTimelines.length) expect(namedTimelines).toContain('ScrollTimeline');
 
   await ctx.close();
 });
