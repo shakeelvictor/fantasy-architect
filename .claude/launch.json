@@ -4,20 +4,23 @@
     {
       "name": "fa2-api",
       "runtimeExecutable": "sh",
-      "runtimeArgs": [
-        "-c",
-        "cd /Users/shakeelvictor/projects/fantasy-architect/tools/dev-api && pnpm start"
-      ],
+      "runtimeArgs": ["-c", "cd /Users/shakeelvictor/projects/fantasy-architect/tools/dev-api && pnpm start"],
       "port": 8787
     },
     {
       "name": "fa2-web",
       "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "cd /Users/shakeelvictor/projects/fantasy-architect/apps/web && pnpm dev"],
+      "port": 5173
+    },
+    {
+      "name": "fa2-web-hosted",
+      "runtimeExecutable": "sh",
       "runtimeArgs": [
         "-c",
-        "cd /Users/shakeelvictor/projects/fantasy-architect/apps/web && pnpm dev"
+        "cd /Users/shakeelvictor/projects/fantasy-architect/apps/web && . ~/.config/fa2/supabase.env && VITE_SUPABASE_URL=$SUPABASE_URL VITE_SUPABASE_ANON_KEY=$ANON_KEY VITE_SEASON=9998 pnpm dev --port 5199"
       ],
-      "port": 5173
+      "port": 5199
     }
   ]
 }

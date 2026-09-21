@@ -1,10 +1,47 @@
 # CLAUDE.md — fantasy-architect (v2)
 
 The ground-up rebuild of the INDOMEXPAK draft tool. Owner: Shakeel ("Shak",
-league slot 11). The v1 app lives in `../fantasy-draft-assistant` — **frozen,
-deployed, and it ran the completed 2026 draft**; read its CLAUDE.md for league
-rules (11 teams, 20 rounds, STRAIGHT draft, max-2 keepers, bespoke fflr
-scoring). v2 runs the 2027 draft.
+league slot 11). The v1 app, `../fantasy-draft-assistant`, ran the completed
+2026 draft and is retired — archived (read-only) on GitHub. This repo is the
+only one maintained; v2 runs the 2027 draft onward. The league rules below
+were carried over from v1's CLAUDE.md so nothing here depends on it.
+
+## League facts (canonical)
+
+- **11 teams, 20 rounds, STRAIGHT draft** (same order every round — never
+  snake; the league has a moratorium on even discussing snake until 2027).
+- 2026 draft order: Anand, Vip, Andres, Ryaan, Dante, Hoss, Asher, Imran,
+  Samson, Laura, **Shak (slot 11)**. Season 2027 is seeded in the same order.
+- Rosters: QB, 2 RB, 3 WR (a TE may fill one), TE, FLEX (no QB), K, 3 IDP,
+  8 BN. Max 2 keepers. Fantasy regular season = weeks 1–14, playoffs =
+  **weeks 15–17** (week 18 is "Pakistan vs. the World").
+- **Every team finishes the draft with exactly 20 players — never 19 or 21.**
+  Trades must be pick-for-pick even; each side gives and gets the same number.
+  Entering one side at a time is briefly uneven and that's fine — `rosterBalance`
+  flags it rather than blocking — but always **enter both sides**.
+- **The 3 IDP slots take ANY defensive player in any combination** — no
+  DL/LB/DB requirement. Every defender carries `posGroup: 'IDP'` and
+  replacement level is computed over one combined IDP pool; DL/LB/DB labels
+  are display only.
+- In the Notion keeper tables, **"Austin" is Hoss** (older seasons use the
+  former name).
+- **Scoring source of truth: https://fflr.netlify.app/rules#scoring** (data
+  in `rules-data.js` on that site) — NOT Sleeper's league settings, which
+  can only approximate the rules. Key quirks: 0.04/pass yd with 300/325/350
+  per-game bonus tiers, **0.13333/rush yd** with 100/125/150 tiers, half-PPR
+  with 125/150/175 tiers, distance-banded kicking (6 pts for 60+), IDP solo
+  tackle escalator (7.5 pts at 7 solos, 12.5 at 10), 6-pt pass TDs.
+  `packages/scoring` implements all of it.
+- Sleeper league 1389392616327503872 (draft 1389392616327503873) was the 2026
+  draft room; it runs with a **fake 12th team** (Sleeper needs an even count).
+- MFL league **19716** (www44.myfantasyleague.com, "INDOMEXPAK 2026") is the
+  season-management site (`MFL_LEAGUE_ID` in `supabase/functions/mfl/core.ts`).
+  Franchise↔owner map (in `MflPanel.tsx`): 0001=Shak, 0002=Ryaan,
+  0003=Samson, 0004=Imran, 0005=Hoss, 0006=Andres, 0007=Asher, 0008=Dante,
+  0009=Vip, 0010=Anand, 0011=Laura.
+  **Never key anything on the team name.** Managers rename teams freely, but
+  franchise ids are permanent, so a rename needs no code change. To re-check:
+  `curl -s "https://www44.myfantasyleague.com/2026/export?TYPE=league&L=19716&JSON=1"`
 
 ## The one architectural idea
 
@@ -74,8 +111,8 @@ compensating events).
 - `apps/web` — React 19 + Vite. **`src/styles/v1.css` is v1's stylesheet
   verbatim and components emit v1's exact DOM/class names** — that is the
   fidelity method: when a surface looks wrong, diff against v1's markup in
-  `../fantasy-draft-assistant/public/{index.html,app.js}`, don't restyle
-  from memory. `src/transport.ts` picks local vs hosted by env
+  `../fantasy-draft-assistant/public/{index.html,app.js}` (the archived v1
+  repo — still clonable read-only), don't restyle from memory. `src/transport.ts` picks local vs hosted by env
   (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_SEASON`). Ported v1
   logic (recommendations/needs, 💎 rule, sort tables, STAT_COLS) lives in
   `src/v1logic.ts`. The queue is `src/queue.ts` (per-browser, never
@@ -103,7 +140,7 @@ compensating events).
   `keep-warm.yml` pings weekly so the Supabase free tier can't pause.
 - Local secrets (never in the repo): `~/.config/fa2/supabase.env` (db
   password, keys, ref) and `~/.config/fa2/pins-2027.txt` (league PINs,
-  commish + 11 teams). v1's launch.json has `fa2-api` / `fa2-web` /
+  commish + 11 teams). `.claude/launch.json` has `fa2-api` / `fa2-web` /
   `fa2-web-hosted` preview configs.
 
 ## Testing
@@ -122,8 +159,8 @@ compensating events).
 - pnpm version comes from `packageManager` only; CI deploy is
   `pnpm --package=netlify-cli dlx netlify deploy --prod --no-build --dir
   apps/web/dist` run from `working-directory: apps/web`.
-- corepack in v1's cwd complains "configured to use yarn" — run pnpm from
-  this repo's directories (launch configs use `sh -c cd`).
+- corepack complains "configured to use yarn" if pnpm runs from v1's
+  directory — run pnpm from this repo's directories (launch configs `cd` in).
 - SSE needs an immediate `: hello` flush + heartbeat or EventSource hangs.
 - Edge function CORS must allow `apikey` header — curl never catches this,
   only a real browser.

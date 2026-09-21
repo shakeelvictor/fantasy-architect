@@ -7,7 +7,7 @@ any finished draft is readable without a login at `/{year}`, e.g.
 **[/2026](https://fantasy-architect.netlify.app/2026)**.
 
 It is a rebuild of a working app. The v1 version (`../fantasy-draft-assistant`,
-vanilla JS, frozen) ran the completed 2026 draft. v2 runs 2027 onward.
+vanilla JS, archived read-only on GitHub) ran the completed 2026 draft. v2 runs 2027 onward.
 
 ## Why it was rebuilt
 
