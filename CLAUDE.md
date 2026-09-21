@@ -97,13 +97,13 @@ compensating events).
   `apps/web/src/archive.ts` — the SAME module the "Archive current draft"
   button uses, so a CI-published archive and a hand-downloaded one are
   identical by construction rather than by two implementations agreeing to
-  stay in step. Runs daily from `daily-data.yml` after the bake; the decision
+  stay in step. Runs weekly from `daily-data.yml` after the bake; the decision
   logic (`plan.ts`) is pure and unit-tested. Two guards do the work: it skips
   unless the draft is COMPLETE, and unless `players.json` is that same
   season's pool — once the bake rolls forward, re-deriving an old year would
   restate its grades with projections nobody drafted against, which makes an
   archive frozen the moment the pool moves on. Also idempotent: an unchanged
-  board is recognised through the `archivedAt` timestamp, so the daily run
+  board is recognised through the `archivedAt` timestamp, so the weekly run
   commits nothing.
 - `tools/dev-api` — local Supabase stand-in: real migration in PGlite, real
   RLS per request, real JWT crypto, SSE for realtime, `/reset` for e2e.
@@ -132,7 +132,7 @@ compensating events).
   before trusting it (see supabase/README).
 - Frontend: https://fantasy-architect.netlify.app (site id
   45be6d85-19a5-4c78-8b03-3ab44e3f6677), deployed by GitHub Actions on push
-  (`deploy.yml` — tests gate the deploy) and daily 10:00 UTC
+  (`deploy.yml` — tests gate the deploy) and weekly, Tuesdays 10:00 UTC
   (`daily-data.yml` — bake, commit-if-changed, deploy itself; pushes from
   the default token don't retrigger workflows, by design).
 - GitHub: shakeelvictor/fantasy-architect (private). Secrets set:
@@ -297,8 +297,9 @@ rendered by the SAME components the signed-in app uses (`ArchiveDocView`,
 `GradeGrid`, `Retrospective`), so the public view cannot drift from the
 private one.
 
-Publishing a year is automatic: `daily-data.yml` writes the archive the day
-after a draft completes (see `tools/archive`). The manual route still exists —
+Publishing a year is automatic: `daily-data.yml` writes the archive on its
+first weekly run after a draft completes (see `tools/archive`) — dispatch it
+by hand the morning after draft night to publish at once. The manual route still exists —
 Past Drafts → Archive current draft → commit the JSON — but nothing depends on
 anyone remembering it.
 

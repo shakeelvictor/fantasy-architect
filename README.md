@@ -66,7 +66,7 @@ packages/rules     event types, the reducer, board math — mirrored
                    case-for-case by the SQL fold, with a test proving it
 supabase/          migrations (the log, the triggers, RLS), the PIN→JWT
                    edge function, the MyFantasyLeague proxy
-tools/bake         the daily data build: Sleeper → a static player pool
+tools/bake         the weekly data build: Sleeper → a static player pool
 tools/archive      publishes a finished draft as a permanent record
 tools/dev-api      the whole platform locally: the real migrations in
                    PGlite, real RLS per request, real JWTs, SSE for realtime

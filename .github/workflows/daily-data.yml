@@ -1,4 +1,4 @@
-# Daily player-data refresh, v1's architecture carried over: bake from
+# Weekly player-data refresh, v1's architecture carried over: bake from
 # Sleeper, commit if changed, build + deploy. (The bake commits with the
 # default token, whose pushes deliberately do NOT retrigger workflows — so
 # this job deploys itself rather than relying on deploy.yml.)
@@ -6,12 +6,19 @@
 # It also publishes a finished draft. Archiving used to be a manual ritual —
 # click the button, let the JSON land in a Downloads folder, hand-commit it —
 # which put the league's permanent record one forgotten step away from being
-# a spreadsheet on somebody's laptop. Now the day after a draft completes,
-# this writes it. The step is a no-op every other day of the year.
+# a spreadsheet on somebody's laptop. Now the first run after a draft
+# completes writes it. The step is a no-op every other run.
+#
+# Weekly, not daily (Sep 2026): in-season the actuals only move once a week,
+# and a daily run meant a commit + deploy a day and a daily chance to fail on
+# a Sleeper timeout. Tuesday picks up the week's games after Monday night.
+# The cost is that an archive can land up to a week after its draft — run it
+# by hand (workflow_dispatch) the morning after draft night to publish at once.
+# The file and workflow keep the name daily-data so the run history stays put.
 name: daily-data
 on:
   schedule:
-    - cron: '0 10 * * *' # 10:00 UTC ≈ 6am ET, same as v1
+    - cron: '0 10 * * 2' # Tuesdays 10:00 UTC ≈ 6am ET
   workflow_dispatch:
 jobs:
   bake:
