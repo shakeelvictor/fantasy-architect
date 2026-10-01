@@ -137,7 +137,7 @@ compensating events).
   the default token don't retrigger workflows, by design).
 - GitHub: shakeelvictor/fantasy-architect (private). Secrets set:
   NETLIFY_AUTH_TOKEN, NETLIFY_SITE_ID, SUPABASE_URL, SUPABASE_ANON_KEY.
-  `keep-warm.yml` pings weekly so the Supabase free tier can't pause.
+  `keep-warm.yml` pings DAILY so the Supabase free tier can't pause (weekly drifted past 7 days on GitHub's cron delays; paused 29 Sep 2026).
 - Local secrets (never in the repo): `~/.config/fa2/supabase.env` (db
   password, keys, ref) and `~/.config/fa2/pins-2027.txt` (league PINs,
   commish + 11 teams). `.claude/launch.json` has `fa2-api` / `fa2-web` /

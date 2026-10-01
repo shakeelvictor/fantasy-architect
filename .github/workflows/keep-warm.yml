@@ -1,10 +1,13 @@
-# Supabase free-tier projects pause after ~a week of inactivity — fatal for a
-# seasonal app. One trivial read per week keeps the project alive. Repo
-# secrets required: SUPABASE_URL, SUPABASE_ANON_KEY.
+# Supabase free-tier projects pause after 7 days of inactivity — fatal for a
+# seasonal app. Daily, not weekly: GitHub delays scheduled runs by hours (the
+# Monday 09:00 run landed between 14:46 and 17:20), so a weekly ping drifted
+# past the 7-day line and the project was paused on 29 Sep 2026 regardless.
+# Daily leaves six misses of margin. Repo secrets required: SUPABASE_URL,
+# SUPABASE_ANON_KEY.
 name: keep-warm
 on:
   schedule:
-    - cron: '0 9 * * 1' # Mondays 09:00 UTC
+    - cron: '0 9 * * *' # daily 09:00 UTC
   workflow_dispatch:
 jobs:
   ping:
