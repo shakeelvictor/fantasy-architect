@@ -2,8 +2,13 @@
 # seasonal app. Daily, not weekly: GitHub delays scheduled runs by hours (the
 # Monday 09:00 run landed between 14:46 and 17:20), so a weekly ping drifted
 # past the 7-day line and the project was paused on 29 Sep 2026 regardless.
-# Daily leaves six misses of margin. Repo secrets required: SUPABASE_URL,
-# SUPABASE_ANON_KEY.
+# Daily leaves six misses of margin.
+#
+# Daily READS were not enough either: fold_state() succeeded every day from
+# 1 Oct and Supabase still warned of inactivity on 11 Oct. So the ping now
+# WRITES — keep_warm() bumps the one-row heartbeat table (migration 0007) —
+# and asserts it got a timestamp back, not just a 2xx.
+# Repo secrets required: SUPABASE_URL, SUPABASE_ANON_KEY.
 name: keep-warm
 on:
   schedule:
@@ -13,12 +18,14 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: touch the database
+      - name: write a heartbeat
         run: |
-          curl -sf -X POST "$SUPABASE_URL/rest/v1/rpc/fold_state" \
+          at=$(curl -sf -X POST "$SUPABASE_URL/rest/v1/rpc/keep_warm" \
             -H "apikey: $SUPABASE_ANON_KEY" \
             -H "content-type: application/json" \
-            -d '{"p_season": 2027}' > /dev/null
+            -d '{}')
+          echo "heartbeat: $at"
+          [[ "$at" == \"20* ]]
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
