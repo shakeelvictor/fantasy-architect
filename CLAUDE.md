@@ -137,7 +137,14 @@ compensating events).
   the default token don't retrigger workflows, by design).
 - GitHub: shakeelvictor/fantasy-architect (private). Secrets set:
   NETLIFY_AUTH_TOKEN, NETLIFY_SITE_ID, SUPABASE_URL, SUPABASE_ANON_KEY.
-  `keep-warm.yml` pings DAILY so the Supabase free tier can't pause (weekly drifted past 7 days on GitHub's cron delays; paused 29 Sep 2026).
+  `keep-warm.yml` WRITES daily so the Supabase free tier can't pause: it
+  calls `keep_warm()`, which bumps the one-row `heartbeat` table (migration
+  0007; anon reaches the table only through that function). A weekly read
+  paused the project on 29 Sep 2026, and a daily read of `fold_state()`
+  still drew an inactivity warning on 11 Oct — `stable` functions run READ
+  ONLY, and reads evidently don't count. Keep the heartbeat out of
+  `draft_events`, which holds league facts only. If a warning still arrives
+  with daily writes landing, the only guaranteed fix is Pro.
 - Local secrets (never in the repo): `~/.config/fa2/supabase.env` (db
   password, keys, ref) and `~/.config/fa2/pins-2027.txt` (league PINs,
   commish + 11 teams). `.claude/launch.json` has `fa2-api` / `fa2-web` /
@@ -145,7 +152,7 @@ compensating events).
 
 ## Testing
 
-- `pnpm -r test` — scoring goldens (23) + rules/DB integration (38) +
+- `pnpm -r test` — scoring goldens (23) + rules/DB integration (56) +
   archive planning (7).
 - `pnpm --filter @fa/web test` — two-browser Playwright e2e (draft-night
   slice + parity slice) against dev-api; kill ports 8787/5173 first
