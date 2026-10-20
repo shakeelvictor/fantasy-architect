@@ -69,6 +69,7 @@ async function boot(): Promise<void> {
   await db.exec(readFileSync(join(ROOT, 'supabase', 'migrations', '0005_freeze_on_coordinates.sql'), 'utf8'));
   await db.exec(readFileSync(join(ROOT, 'supabase', 'migrations', '0006_team_picks.sql'), 'utf8'));
   await db.exec(readFileSync(join(ROOT, 'supabase', 'migrations', '0007_heartbeat.sql'), 'utf8'));
+  await db.exec(readFileSync(join(ROOT, 'supabase', 'migrations', '0008_explicit_grants.sql'), 'utf8'));
   await db.exec(readFileSync(join(ROOT, 'supabase', 'dev', 'grants.sql'), 'utf8'));
   await db.query(`insert into seasons (year, config) values ($1, $2)`, [SEASON, JSON.stringify(SEED_CONFIG)]);
   for (const [i, owner] of ORDER.entries()) {

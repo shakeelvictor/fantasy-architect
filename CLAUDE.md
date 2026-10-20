@@ -73,7 +73,11 @@ compensating events).
   event — every pick's coordinates were computed under the config in force
   when it landed — so it FREEZES once the season has any event that names a
   slot or round (picks, keepers, trades, requests). `draft_started` alone does
-  not freeze it, so an accidental start stays recoverable),
+  not freeze it, so an accidental start stays recoverable; 0008 states every
+  table's grants — from 30 Oct 2026 Supabase stops auto-granting new public
+  tables, so a NEW TABLE NEEDS ITS OWN GRANT or it is unreachable on any
+  rebuilt project. `dev/grants.sql` no longer grants tables, and a test fails
+  on any public table left ungranted),
   `auth-pin` edge function (PIN → 24h HS256 JWT with app_role/app_slot
   claims), deploy runbook in its README.
 - `tools/bake` — v1's buildPlayerTable ported: 38 Sleeper fetches (season +

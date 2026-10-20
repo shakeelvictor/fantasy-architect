@@ -90,6 +90,23 @@ describe('the ops-channel contract, kept', () => {
   });
 });
 
+describe('the migrations carry their own table grants', () => {
+  // From 30 Oct 2026 Supabase stops auto-granting new public tables, so a
+  // table a migration creates without a GRANT is unreachable through the API
+  // on any rebuilt project. dev/grants.sql deliberately no longer papers over
+  // that, so this checks the migrations alone.
+  it('every public table is granted to anon, authenticated and service_role', async () => {
+    const { rows } = await h.db.query<{ missing: string }>(`
+      select t.table_name || ' → ' || r.role as missing
+      from information_schema.tables t
+      cross join (values ('anon'), ('authenticated'), ('service_role')) r(role)
+      where t.table_schema = 'public' and t.table_type = 'BASE TABLE'
+        and not has_table_privilege(r.role, format('public.%I', t.table_name), 'SELECT')
+      order by 1`);
+    expect(rows.map((r) => r.missing)).toEqual([]);
+  });
+});
+
 describe('keeper rules', () => {
   it('max 2 per team, one per round — and a re-declare is a move, not a clash', async () => {
     const y = await season();

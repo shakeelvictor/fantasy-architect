@@ -34,6 +34,7 @@ export async function createDb(): Promise<Harness> {
   await db.exec(readFileSync(join(SUPABASE, 'migrations', '0005_freeze_on_coordinates.sql'), 'utf8'));
   await db.exec(readFileSync(join(SUPABASE, 'migrations', '0006_team_picks.sql'), 'utf8'));
   await db.exec(readFileSync(join(SUPABASE, 'migrations', '0007_heartbeat.sql'), 'utf8'));
+  await db.exec(readFileSync(join(SUPABASE, 'migrations', '0008_explicit_grants.sql'), 'utf8'));
   await db.exec(readFileSync(join(SUPABASE, 'dev', 'grants.sql'), 'utf8'));
   return new Harness(db);
 }
