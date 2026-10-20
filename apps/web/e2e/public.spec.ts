@@ -10,6 +10,10 @@ test('a past draft is readable with no session at all', async ({ browser }) => {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
   await page.route(/sleeper(cdn)?\.(app|com)/, (r) => r.abort());
+  // pinned to before kickoff: the real actuals/2026.json advances weekly with
+  // the bake, and this test must not depend on the calendar
+  await page.route('**/actuals/2026.json', (route) =>
+    route.fulfill({ json: { season: '2026', throughWeek: 0, seasonWeeks: 17, complete: false, players: {} } }));
 
   await page.goto('/2026');
   await page.evaluate(() => localStorage.clear());
@@ -43,8 +47,9 @@ test('a past draft is readable with no session at all', async ({ browser }) => {
   await expect(page.getByTestId('grade-2')).toContainText('Vip');
   await expect(page.getByTestId('grade-2').locator('.grade-letter')).toHaveText('A');
 
-  // 2026 has not been played, so the retrospective holds off
+  // the season has not been played, so the retrospective holds off
   await expect(page.getByTestId('retro-pending')).toContainText('has not kicked off');
+  await expect(page.getByTestId('retro-grid')).toHaveCount(0);
 
   // ---- v1's hot take: a grade card opens the analysis behind it
   await page.getByTestId('grade-2').click();

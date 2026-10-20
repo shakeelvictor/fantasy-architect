@@ -1,10 +1,11 @@
 // The Analyzer over an archived draft, and the retrospective that marks those
 // grades against what the season actually did.
 //
-// Actuals are stubbed, for two reasons: the e2e must not depend on Sleeper,
-// and the archived 2026 season has not been played yet in real life — the
-// not-yet state is asserted against the real (empty) file, then a stubbed
-// finished season drives the regrade.
+// Actuals are stubbed in every test, for two reasons: the e2e must not depend
+// on Sleeper, and the real actuals/2026.json moves every week as the bake
+// rolls the season forward — asserting against it ties the suite to the
+// calendar. Each test pins the season state it is about: not yet kicked off,
+// half-played, finished.
 //
 // The regrade is season-end only (weeks 1-17 for this league), so a
 // half-played season must show progress and NO grades — that boundary is
@@ -29,6 +30,9 @@ test('past-draft grades and the empty retrospective', async ({ browser }) => {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
   await page.route(/sleeper(cdn)?\.(app|com)/, (r) => r.abort());
+  // pinned to before kickoff: the real file advances weekly with the bake
+  await page.route('**/actuals/2026.json', (route) =>
+    route.fulfill({ json: { season: '2026', throughWeek: 0, seasonWeeks: 17, complete: false, players: {} } }));
   await login(page, '1111');
   await page.getByTestId('tab-analyzer').click();
 
@@ -42,7 +46,7 @@ test('past-draft grades and the empty retrospective', async ({ browser }) => {
   await expect(page.getByTestId('grade-9').locator('.grade-letter')).toHaveText('F');
   await expect(page.locator('#analyzer-content')).toContainText('220 picks');
 
-  // 2026 has not kicked off, so there is nothing to mark the grades against
+  // the season has not kicked off, so there is nothing to mark the grades against
   await expect(page.getByTestId('retro-pending')).toContainText('has not kicked off');
   await expect(page.getByTestId('retro-grid')).toHaveCount(0);
 
