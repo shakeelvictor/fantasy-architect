@@ -142,9 +142,13 @@ compensating events).
   0007; anon reaches the table only through that function). A weekly read
   paused the project on 29 Sep 2026, and a daily read of `fold_state()`
   still drew an inactivity warning on 11 Oct — `stable` functions run READ
-  ONLY, and reads evidently don't count. Keep the heartbeat out of
-  `draft_events`, which holds league facts only. If a warning still arrives
-  with daily writes landing, the only guaranteed fix is Pro.
+  ONLY, and reads evidently don't count. Writes didn't either: the heartbeat
+  landed daily from 12 Oct and the same email came on 19 Oct, under a day
+  after a write. So since 20 Oct it mimics a page load, twice daily — the
+  transport's two reads, a wrong-PIN `auth-pin` call on empty season 9997
+  (asserts 401, proving the edge function ran), and the heartbeat. Keep the
+  heartbeat out of `draft_events`, which holds league facts only. If a
+  warning still arrives after ~27 Oct, the only guaranteed fix is Pro.
 - Local secrets (never in the repo): `~/.config/fa2/supabase.env` (db
   password, keys, ref) and `~/.config/fa2/pins-2027.txt` (league PINs,
   commish + 11 teams). `.claude/launch.json` has `fa2-api` / `fa2-web` /

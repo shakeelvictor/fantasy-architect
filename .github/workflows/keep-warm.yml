@@ -2,30 +2,49 @@
 # seasonal app. Daily, not weekly: GitHub delays scheduled runs by hours (the
 # Monday 09:00 run landed between 14:46 and 17:20), so a weekly ping drifted
 # past the 7-day line and the project was paused on 29 Sep 2026 regardless.
-# Daily leaves six misses of margin.
 #
-# Daily READS were not enough either: fold_state() succeeded every day from
-# 1 Oct and Supabase still warned of inactivity on 11 Oct. So the ping now
-# WRITES — keep_warm() bumps the one-row heartbeat table (migration 0007) —
-# and asserts it got a timestamp back, not just a 2xx.
+# Daily READS were not enough: fold_state() succeeded every day from 1 Oct and
+# Supabase still warned of inactivity on 11 Oct. A daily WRITE was not enough
+# either: keep_warm() (migration 0007) landed every day from 12 Oct, one at
+# 13:04 UTC on 18 Oct, and the same "not seen sufficient activity for more
+# than 7 days" email arrived on 19 Oct. Whatever Supabase counts, one database
+# call a day is not it.
+#
+# So the ping now does what a manager opening the app does — the transport's
+# two page-load reads, a PIN check through the auth-pin EDGE FUNCTION, and the
+# heartbeat write — twice a day. The PIN check aims at season 9997, which has
+# no pins, so it can only ever 401; a 401 proves the function ran end to end.
+# If the emails STILL come, the only guaranteed fix is Pro.
 # Repo secrets required: SUPABASE_URL, SUPABASE_ANON_KEY.
 name: keep-warm
 on:
   schedule:
-    - cron: '0 9 * * *' # daily 09:00 UTC
+    - cron: '0 9 * * *'  # 09:00 UTC
+    - cron: '0 21 * * *' # 21:00 UTC
   workflow_dispatch:
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: write a heartbeat
+      - name: act like a page load
         run: |
-          at=$(curl -sf -X POST "$SUPABASE_URL/rest/v1/rpc/keep_warm" \
-            -H "apikey: $SUPABASE_ANON_KEY" \
-            -H "content-type: application/json" \
-            -d '{}')
-          echo "heartbeat: $at"
-          [[ "$at" == \"20* ]]
+          set -euo pipefail
+          auth=(-H "apikey: $SUPABASE_ANON_KEY" -H "authorization: Bearer $SUPABASE_ANON_KEY")
+          code() { curl -s -o /dev/null -w '%{http_code}' "$@"; }
+
+          c=$(code "${auth[@]}" "$SUPABASE_URL/rest/v1/seasons?year=eq.2027&select=config")
+          echo "seasons: $c"; [[ "$c" == 200 ]]
+
+          c=$(code "${auth[@]}" "$SUPABASE_URL/rest/v1/draft_events?season=eq.2027&select=seq,type,payload&order=seq")
+          echo "draft_events: $c"; [[ "$c" == 200 ]]
+
+          c=$(code "${auth[@]}" -X POST "$SUPABASE_URL/functions/v1/auth-pin" \
+            -H "content-type: application/json" -d '{"season":9997,"pin":"keep-warm"}')
+          echo "auth-pin: $c"; [[ "$c" == 401 ]]
+
+          at=$(curl -sf "${auth[@]}" -X POST "$SUPABASE_URL/rest/v1/rpc/keep_warm" \
+            -H "content-type: application/json" -d '{}')
+          echo "heartbeat: $at"; [[ "$at" == \"20* ]]
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
