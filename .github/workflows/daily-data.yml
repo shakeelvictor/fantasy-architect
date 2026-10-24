@@ -48,6 +48,22 @@ jobs:
           git diff --cached --quiet && echo "nothing changed" || {
             git commit -m "Daily data bake" && git push
           }
+      # The repo is public (Oct 2026), and GitHub disables a public repo's
+      # schedules after 60 days with no commits — keep-warm included, and
+      # then Supabase pauses. In the off-season the bake can go months
+      # without a change, so once the last commit is 30 days old this one
+      # lands an empty one. Weekly runs keep the worst gap near 37 days.
+      # always(): a failed bake must not also cost the keepalive.
+      - name: keep the schedules alive
+        if: always()
+        run: |
+          age=$(( ( $(date +%s) - $(git log -1 --format=%ct) ) / 86400 ))
+          echo "last commit: $age days ago"
+          if [ "$age" -ge 30 ]; then
+            git config user.name "fa-bake"
+            git config user.email "bake@users.noreply.github.com"
+            git commit --allow-empty -m "Keepalive: $age days without a commit" && git push
+          fi
       - name: build
         run: pnpm --filter @fa/web build
         env:

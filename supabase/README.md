@@ -2,10 +2,15 @@
 
 **Deployed 1 Sep 2026** — project `fantasy-architect`, ref
 `prkdvoyxtdwwzeqqrzcq`, us-east-2, Postgres 17. Both migrations applied,
-auth-pin live with FA_JWT_SECRET, season 2027 + teams + PINs seeded.
+auth-pin live with FA_JWT_SECRET, season 2027 + teams seeded. **2027's PIN
+rows were deleted on 24 Oct 2026**, when the repo went public: they were 4
+digits behind only a flat 600ms wrong-guess delay, which parallel requests
+brute-force fast. Nobody can sign in to 2027 until step 2 below re-seeds them —
+do it with longer PINs (or add a lockout to auth-pin) before draft night.
 Verified end-to-end: 20/20 hosted checks (PIN auth, guards, keeper chain,
 RLS slot cage, append-only log). Credentials: `~/.config/fa2/supabase.env`;
-league PINs: `~/.config/fa2/pins-2027.txt` (both local-only, mode 600).
+league PINs: `~/.config/fa2/pins-2027.txt` (both local-only, mode 600; the
+PINs file now lists the deleted PINs and is stale until re-seeding).
 
 Note: on new-generation projects the legacy JWT secret is dashboard-only
 (Settings → JWT Keys → Legacy JWT Secret) — no Management API reveals it,

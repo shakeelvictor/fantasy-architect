@@ -139,8 +139,17 @@ compensating events).
   (`deploy.yml` — tests gate the deploy) and weekly, Tuesdays 10:00 UTC
   (`daily-data.yml` — bake, commit-if-changed, deploy itself; pushes from
   the default token don't retrigger workflows, by design).
-- GitHub: shakeelvictor/fantasy-architect (private). Secrets set:
-  NETLIFY_AUTH_TOKEN, NETLIFY_SITE_ID, SUPABASE_URL, SUPABASE_ANON_KEY.
+- GitHub: shakeelvictor/fantasy-architect (PUBLIC since 24 Oct 2026). Secrets
+  set: NETLIFY_AUTH_TOKEN, NETLIFY_SITE_ID, SUPABASE_URL, SUPABASE_ANON_KEY.
+  Made public because mfl-live's scheduled feed logger (it held runners idle
+  for hours before kickoff) spent the account's 2,000 private Actions minutes
+  by 23 Oct, which blocked keep-warm here; public repos run free. History was
+  scanned first: no secrets, and real PINs were never committed. Two things
+  follow. (1) NEVER commit a secret or a real PIN — this repo is world-readable
+  now. (2) GitHub DISABLES a public repo's schedules after 60 days without a
+  commit, which would stop keep-warm and let Supabase pause. `daily-data.yml`
+  lands an empty "Keepalive" commit whenever the last commit is 30+ days old;
+  keep that step.
   `keep-warm.yml` WRITES daily so the Supabase free tier can't pause: it
   calls `keep_warm()`, which bumps the one-row `heartbeat` table (migration
   0007; anon reaches the table only through that function). A weekly read
@@ -155,7 +164,12 @@ compensating events).
   warning still arrives after ~27 Oct, the only guaranteed fix is Pro.
 - Local secrets (never in the repo): `~/.config/fa2/supabase.env` (db
   password, keys, ref) and `~/.config/fa2/pins-2027.txt` (league PINs,
-  commish + 11 teams). `.claude/launch.json` has `fa2-api` / `fa2-web` /
+  commish + 11 teams). **The hosted 2027 PIN rows were DELETED on 24 Oct
+  2026**, so nobody can sign in to 2027 and that file is stale. They were 4
+  digits behind a flat 600ms delay, which parallel requests can brute-force.
+  Re-seed them (supabase/README step 2) with longer PINs, or a lockout in
+  auth-pin, before draft night. keep-warm is unaffected: it uses season
+  9997. `.claude/launch.json` has `fa2-api` / `fa2-web` /
   `fa2-web-hosted` preview configs.
 
 ## Testing
